@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ContenidoCurricular {
+  id     String @id @default(uuid())
+  nombre String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  area   Area   @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  areaId String @map("area_id")
+
+  preguntas Pregunta[]
+
+  @@unique([areaId, nombre])
+  @@index([areaId])
+  @@map("contenidos_curriculares")
+}
+
+model Pregunta {
+  id        String   @id @default(uuid())
+  contexto  String
+  imagen    String?
+  enunciado String
+  opciones  Json
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  contenidoCurricular   ContenidoCurricular @relation(fields: [contenidoCurricularId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  contenidoCurricularId String              @map("contenido_curricular_id")
+
+  evidencia   Evidencia @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  evidenciaId String    @map("evidencia_id")
+
+  @@index([contenidoCurricularId])
+  @@index([evidenciaId])
+  @@map("preguntas")
+}
+
+model Area {
+  id        String   @id @default(uuid())
+  nombre    String   @unique
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  contenidosCurriculares ContenidoCurricular[]
+  competencias           Competencia[]
+
+  @@map("areas")
+}
+
+model Competencia {
+  id        String   @id @default(uuid())
+  nombre    String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  afirmaciones Afirmacion[]
+  area         Area         @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  areaId       String       @map("area_id")
+
+  @@unique([areaId, nombre])
+  @@index([areaId])
+  @@map("competencias")
+}
+
+model Afirmacion {
+  id        String   @id @default(uuid())
+  nombre    String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  evidencias    Evidencia[]
+  competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  competenciaId String      @map("competencia_id")
+
+  @@unique([competenciaId, nombre])
+  @@index([competenciaId])
+  @@map("afirmaciones")
+}
+
+model Evidencia {
+  id        String   @id @default(uuid())
+  nombre    String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  afirmacion   Afirmacion @relation(fields: [afirmacionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  afirmacionId String     @map("afirmacion_id")
+
+  preguntas Pregunta[]
+
+  @@unique([afirmacionId, nombre])
+  @@index([afirmacionId])
+  @@map("evidencias")
+}
