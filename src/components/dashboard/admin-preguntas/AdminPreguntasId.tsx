@@ -234,25 +234,7 @@ export default function AdminPreguntasId() {
               <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-400">Selecciona la evidencia o competencia que evalúa la pregunta.</p>
             </div>
 
-            <div className="col-span-full">
-              <label htmlFor="evidencia" className="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Contendiso Curriculares</label>
-              <div className="mt-2">
-                <select 
-                  id="evidencia" 
-                  name="evidencia" 
-                  value={evidencia} 
-                  onChange={e => setEvidencia(e.target.value)} 
-                  required 
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-600 dark:focus:ring-indigo-500"
-                >
-                  <option value="">Seleccione una opción</option>
-                  <option value="">Opción1</option>
-                  <option value="">Opción2</option>
-                  <option value="">Opción3</option>
-                </select>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-400">Selecciona la evidencia o competencia que evalúa la pregunta.</p>
-            </div>
+            {/* Checkbox here */}
             
           </div>
         </div>

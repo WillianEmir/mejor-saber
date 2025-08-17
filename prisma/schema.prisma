@@ -24,12 +24,12 @@ model ContenidoCurricular {
   area   Area   @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   areaId String @map("area_id")
 
-  preguntas Pregunta[]
+  preguntas Pregunta[] @relation("ContenidoCurricularPreguntas")
 
   @@unique([areaId, nombre])
   @@index([areaId])
   @@map("contenidos_curriculares")
-}
+} 
 
 model Pregunta {
   id        String   @id @default(uuid())
@@ -41,13 +41,11 @@ model Pregunta {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  contenidoCurricular   ContenidoCurricular @relation(fields: [contenidoCurricularId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  contenidoCurricularId String              @map("contenido_curricular_id")
+  contenidosCurriculares ContenidoCurricular[] @relation("ContenidoCurricularPreguntas")
 
   evidencia   Evidencia @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   evidenciaId String    @map("evidencia_id")
 
-  @@index([contenidoCurricularId])
   @@index([evidenciaId])
   @@map("preguntas")
 }
