@@ -101,7 +101,7 @@ export default function AreaItem({ area }: AreaItemProps) {
     handleEvidenciaAdd();
   };
 
-  const handleDelete = async (action: (id: string) => Promise<any>, id: string, type: string) => {
+  const handleDelete = async (action: (id: string) => Promise<void | { message: string}>, id: string, type: string) => {
     if (confirm(`¿Estás seguro de que quieres eliminar est${type}?`)) {
       const result = await action(id);
       if (result?.message.includes('exitosamente')) {
@@ -245,7 +245,7 @@ export default function AreaItem({ area }: AreaItemProps) {
       </section>
 
       <AreaModal
-        areaId={area.id} // This modal fetches its own data, so this is correct
+        area={area}
       />
 
       <CompetenciaModal

@@ -6,12 +6,11 @@ import { useFormStatus } from 'react-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { createOrUpdateArea } from '@/src/lib/actions/area.actions'
-import { getAreaById } from '@/src/lib/data/areas.data'
 import { Areatype } from '@/src/lib/schemas/area.schema'
 import { toast } from 'react-toastify'
 
 interface AreaModalProps {
-  areaId?: string | undefined
+  area: Areatype
 }
 
 // Componente para el botón de envío, para usar el hook useFormStatus
@@ -35,7 +34,7 @@ function SubmitButton({ editMode }: { editMode: boolean }) {
   )
 }
 
-export default function AreaModal({ areaId }: AreaModalProps) {
+export default function AreaModal({ area }: AreaModalProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -44,8 +43,6 @@ export default function AreaModal({ areaId }: AreaModalProps) {
   const addMode = searchParams.get('add-area') === 'true'
   const editAreaQuery = searchParams.get('edit-area')
   const showModal = addMode || !!editAreaQuery
-
-  const [areaData, setAreaData] = useState<Areatype | null>(null)
 
   const onClose = useCallback(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString())
@@ -57,27 +54,6 @@ export default function AreaModal({ areaId }: AreaModalProps) {
 
   const initialState = { message: null, errors: {} }
   const [state, dispatch] = useActionState(createOrUpdateArea, initialState)
-
-  // Cargar datos del área si estamos en modo edición
-  useEffect(() => {
-    if (editAreaQuery && areaId) {
-      const fetchArea = async () => {
-        try {
-          const data = await getAreaById(areaId)
-          if (data) {
-            setAreaData(data)
-          } else {
-            toast.error('Área no encontrada.')
-            onClose()
-          }
-        } catch (error) {
-          toast.error('No se pudo cargar el área para editar.')
-          onClose()
-        }
-      }
-      fetchArea()
-    }
-  }, [editAreaQuery, areaId, onClose])
 
   // Efecto para manejar el cierre del modal y reseteo del formulario tras una operación exitosa
   useEffect(() => {
@@ -106,7 +82,6 @@ export default function AreaModal({ areaId }: AreaModalProps) {
   useEffect(() => {
     if (!showModal) {
       formRef.current?.reset()
-      setAreaData(null)
     }
   }, [showModal])
 
@@ -153,7 +128,9 @@ export default function AreaModal({ areaId }: AreaModalProps) {
                 </button>
 
                 <form ref={formRef} action={dispatch} className="mt-4 space-y-4">
-                  <input type="hidden" name="id" value={areaData?.id || ''} />
+                  {!!editAreaQuery && (
+                    <input type="hidden" name="id" value={area.id || ''} />
+                  )}
                   
                   <div>
                     <label
@@ -170,7 +147,7 @@ export default function AreaModal({ areaId }: AreaModalProps) {
                         className="block w-full rounded-md border border-gray-300 shadow-sm p-2 focus:outline-none  focus:border-(--color-principal) dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         placeholder="Ej: Ciencias Sociales"
                         aria-describedby="nombre-error"
-                        defaultValue={areaData?.nombre || ''}
+                        defaultValue={!!editAreaQuery ? area.nombre : ''}
                       />
                     </div>
                   </div>

@@ -7,7 +7,7 @@ export default function EjerciciosPractica() {
       <br />
       <div>
         <ul className='list-disc'>
-          <li>Ejercicios por Tema: Ejercicios específicos de un tema (ej. "Funciones Cuadráticas").</li>
+          <li>Ejercicios por Tema: Ejercicios específicos de un tema (ej. &quot;Funciones Cuadráticas&quot;).</li>
           <li>Banco de Preguntas: Posibilidad de practicar preguntas aleatorias o filtradas.</li>
           <li>Desafíos Diarios/Semanales: Series de ejercicios temáticos o mixtos.</li>
         </ul>
