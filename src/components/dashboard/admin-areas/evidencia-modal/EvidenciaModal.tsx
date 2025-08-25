@@ -1,16 +1,13 @@
 'use client' 
 
-import { Fragment, useActionState, useCallback, useEffect, useRef, useState } from 'react'
+import { Fragment, useActionState, useCallback, useEffect, useRef } from 'react'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useFormStatus } from 'react-dom'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-toastify'
 
 // Types
-import { type CompetenciaType } from '@/src/lib/schemas/competencia.schema'
-import { createOrUpdateCompetencia } from '@/src/lib/actions/competencia.actions'
 import { Dialog, Transition } from '@headlessui/react'
-import { Areatype } from '@/src/lib/schemas/area.schema'
 import { AfirmacionType } from '@/src/lib/schemas/afirmacion.schema'
 import { EvidenciaType } from '@/src/lib/schemas/evidencia.schema'
 import { createOrUpdateEvidencia } from '@/src/lib/actions/evidencia.actions'

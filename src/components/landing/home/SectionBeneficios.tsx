@@ -99,7 +99,7 @@ export default function SectionBeneficios() {
           </p>
         </header>
         <div className="space-y-16">
-          {sections.map((section, idx) => (
+          {sections.map((section) => (
             <div
               key={section.title}
               className={`flex flex-col-reverse lg:flex-row ${section.imageFirst ? 'lg:flex-row-reverse' : ''} items-center gap-10 lg:gap-20`}

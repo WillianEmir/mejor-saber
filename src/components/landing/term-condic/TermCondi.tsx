@@ -15,7 +15,7 @@ const TerminosYCondiciones = () => {
           1. Aceptación de los Términos
         </h2>
         <p className="text-gray-700 leading-relaxed">
-          Bienvenido a nuestra plataforma de simulacros de exámenes académicos. Al acceder o utilizar nuestro servicio, usted (el "Usuario") acepta y se compromete a cumplir con los siguientes términos y condiciones ("Términos"). Si no está de acuerdo con alguna parte de estos Términos, no debe usar nuestra plataforma.
+          Bienvenido a nuestra plataforma de simulacros de exámenes académicos. Al acceder o utilizar nuestro servicio, usted (el &quotUsuario&quot) acepta y se compromete a cumplir con los siguientes términos y condiciones (&quotTérminos&quot). Si no está de acuerdo con alguna parte de estos Términos, no debe usar nuestra plataforma.
         </p>
       </section>
 
@@ -54,7 +54,7 @@ const TerminosYCondiciones = () => {
           5. Exclusión de Garantías y Limitación de Responsabilidad
         </h2>
         <p className="text-gray-700 leading-relaxed">
-          El servicio se proporciona "tal cual" y "según disponibilidad". No garantizamos que los simulacros sean idénticos o que aseguren un resultado específico en el examen real. Nuestra responsabilidad se limita a la provisión del servicio, y no seremos responsables por daños indirectos, incidentales, especiales o consecuentes derivados del uso de la plataforma.
+          El servicio se proporciona &quottal cual&quot y &quotsegún disponibilidad&quot. No garantizamos que los simulacros sean idénticos o que aseguren un resultado específico en el examen real. Nuestra responsabilidad se limita a la provisión del servicio, y no seremos responsables por daños indirectos, incidentales, especiales o consecuentes derivados del uso de la plataforma.
         </p>
       </section>
       

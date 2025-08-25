@@ -7,7 +7,6 @@ import Button from "../ui/button/Button";
 import ChevronLeftIcon from "@heroicons/react/24/outline/ChevronLeftIcon";
 import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
 import { EyeSlashIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);

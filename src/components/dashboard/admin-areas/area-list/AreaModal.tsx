@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useActionState, useEffect, useRef, useState, useCallback } from 'react'
+import { Fragment, useActionState, useEffect, useRef, useCallback } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useFormStatus } from 'react-dom'
 import { Dialog, Transition } from '@headlessui/react'
@@ -10,8 +10,8 @@ import { Areatype } from '@/src/lib/schemas/area.schema'
 import { toast } from 'react-toastify'
 
 interface AreaModalProps {
-  area: Areatype
-}
+  area?: Areatype
+} 
 
 // Componente para el botón de envío, para usar el hook useFormStatus
 function SubmitButton({ editMode }: { editMode: boolean }) {
@@ -129,7 +129,7 @@ export default function AreaModal({ area }: AreaModalProps) {
 
                 <form ref={formRef} action={dispatch} className="mt-4 space-y-4">
                   {!!editAreaQuery && (
-                    <input type="hidden" name="id" value={area.id || ''} />
+                    <input type="hidden" name="id" value={area?.id || ''} />
                   )}
                   
                   <div>
@@ -147,7 +147,7 @@ export default function AreaModal({ area }: AreaModalProps) {
                         className="block w-full rounded-md border border-gray-300 shadow-sm p-2 focus:outline-none  focus:border-(--color-principal) dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         placeholder="Ej: Ciencias Sociales"
                         aria-describedby="nombre-error"
-                        defaultValue={!!editAreaQuery ? area.nombre : ''}
+                        defaultValue={!!editAreaQuery ? area?.nombre : ''}
                       />
                     </div>
                   </div>

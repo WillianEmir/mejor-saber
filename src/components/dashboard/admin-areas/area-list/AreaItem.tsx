@@ -22,7 +22,7 @@ import type { EvidenciaType } from '@/src/lib/schemas/evidencia.schema';
 import { deleteEviencia } from '@/src/lib/actions/evidencia.actions';
 
 interface AreaItemProps {
-  area: AreaWithRelationsType
+  area: AreaWithRelationsType 
 }
 
 export default function AreaItem({ area }: AreaItemProps) {

@@ -7,7 +7,7 @@ interface pageProps {
   params: Promise<{
     id: string
   }>
-}
+} 
  
 export default async function page({ params }: pageProps) {
 

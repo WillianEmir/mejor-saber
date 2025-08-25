@@ -28,7 +28,7 @@ export default function SectionDestacados() {
         </p>
       </header>
       <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((feature, idx) => (
+        {features.map((feature) => (
         <div
           key={feature.description}
           className="border border-slate-100 relative flex flex-col items-center bg-white rounded-lg shadow-lg p-8 transition hover:shadow-lg"

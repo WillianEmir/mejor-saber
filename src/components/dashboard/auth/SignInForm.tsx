@@ -1,6 +1,6 @@
 "use client";
 
-import { Label, Input, Checkbox } from "@headlessui/react";
+import { Checkbox } from "@headlessui/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import Button from "../ui/button/Button";

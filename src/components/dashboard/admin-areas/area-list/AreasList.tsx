@@ -5,6 +5,7 @@ import type { Areatype } from '@/src/lib/schemas/area.schema';
 import Link from 'next/link';
 import AreaModalAdd from './AreaModal';
 import HeaderAreaList from './HeaderAreaList';
+import { Suspense } from 'react'; 
 
 export default async function AreasList() { 
 
@@ -31,7 +32,9 @@ export default async function AreasList() {
         </div>
       </main>
 
-      <AreaModalAdd />
+      <Suspense >
+        <AreaModalAdd />
+      </Suspense>
     </div>
   );
 }
