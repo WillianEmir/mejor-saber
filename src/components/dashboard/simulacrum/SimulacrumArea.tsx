@@ -72,7 +72,7 @@ export default function SimulacrumArea() {
                 <div className="mt-6">
                   <Link
                     href='/dashboard/simulacros/matematicas/id'
-                    className="inline-block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Iniciar Simulacro
+                    className="inline-block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Iniciar Simulacro
                   </Link>
                 </div>
               </div>

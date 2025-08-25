@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// Esquema de validación para la creación/edición de una Afirmación
+// Esquema de validación para la creación/edición de una Afirmación 
 export const AfirmacionSchema = z.object({
   id: z.string().optional(), // Opcional, solo presente en edición
   nombre: z.string({error: 'El nombre es obligatorio.'}).trim().min(3, { message: 'El nombre debe tener al menos 3 caracteres.' }),

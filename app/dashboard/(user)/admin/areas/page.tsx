@@ -1,8 +1,12 @@
-import AdminAreas from '@/src/components/dashboard/admin-areas/AdminAreas'
-import React from 'react'
+import AreasList from '@/src/components/dashboard/admin-areas/area-list/AreasList';
+import { ToastContainer } from 'react-toastify';
 
-export default function page() {
+export default async function page() {
+
   return (
-    <AdminAreas />
+    <>
+      <AreasList /> 
+      <ToastContainer />
+    </>
   )
 }

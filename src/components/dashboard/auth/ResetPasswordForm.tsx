@@ -6,8 +6,8 @@ import Button from "../ui/button/Button";
 import ChevronLeftIcon from "@heroicons/react/24/outline/ChevronLeftIcon";
 
 export default function ResetPasswordForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
   return (
     <>
       <div className="grid lg:grid-cols-2 max-md:p-3">

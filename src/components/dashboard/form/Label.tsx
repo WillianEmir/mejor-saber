@@ -1,4 +1,5 @@
 import React, { FC, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface LabelProps {
   htmlFor?: string;
@@ -7,10 +8,6 @@ interface LabelProps {
 }
 
 const Label: FC<LabelProps> = ({ htmlFor, children, className }) => {
-  function twMerge(arg0: string, className: string | undefined): string | undefined {
-    throw new Error("Function not implemented.");
-  }
-
   return (
     <label
       htmlFor={htmlFor}

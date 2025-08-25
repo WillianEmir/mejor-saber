@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import { ChevronDownIcon, EllipsisHorizontalCircleIcon, ChartBarIcon, Squares2X2Icon, PencilSquareIcon, BookOpenIcon, RocketLaunchIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
