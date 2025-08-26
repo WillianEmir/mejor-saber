@@ -23,7 +23,7 @@ import { deleteEviencia } from '@/src/lib/actions/evidencia.actions';
 
 interface AreaItemProps {
   area: AreaWithRelationsType 
-}
+} 
 
 export default function AreaItem({ area }: AreaItemProps) {
   const router = useRouter();
@@ -117,7 +117,7 @@ export default function AreaItem({ area }: AreaItemProps) {
       <div className="mb-4">
         <Link href="/dashboard/admin/areas" className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
           <ArrowLeftIcon className="h-5 w-5" />
-          <span>Volver a las Áreas</span>
+          <span className='bg-amber-400'>Volver a las Áreas</span>
         </Link>
       </div>
       <header className="sm:flex sm:items-center sm:justify-between pb-8 border-b border-gray-200 dark:border-gray-700">
