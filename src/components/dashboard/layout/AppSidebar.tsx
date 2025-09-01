@@ -18,14 +18,15 @@ const navItems: NavItem[] = [
     icon: <ChartBarIcon className="size-5.5" />,
     name: "Dashboard",
     path: '/dashboard'
-  },
+  }, 
   {
     icon: <PencilSquareIcon className="size-5.5" />,
     name: "Simulacros",
     subItems: [
       { name: "Resumen", path: "/dashboard/simulacros" },
       { name: "Áreas", path: "/dashboard/admin/areas" },
-      { name: "Preguntas", path: "/dashboard/admin/preguntas" }
+      { name: "Preguntas", path: "/dashboard/admin/preguntas" },
+      { name: "Contenidos Curriculares", path: "/dashboard/admin/contenidos-curriculares" },
     ]
   },
   {

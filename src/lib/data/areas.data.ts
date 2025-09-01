@@ -1,12 +1,16 @@
 'use server'
 
 import prisma from '../prisma';
-import { AreaWithRelationsType } from '../schemas/area.schema';
+import { AreasFullType, AreaWithRelationsType } from '../schemas/area.schema';
 
 export async function getAreas() {
   try {
     const areas = await prisma.area.findMany({
-      orderBy: { nombre: 'asc' }, 
+      orderBy: { nombre: 'asc' },
+      select: {
+        id: true,
+        nombre: true,
+      },
     }); 
     return areas;
   } catch (error) {
@@ -29,6 +33,29 @@ export async function getAreaById(id: string) : Promise<AreaWithRelationsType | 
             },
           },
         },
+      },
+    });
+    return area;
+  } catch (error) {
+    console.error('Error de base de datos al obtener el área:', error);
+    throw new Error('No se pudo obtener el área.');
+  }
+}
+
+export async function getAreasFull() : Promise<AreasFullType[]> {
+  try {
+    const area = await prisma.area.findMany({
+      include: {
+        competencias: {
+          include: {
+            afirmaciones: {
+              include: {
+                evidencias: true,
+              },
+            },
+          },
+        },
+        contenidosCurriculares: true
       },
     });
     return area;

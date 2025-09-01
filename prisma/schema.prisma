@@ -29,14 +29,27 @@ model ContenidoCurricular {
   @@unique([areaId, nombre])
   @@index([areaId])
   @@map("contenidos_curriculares")
-} 
+}
+
+model OpcionPregunta {
+  id                String  @id @default(uuid())
+  respuesta         String
+  correcta          Boolean
+  retroalimentacion String?
+
+  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+  preguntaId String   @map("pregunta_id")
+
+  @@index([preguntaId])
+  @@map("opciones_pregunta")
+}
 
 model Pregunta {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid()) 
   contexto  String
   imagen    String?
   enunciado String
-  opciones  Json
+  opciones  OpcionPregunta[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -51,8 +64,8 @@ model Pregunta {
 }
 
 model Area {
-  id        String   @id @default(uuid())
-  nombre    String   @unique
+  id     String @id @default(uuid())
+  nombre String @unique
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -64,8 +77,8 @@ model Area {
 }
 
 model Competencia {
-  id        String   @id @default(uuid())
-  nombre    String
+  id     String @id @default(uuid())
+  nombre String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -80,8 +93,8 @@ model Competencia {
 }
 
 model Afirmacion {
-  id        String   @id @default(uuid())
-  nombre    String
+  id     String @id @default(uuid())
+  nombre String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -96,8 +109,8 @@ model Afirmacion {
 }
 
 model Evidencia {
-  id        String   @id @default(uuid())
-  nombre    String
+  id     String @id @default(uuid())
+  nombre String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

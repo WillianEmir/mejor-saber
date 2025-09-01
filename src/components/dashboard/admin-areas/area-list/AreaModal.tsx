@@ -49,7 +49,7 @@ export default function AreaModal({ area }: AreaModalProps) {
     newSearchParams.delete('add-area')
     newSearchParams.delete('edit-area')
     const newPath = `${pathname}?${newSearchParams.toString()}`
-    router.replace(newPath)
+    router.replace(newPath) 
   }, [pathname, router, searchParams]) 
 
   const initialState = { message: null, errors: {} }
@@ -125,7 +125,7 @@ export default function AreaModal({ area }: AreaModalProps) {
                   aria-label="Cerrar modal"
                 >
                   <XMarkIcon className="h-6 w-6" />
-                </button>
+                </button>6
 
                 <form ref={formRef} action={dispatch} className="mt-4 space-y-4">
                   {!!editAreaQuery && (

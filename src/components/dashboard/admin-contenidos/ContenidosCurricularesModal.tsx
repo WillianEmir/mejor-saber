@@ -1,5 +1,3 @@
-'use client'
-
 import { Fragment, useActionState, useCallback, useEffect, useRef } from 'react'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useFormStatus } from 'react-dom'
@@ -7,14 +5,14 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-toastify'
 
 // Types
-import { type CompetenciaType } from '@/src/lib/schemas/competencia.schema'
-import { createOrUpdateCompetencia } from '@/src/lib/actions/competencia.actions'
 import { Dialog, Transition } from '@headlessui/react'
+import { type ContenidoAreaType } from '@/src/lib/schemas/contenidoCurricular.schema'
 import { Areatype } from '@/src/lib/schemas/area.schema'
+import { createOrUpdateContenidoCurricular } from '@/src/lib/actions/contenidosCurricular.action'
 
 interface Props {
-  competencia: CompetenciaType 
-  areaId: Areatype['id']
+  contenidoCurricular: ContenidoAreaType;
+  areas: Areatype[]
 }
 
 // Componente para el botón de envío, para usar el hook useFormStatus
@@ -28,37 +26,37 @@ function SubmitButton({ editMode }: { editMode: boolean }) {
       className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-400 disabled:cursor-not-allowed"
     >
       {pending
-        ? editMode 
+        ? editMode
           ? 'Guardando...'
           : 'Creando...'
         : editMode
           ? 'Guardar Cambios'
-          : 'Crear Competencia'}
+          : 'Crear Contenido Curricular'} 
     </button>
   )
 }
 
-export default function CompetenciaModal({ competencia, areaId }: Props) {
+export default function ContenidosCurricularesModal({ contenidoCurricular, areas }: Props) {
 
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
   const formRef = useRef<HTMLFormElement>(null)
 
-  const addMode = searchParams.get('add-competencia') === 'true'
-  const editCompetenciaQuery = searchParams.get('edit-competencia')
-  const showModal = addMode || !!editCompetenciaQuery
+  const addMode = searchParams.get('add-contenido-curricular') === 'true'
+  const editContenidoCurricularQuery = searchParams.get('edit-contenido-curricular')
+  const showModal = addMode || !!editContenidoCurricularQuery
 
   const onClose = useCallback(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString())
-    newSearchParams.delete('add-competencia')
-    newSearchParams.delete('edit-competencia')
+    newSearchParams.delete('add-contenido-curricular')
+    newSearchParams.delete('edit-contenido-curricular')
     const newPath = `${pathname}?${newSearchParams.toString()}`
     router.replace(newPath)
   }, [pathname, router, searchParams])
 
   const initialState = { message: null, errors: {} }
-  const [state, dispatch] = useActionState(createOrUpdateCompetencia, initialState)
+  const [state, dispatch] = useActionState(createOrUpdateContenidoCurricular, initialState)
 
   // Efecto para manejar el cierre del modal y reseteo del formulario tras una operación exitosa
   useEffect(() => {
@@ -121,7 +119,7 @@ export default function CompetenciaModal({ competencia, areaId }: Props) {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100"
                 >
-                  {editCompetenciaQuery ? 'Editar Competencia' : 'Agregar Nueva Competencia'}
+                  {editContenidoCurricularQuery ? 'Editar Contenido Curricular' : 'Agregar Nuevo Contenido Curricular'}
                 </Dialog.Title>
                 <button
                   type="button"
@@ -134,22 +132,39 @@ export default function CompetenciaModal({ competencia, areaId }: Props) {
 
                 <form ref={formRef} action={dispatch} className="space-y-4">
 
-                  {!!editCompetenciaQuery && <input type="hidden" name="id" value={competencia.id} />}
+                  {!!editContenidoCurricularQuery && <input type="hidden" name="id" value={contenidoCurricular.id} />}
 
-                  <input type="hidden" name="areaId" value={areaId} />
+                  <select
+                    name="areaId"
+                    id="areaId"
+                    className='mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm'
+                  >
+                    {!editContenidoCurricularQuery && <option value="">Seleccione una Área</option>}
+                    {!!editContenidoCurricularQuery ? ( 
+                      <>
+                        <option value={contenidoCurricular.area.id}>{contenidoCurricular.area.nombre}</option>
+                      </>
+                    ) : (
+                      <>
+                        {areas.map((area) => (
+                          <option key={area.id} value={area.id}>{area.nombre}</option>
+                        ))}
+                      </>
+                    )}
+                  </select>
 
                   <div>
                     <label
-                      htmlFor="nombre-competencia"
+                      htmlFor="nombre"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-200"
                     >
-                      Nombre de la Competencia
+                      Nombre del Contenido Curricular
                     </label>
                     <input
                       type="text"
-                      id="nombre-competencia"
+                      id="nombre"
                       name="nombre"
-                      defaultValue={!!editCompetenciaQuery ? competencia.nombre : ''}
+                      defaultValue={!!editContenidoCurricularQuery ? contenidoCurricular.nombre : ''}
                       className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       required
                     />
@@ -165,7 +180,7 @@ export default function CompetenciaModal({ competencia, areaId }: Props) {
                     >
                       Cancelar
                     </button>
-                    <SubmitButton editMode={!!editCompetenciaQuery} />
+                    <SubmitButton editMode={!!editContenidoCurricularQuery} />
                   </div>
                 </form>
               </Dialog.Panel>
