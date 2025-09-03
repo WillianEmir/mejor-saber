@@ -9,7 +9,7 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
-datasource db {
+datasource db { 
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
@@ -37,15 +37,16 @@ model OpcionPregunta {
   correcta          Boolean
   retroalimentacion String?
 
-  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
-  preguntaId String   @map("pregunta_id")
+  pregunta          Pregunta            @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+  preguntaId        String              @map("pregunta_id")
+  SimulacroPregunta SimulacroPregunta[]
 
   @@index([preguntaId])
   @@map("opciones_pregunta")
-}
+} 
 
 model Pregunta {
-  id        String  @id @default(uuid()) 
+  id        String           @id @default(uuid())
   contexto  String
   imagen    String?
   enunciado String
@@ -56,8 +57,9 @@ model Pregunta {
 
   contenidosCurriculares ContenidoCurricular[] @relation("ContenidoCurricularPreguntas")
 
-  evidencia   Evidencia @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  evidenciaId String    @map("evidencia_id")
+  evidencia         Evidencia           @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  evidenciaId       String              @map("evidencia_id")
+  SimulacroPregunta SimulacroPregunta[]
 
   @@index([evidenciaId])
   @@map("preguntas")
@@ -72,6 +74,7 @@ model Area {
 
   contenidosCurriculares ContenidoCurricular[]
   competencias           Competencia[]
+  Simulacro              Simulacro[]
 
   @@map("areas")
 }
@@ -109,7 +112,7 @@ model Afirmacion {
 }
 
 model Evidencia {
-  id     String @id @default(uuid())
+  id     String @id @default(uuid()) 
   nombre String
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -123,4 +126,134 @@ model Evidencia {
   @@unique([afirmacionId, nombre])
   @@index([afirmacionId])
   @@map("evidencias")
+}
+
+enum Rol {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  password      String
+  firstName     String?
+  lastName      String?
+  isActived     Boolean   @default(false)
+  avatar        String?
+  phone         String?
+  dateIsActived DateTime? @map("date_is_actived")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  rol       Rol      @default(USER)
+
+  simulacros       Simulacro[]
+  UserSubscription UserSubscription[]
+
+  @@map("users")
+}
+
+model Simulacro {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  areaId String @map("area_id")
+  area   Area   @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  score     Float? // The score of the simulacro
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  preguntas SimulacroPregunta[]
+
+  @@index([userId])
+  @@index([areaId])
+  @@map("simulacros")
+}
+
+model SimulacroPregunta {
+  id String @id @default(uuid())
+
+  simulacroId String    @map("simulacro_id")
+  simulacro   Simulacro @relation(fields: [simulacroId], references: [id], onDelete: Cascade)
+
+  preguntaId String   @map("pregunta_id")
+  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+
+  opcionSeleccionadaId String?         @map("opcion_seleccionada_id")
+  opcionSeleccionada   OpcionPregunta? @relation(fields: [opcionSeleccionadaId], references: [id], onDelete: SetNull)
+
+  correcta Boolean? // Was the selected answer correct?
+
+  @@unique([simulacroId, preguntaId])
+  @@index([simulacroId])
+  @@index([preguntaId])
+  @@map("simulacro_preguntas")
+}
+
+enum PlanName {
+  FREE
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+}
+
+model Plan {
+  id             String   @id @default(uuid())
+  name           PlanName @unique
+  price          Float
+  durationInDays Int      @map("duration_in_days")
+  description    String?
+
+  subscriptions UserSubscription[]
+
+  @@map("planes")
+}
+
+model UserSubscription {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  planId String @map("plan_id")
+  plan   Plan   @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  startDate DateTime @map("start_date")
+  endDate   DateTime @map("end_date")
+
+  status SubscriptionStatus
+
+  payments Payment[]
+
+  @@index([userId])
+  @@index([planId])
+  @@map("user_subscriptions")
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model Payment {
+  id                 String           @id @default(uuid())
+  userSubscriptionId String           @map("user_subscription_id")
+  userSubscription   UserSubscription @relation(fields: [userSubscriptionId], references: [id], onDelete: Cascade)
+  amount             Float
+  status             PaymentStatus
+  paymentGatewayId   String?          @map("payment_gateway_id") // ID de la transacción en la pasarela de pago
+  createdAt          DateTime         @default(now()) @map("created_at")
+
+  @@index([userSubscriptionId])
+  @@map("payments")
 }

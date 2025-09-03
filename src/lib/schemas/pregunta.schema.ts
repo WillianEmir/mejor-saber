@@ -1,11 +1,8 @@
 import { z } from 'zod';
 import { ContenidoCurricularSchema } from './contenidoCurricular.schema';
-import { EvidenciaSchema } from './evidencia.schema';
-import { AfirmacionSchema } from './afirmacion.schema';
-import { CompetenciaSchema } from './competencia.schema';
-import { AreaSchema } from './area.schema';
 
 export const OpcionRespuestaSchema = z.object({
+  id: z.uuid({ error: 'El ID debe ser un UUID válido.' }).optional(),
   respuesta: z.string().min(1, { message: 'La respuesta no puede estar vacía.' }),
   correcta: z.preprocess((val) => val === 'on', z.boolean()),
   retroalimentacion: z.string().nullable(),

@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import Link from "next/link";
 import Button from "../ui/button/Button";
 import ChevronLeftIcon from "@heroicons/react/24/outline/ChevronLeftIcon";
@@ -13,11 +13,11 @@ export default function ResetPasswordForm() {
         <div className="flex flex-col items-center justify-center w-full h-screen">
           <div className="w-full max-w-md sm:pt-10 mx-auto mb-5">
             <Link
-              href="/dashboard"
+              href="/"
               className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
               <ChevronLeftIcon className="size-6" />
-              Back to dashboard
+              Volver al Inicio
             </Link>
           </div>
 
@@ -30,17 +30,21 @@ export default function ResetPasswordForm() {
                 Ingrese la dirección de correo electrónico vinculada a su cuenta y le enviaremos un enlace para restablecer su contraseña.
               </p>
             </div>
+
             <div>
               <form>
                 <div className="space-y-6">
                   <div>
-                    <label>
+                    <label htmlFor="email">
                       Email <span className="text-error-500">*</span>{" "}
                     </label>
                     <input
+                      id="email"
+                      name="email"
                       placeholder="info@gmail.com"
                       type="email"
                       className="w-full border border-slate-300 rounded-sm p-3"
+                      required
                     />
                   </div>
 
@@ -56,7 +60,7 @@ export default function ResetPasswordForm() {
                 <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                   Espera, recuerdo mi contraseña {""}
                   <Link
-                    href="/dashboard/signin"
+                    href="/dashboard/auth/signin"
                     className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                   >
                     Sign In

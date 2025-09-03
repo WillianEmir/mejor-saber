@@ -27,6 +27,7 @@ const navItems: NavItem[] = [
       { name: "Áreas", path: "/dashboard/admin/areas" },
       { name: "Preguntas", path: "/dashboard/admin/preguntas" },
       { name: "Contenidos Curriculares", path: "/dashboard/admin/contenidos-curriculares" },
+      { name: "Usuarios", path: "/dashboard/admin/users" },
     ]
   },
   {

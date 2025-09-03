@@ -1,4 +1,4 @@
-import 'server-only';
+import 'server-only'; 
 
 import prisma from '../prisma';
 import type { EvidenciaType } from '../schemas/evidencia.schema';

@@ -44,7 +44,7 @@ export async function getAreaById(id: string) : Promise<AreaWithRelationsType | 
 
 export async function getAreasFull() : Promise<AreasFullType[]> {
   try {
-    const area = await prisma.area.findMany({
+    const areas = await prisma.area.findMany({
       include: {
         competencias: {
           include: {
@@ -58,7 +58,7 @@ export async function getAreasFull() : Promise<AreasFullType[]> {
         contenidosCurriculares: true
       },
     });
-    return area;
+    return areas;
   } catch (error) {
     console.error('Error de base de datos al obtener el área:', error);
     throw new Error('No se pudo obtener el área.');

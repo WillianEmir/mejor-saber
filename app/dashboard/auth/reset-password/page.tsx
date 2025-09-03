@@ -5,6 +5,6 @@ export default function Signin() {
   return (
     <>
       <ResetPasswordForm />
-    </>
+    </> 
   )
 }

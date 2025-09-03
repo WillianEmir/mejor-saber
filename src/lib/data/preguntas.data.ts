@@ -1,35 +1,33 @@
-import 'server-only';
+import 'server-only'; 
 
-import prisma from '../prisma';
+import prisma from '@/src/lib/prisma';
 import { PreguntaType } from '../schemas/pregunta.schema';
+import { CompetenciaType } from '../schemas/competencia.schema';
 
 export async function getPreguntas(): Promise<PreguntaType[]> {
-  try {
-    const preguntas = await prisma.pregunta.findMany({
-      include: {
-        contenidosCurriculares: true,
-        opciones: true
-      }
-    });
-    return preguntas
-  } catch (error) {
-    console.error('Error de base de datos al obtener las preguntas:', error);
-    throw new Error('No se pudieron obtener las preguntas.');
-  }
+  const preguntas = await prisma.pregunta.findMany({
+    include: {
+      opciones: true,
+      contenidosCurriculares: true,
+    },
+  });
+  return preguntas;
 }
 
-export async function getPreguntaById(id: string): Promise<PreguntaType | null> {
-  try {
-    const pregunta = await prisma.pregunta.findUnique({
-      where: { id },
-      include: {
-        contenidosCurriculares: true,
-        opciones: true,
+export async function getPreguntasByCompetencia(competenciaId: CompetenciaType['id']): Promise<PreguntaType[]> {
+  const preguntas = await prisma.pregunta.findMany({
+    where: {
+      evidencia: {
+        afirmacion: {
+          competenciaId: competenciaId,
+        },
       },
-    })
-    return pregunta;
-  } catch (error) {
-    console.error('Error de base de datos al obtener la pregunta:', error);
-    throw new Error('No se pudo obtener la pregunta.');
-  }
+    },
+    include: {
+      opciones: true,
+      contenidosCurriculares: true,
+    },
+  });
+ 
+  return preguntas;
 }
