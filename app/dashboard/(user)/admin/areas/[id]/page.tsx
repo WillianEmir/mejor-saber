@@ -1,14 +1,14 @@
-import AreaItem from '@/src/components/dashboard/admin-areas/area-list/AreaItem'
+import AreaView from '@/src/components/dashboard/admin-areas/area-view/AreaView'
 import { getAreaById } from '@/src/lib/data/areas.data';
 import { notFound } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
 
 interface pageProps {
   params: Promise<{
-    id: string
+    id: string 
   }>
-} 
- 
+}
+
 export default async function page({ params }: pageProps) {
 
   const { id } = await params;
@@ -16,10 +16,10 @@ export default async function page({ params }: pageProps) {
   const area = await getAreaById(id)
 
   if(!area) notFound();
-
+  
   return (
     <>
-      <AreaItem
+      <AreaView
         area={area}
       />
       <ToastContainer />

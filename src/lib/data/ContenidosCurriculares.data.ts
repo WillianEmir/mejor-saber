@@ -1,13 +1,14 @@
 import 'server-only';
 
 import prisma from '../prisma';
-import { ContenidoAreaType, ContenidoCurricularType } from '../schemas/contenidoCurricular.schema';
+import { ContenidoCurricularType, ContenidoWithRelationsType } from '../schemas/contenidoCurricular.schema';
 
-export async function getContenidosCurriculares(): Promise<ContenidoAreaType[]> {
+export async function getContenidosWithRelations(): Promise<ContenidoWithRelationsType[]> {
   try {
-    const contenidosCurriculares = await prisma.contenidoCurricular.findMany({
+    const contenidosCurriculares = await prisma.contenidoCurricular.findMany({ 
       include: {
-        area: true
+        area: true,
+        Ejetematico: true
       }
     });
     return contenidosCurriculares;
@@ -16,7 +17,7 @@ export async function getContenidosCurriculares(): Promise<ContenidoAreaType[]> 
     throw new Error('No se pudieron obtener los Contenidos Curriculares.');
   }
 }
-
+ 
 export async function getContenidoCurricular(id: string): Promise<ContenidoCurricularType | null> {
   try {
     const contenidoCurricular = await prisma.contenidoCurricular.findUnique({

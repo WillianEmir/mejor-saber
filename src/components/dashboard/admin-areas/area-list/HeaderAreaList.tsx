@@ -1,8 +1,12 @@
-import React from 'react'
-import ButtonAdd from '../ui/ButtonAdd'
+'use client'
 
-export default function HeaderAreaList() { 
+import { PlusIcon } from '@heroicons/react/24/outline'
 
+interface HeaderAreaListProps {
+  onAddArea: () => void;
+}
+
+export default function HeaderAreaList({ onAddArea }: HeaderAreaListProps) {
   return (
     <header className="sm:flex sm:items-center sm:justify-between pb-8 border-b border-gray-200 dark:border-gray-700">
       <div className="sm:flex-auto">
@@ -14,10 +18,14 @@ export default function HeaderAreaList() {
         </p>
       </div>
       <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <ButtonAdd
-          textAdd='Área'
-          textParams='area'
-        />
+        <button
+          type="button"
+          onClick={onAddArea}
+          className="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors"
+        >
+          <PlusIcon className="w-5 h-5 -ml-0.5" />
+          Agregar Área
+        </button>
       </div>
     </header>
   )

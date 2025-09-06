@@ -6,14 +6,14 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-toastify'
 import { Dialog, Transition } from '@headlessui/react'
 
-import { CompetenciaType } from '@/src/lib/schemas/competencia.schema'
-import { createOrUpdateCompetencia } from '@/src/lib/actions/competencia.actions'
+import { EjeTematicoType } from '@/src/lib/schemas/ejeTematico.schema'
+import { createOrUpdateEjeTematico } from '@/src/lib/actions/ejeTematico.action'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
-  areaId: string
-  competencia: CompetenciaType | null
+  contenidoCurricularId: string
+  ejeTematico: EjeTematicoType | null
 }
 
 function SubmitButton({ editMode }: { editMode: boolean }) {
@@ -24,17 +24,17 @@ function SubmitButton({ editMode }: { editMode: boolean }) {
       disabled={pending}
       className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-400 disabled:cursor-not-allowed"
     >
-      {pending ? (editMode ? 'Guardando...' : 'Creando...') : (editMode ? 'Guardar Cambios' : 'Crear Competencia')}
+      {pending ? (editMode ? 'Guardando...' : 'Creando...') : (editMode ? 'Guardar Cambios' : 'Crear Eje Temático')}
     </button>
   )
 }
 
-export default function CompetenciaModal({ isOpen, onClose, areaId, competencia }: Props) {
+export default function EjeTematicoModal({ isOpen, onClose, contenidoCurricularId, ejeTematico }: Props) {
   const formRef = useRef<HTMLFormElement>(null)
-  const editMode = !!competencia?.id
+  const editMode = !!ejeTematico?.id
 
   const initialState = { message: null, errors: {} }
-  const [state, dispatch] = useActionState(createOrUpdateCompetencia, initialState)
+  const [state, dispatch] = useActionState(createOrUpdateEjeTematico, initialState)
 
   useEffect(() => {
     if (!isOpen) return
@@ -89,7 +89,7 @@ export default function CompetenciaModal({ isOpen, onClose, areaId, competencia 
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-gray-800">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">
-                  {editMode ? 'Editar Competencia' : 'Agregar Nueva Competencia'}
+                  {editMode ? 'Editar Eje Temático' : 'Agregar Nuevo Eje Temático'}
                 </Dialog.Title>
                 <button
                   type="button"
@@ -101,18 +101,18 @@ export default function CompetenciaModal({ isOpen, onClose, areaId, competencia 
                 </button>
 
                 <form ref={formRef} action={dispatch} className="mt-4 space-y-4">
-                  {editMode && <input type="hidden" name="id" value={competencia.id} />}
-                  <input type="hidden" name="areaId" value={areaId} />
+                  {editMode && <input type="hidden" name="id" value={ejeTematico.id} />}
+                  <input type="hidden" name="contenidoCurricularId" value={contenidoCurricularId} />
 
                   <div>
                     <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                      Nombre de la Competencia
+                      Nombre del Eje Temático
                     </label>
                     <input
                       type="text"
                       id="nombre"
                       name="nombre"
-                      defaultValue={competencia?.nombre || ''}
+                      defaultValue={ejeTematico?.nombre || ''}
                       className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       required
                     />

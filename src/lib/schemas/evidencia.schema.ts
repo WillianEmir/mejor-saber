@@ -1,3 +1,4 @@
+import { Evidencia } from '@/src/generated/prisma';
 import { z } from 'zod';
 
 // Esquema de validación para la creación/edición de una Evidencia
@@ -8,7 +9,7 @@ export const EvidenciaSchema = z.object({
 });
 
 // Type para las evidencias
-export type EvidenciaType = z.infer<typeof EvidenciaSchema>;
+export type EvidenciaType = Omit<Evidencia, 'createdAt' | 'updatedAt'>;
 
 // Tipo para el estado del formulario que será usado por useFormState
 export type EvidenciaFormState = {

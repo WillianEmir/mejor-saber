@@ -1,13 +1,15 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from 'next/cache'; 
 import prisma from '../prisma';
 import { AreaSchema, type AreaFormState } from '../schemas/area.schema';
 
+// Server Action para crear y editar un área
 export async function createOrUpdateArea(
   prevState: AreaFormState,
   formData: FormData,
 ): Promise<AreaFormState> {
+
   // 1. Validar los campos del formulario usando Zod.
   const validatedFields = AreaSchema.safeParse({
     id: formData.get('id') || undefined,
@@ -31,7 +33,6 @@ export async function createOrUpdateArea(
     } else {
       // 3b. Lógica de creación
       await prisma.area.create({ data: { nombre } });
-      revalidatePath('/dashboard/admin/areas');
     }
   } catch (e) {
     // 4. Manejo de errores de la base de datos
@@ -43,7 +44,8 @@ export async function createOrUpdateArea(
     }
     return { message: 'Error de base de datos: No se pudo procesar la solicitud.' };
   }
-
+  
+  revalidatePath('/dashboard/admin/areas');
   return { message: id ? 'Área actualizada exitosamente.' : 'Área creada exitosamente.' };
 } 
 

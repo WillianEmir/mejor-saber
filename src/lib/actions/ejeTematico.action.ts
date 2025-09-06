@@ -2,40 +2,39 @@
 
 import { revalidatePath } from 'next/cache';
 import prisma from '../prisma';
-import { ContenidoCurricularSchema, type ContenidoCurricularFormState } from '../schemas/contenidoCurricular.schema';
+import { EjeTematicoFormState, EjeTematicoSchema } from '../schemas/ejeTematico.schema';
 
-export async function createOrUpdateContenidoCurricular(
-  prevState: ContenidoCurricularFormState,
+export async function createOrUpdateEjeTematico(
+  prevState: EjeTematicoFormState,
   formData: FormData,
-): Promise<ContenidoCurricularFormState> { 
+): Promise<EjeTematicoFormState> { 
 
   // 1. Extraer y validar los datos del formulario del lado del servidor
-  const validatedFields = ContenidoCurricularSchema.safeParse({
-    id: formData.get('id') || undefined,
-    nombre: formData.get('nombre'), 
-    areaId: formData.get('areaId'),
+  const validatedFields = EjeTematicoSchema.safeParse({
+    id: formData.get('id') || undefined, 
+    nombre: formData.get('nombre'),
+    contenidoCurricularId: formData.get('contenidoCurricularId'),
   });
 
   if (!validatedFields.success) {
-    
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Error de validación. Por favor, corrija los campos.',
     };
   }
 
-  const { id, nombre, areaId } = validatedFields.data;  
+  const { id, nombre, contenidoCurricularId } = validatedFields.data;  
 
   try {
     if (id) {
-      await prisma.contenidoCurricular.update({
+      await prisma.ejeTematico.update({
         where: { id },
-        data: { nombre, areaId },
+        data: { nombre, contenidoCurricularId },
       });
     } else {
-      await prisma.contenidoCurricular.create({
+      await prisma.ejeTematico.create({
         data: {
-          areaId,
+          contenidoCurricularId,
           nombre,
         },
       });
@@ -44,7 +43,7 @@ export async function createOrUpdateContenidoCurricular(
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
       return {
         errors: {
-          nombre: ['Ya existe un Contenido Curricular con este nombre en esta área.'],
+          nombre: ['Ya existe un Eje Temático con este nombre en esta área.'],
         },
         message: 'Error en la base de datos.',
       };
@@ -55,14 +54,14 @@ export async function createOrUpdateContenidoCurricular(
   }
 
   revalidatePath(`/dashboard/admin/contenidos-curriculares`);
-  return { message: id ? 'Contenido Curricular actualizado exitosamente.' : 'Contenido Curricular creado exitosamente.' };
+  return { message: id ? 'Eje Temático actualizado exitosamente.' : 'Eje Temático creado exitosamente.' };
 }
 
-export async function deleteContenidoCurricular(id: string): Promise<{ message: string } | void> {
+export async function deleteEjeTematico(id: string): Promise<{ message: string } | void> {
   try {
-    await prisma.contenidoCurricular.delete({ where: { id } });
+    await prisma.ejeTematico.delete({ where: { id } });
     revalidatePath('/dashboard/admin/contenidos-curriculares')
-    return {message: 'Contenido Curricular eliminado exitosamente.'}
+    return {message: 'Eje Temático eliminado exitosamente.'}
   } catch (e) { 
     if (e instanceof Error) {
       return { message: e.message };

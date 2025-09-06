@@ -1,16 +1,18 @@
 'use server'
 
+import { Area } from '@/src/generated/prisma';
 import prisma from '../prisma';
-import { AreasFullType, AreaWithRelationsType } from '../schemas/area.schema';
+import { AreasFullType, Areatype, AreaWithRelationsType } from '../schemas/area.schema';
 
-export async function getAreas() {
+// Obtiene todas id y name de todas las áreas
+export async function getAreas(): Promise<Areatype[]> { 
   try {
     const areas = await prisma.area.findMany({
       orderBy: { nombre: 'asc' },
       select: {
         id: true,
-        nombre: true,
-      },
+        nombre: true, 
+      }
     }); 
     return areas;
   } catch (error) {
@@ -19,7 +21,8 @@ export async function getAreas() {
   } 
 }
 
-export async function getAreaById(id: string) : Promise<AreaWithRelationsType | null> {
+// Obtiene un área con sus relaciones 
+export async function getAreaById(id: Area['id']): Promise<AreaWithRelationsType> {
   try {
     const area = await prisma.area.findUnique({
       where: { id },
@@ -33,6 +36,7 @@ export async function getAreaById(id: string) : Promise<AreaWithRelationsType | 
             },
           },
         },
+        contenidosCurriculares: true
       },
     });
     return area;
@@ -41,6 +45,8 @@ export async function getAreaById(id: string) : Promise<AreaWithRelationsType | 
     throw new Error('No se pudo obtener el área.');
   }
 }
+
+
 
 export async function getAreasFull() : Promise<AreasFullType[]> {
   try {

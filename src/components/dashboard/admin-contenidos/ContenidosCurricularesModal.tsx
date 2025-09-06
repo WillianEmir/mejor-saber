@@ -1,74 +1,49 @@
-import { Fragment, useActionState, useCallback, useEffect, useRef } from 'react'
-import { useSearchParams, usePathname, useRouter } from 'next/navigation'
+'use client'
+
+import { Fragment, useActionState, useEffect, useRef } from 'react'
 import { useFormStatus } from 'react-dom'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-toastify'
 
 // Types
 import { Dialog, Transition } from '@headlessui/react'
-import { type ContenidoAreaType } from '@/src/lib/schemas/contenidoCurricular.schema'
-import { Areatype } from '@/src/lib/schemas/area.schema'
+import { type ContenidoWithRelationsType } from '@/src/lib/schemas/contenidoCurricular.schema'
+import { type Areatype } from '@/src/lib/schemas/area.schema'
 import { createOrUpdateContenidoCurricular } from '@/src/lib/actions/contenidosCurricular.action'
 
 interface Props {
-  contenidoCurricular: ContenidoAreaType;
-  areas: Areatype[]
+  isOpen: boolean;
+  onClose: () => void;
+  contenidoCurricular: ContenidoWithRelationsType | null;
+  areas: Areatype[];
 }
 
-// Componente para el botón de envío, para usar el hook useFormStatus
 function SubmitButton({ editMode }: { editMode: boolean }) {
   const { pending } = useFormStatus()
 
   return (
-    <button
+    <button 
       type="submit"
       disabled={pending}
-      className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+      className="w-full inline-flex justify-center rounded-lg border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors duration-200"
     >
-      {pending
-        ? editMode
-          ? 'Guardando...'
-          : 'Creando...'
-        : editMode
-          ? 'Guardar Cambios'
-          : 'Crear Contenido Curricular'} 
+      {pending ? (editMode ? 'Guardando...' : 'Creando...') : (editMode ? 'Guardar Cambios' : 'Crear Contenido')}
     </button>
   )
 }
 
-export default function ContenidosCurricularesModal({ contenidoCurricular, areas }: Props) {
-
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+export default function ContenidosCurricularesModal({ isOpen, onClose, contenidoCurricular, areas }: Props) {
   const formRef = useRef<HTMLFormElement>(null)
-
-  const addMode = searchParams.get('add-contenido-curricular') === 'true'
-  const editContenidoCurricularQuery = searchParams.get('edit-contenido-curricular')
-  const showModal = addMode || !!editContenidoCurricularQuery
-
-  const onClose = useCallback(() => {
-    const newSearchParams = new URLSearchParams(searchParams.toString())
-    newSearchParams.delete('add-contenido-curricular')
-    newSearchParams.delete('edit-contenido-curricular')
-    const newPath = `${pathname}?${newSearchParams.toString()}`
-    router.replace(newPath)
-  }, [pathname, router, searchParams])
+  const editMode = !!contenidoCurricular?.id
 
   const initialState = { message: null, errors: {} }
   const [state, dispatch] = useActionState(createOrUpdateContenidoCurricular, initialState)
 
-  // Efecto para manejar el cierre del modal y reseteo del formulario tras una operación exitosa
   useEffect(() => {
-    if (!showModal) return
+    if (!isOpen) return
 
-    const hasFieldErrors = state.errors && Object.keys(state.errors).length > 0
-
-    if (hasFieldErrors) {
-      Object.values(state.errors || {}).forEach(errorArray => {
-        errorArray?.forEach(error => toast.error(error))
-      })
-
+    if (state.errors && Object.keys(state.errors).length > 0) {
+      Object.values(state.errors).flat().forEach(error => toast.error(error))
     } else if (state.message) {
       if (state.message.includes('exitosamente')) {
         toast.success(state.message)
@@ -77,30 +52,31 @@ export default function ContenidosCurricularesModal({ contenidoCurricular, areas
         toast.error(state.message)
       }
     }
-    state.message = null
-    state.errors = {}
-  }, [state, showModal, onClose])
+    // Reset state after handling
+    state.message = null;
+    state.errors = {};
 
-  // Efecto para resetear el formulario cuando el modal se cierra
+  }, [state, isOpen, onClose])
+
   useEffect(() => {
-    if (!showModal) {
+    if (!isOpen) {
       formRef.current?.reset()
     }
-  }, [showModal])
+  }, [isOpen])
 
   return (
-    <Transition appear show={showModal} as={Fragment}>
+    <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-100"
+          leave="ease-in duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/30" />
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -114,73 +90,68 @@ export default function ContenidosCurricularesModal({ contenidoCurricular, areas
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-gray-800">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-8 text-left align-middle shadow-2xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100"
+                  className="text-2xl font-bold leading-6 text-gray-900 dark:text-white mb-4"
                 >
-                  {editContenidoCurricularQuery ? 'Editar Contenido Curricular' : 'Agregar Nuevo Contenido Curricular'}
+                  {editMode ? 'Editar Contenido Curricular' : 'Agregar Nuevo Contenido'}
                 </Dialog.Title>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  className="absolute top-5 right-5 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-200"
                   aria-label="Cerrar modal"
                 >
                   <XMarkIcon className="h-6 w-6" />
                 </button>
 
-                <form ref={formRef} action={dispatch} className="space-y-4">
-
-                  {!!editContenidoCurricularQuery && <input type="hidden" name="id" value={contenidoCurricular.id} />}
-
-                  <select
-                    name="areaId"
-                    id="areaId"
-                    className='mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm'
-                  >
-                    {!editContenidoCurricularQuery && <option value="">Seleccione una Área</option>}
-                    {!!editContenidoCurricularQuery ? ( 
-                      <>
-                        <option value={contenidoCurricular.area.id}>{contenidoCurricular.area.nombre}</option>
-                      </>
-                    ) : (
-                      <>
-                        {areas.map((area) => (
-                          <option key={area.id} value={area.id}>{area.nombre}</option>
-                        ))}
-                      </>
-                    )}
-                  </select>
+                <form ref={formRef} action={dispatch} className="space-y-6 mt-6">
+                  {editMode && <input type="hidden" name="id" value={contenidoCurricular.id} />}
 
                   <div>
-                    <label
-                      htmlFor="nombre"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                    <label htmlFor="areaId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Área
+                    </label>
+                    <select
+                      name="areaId"
+                      id="areaId"
+                      defaultValue={editMode ? contenidoCurricular.area.id : ''}
+                      className='w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors duration-200 p-2'
+                      required
                     >
-                      Nombre del Contenido Curricular
+                      {!editMode && <option value="" disabled>Seleccione un Área</option>}                      
+                      {!editMode && areas.map((area) => ( <option key={area.id} value={area.id}>{area.nombre}</option> ))}
+                      {!!editMode && <option key={contenidoCurricular.area.id} value={contenidoCurricular.area.id}>{contenidoCurricular.area.nombre}</option>}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Nombre del Contenido
                     </label>
                     <input
                       type="text"
                       id="nombre"
                       name="nombre"
-                      defaultValue={!!editContenidoCurricularQuery ? contenidoCurricular.nombre : ''}
-                      className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      defaultValue={editMode ? contenidoCurricular.nombre : ''}
+                      className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 transition-colors duration-200 p-2"
                       required
                     />
                     {state?.errors?.nombre && (
-                      <p className="text-red-500 text-sm mt-1">{state.errors.nombre[0]}</p>
+                      <p className="text-red-500 text-sm mt-2">{state.errors.nombre[0]}</p>
                     )}
                   </div>
-                  <div className="flex justify-end gap-4 pt-4">
+
+                  <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-4 pt-4">
                     <button
                       type="button"
                       onClick={onClose}
-                      className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-gray-600 dark:text-gray-200 dark:border-gray-500 dark:hover:bg-gray-500"
+                      className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
                     >
                       Cancelar
                     </button>
-                    <SubmitButton editMode={!!editContenidoCurricularQuery} />
+                    <SubmitButton editMode={editMode} />
                   </div>
                 </form>
               </Dialog.Panel>

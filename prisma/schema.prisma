@@ -25,10 +25,23 @@ model ContenidoCurricular {
   areaId String @map("area_id")
 
   preguntas Pregunta[] @relation("ContenidoCurricularPreguntas")
+  Ejetematico EjeTematico[]
 
   @@unique([areaId, nombre])
   @@index([areaId])
   @@map("contenidos_curriculares")
+}
+
+model EjeTematico {
+  id     String @id @default(uuid())
+  nombre String
+
+  contenidoCurricular ContenidoCurricular @relation(fields: [contenidoCurricularId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  contenidoCurricularId String @map("contenido_curricular_id")
+
+  @@unique([contenidoCurricularId, nombre])
+  @@index([contenidoCurricularId])
+  @@map("ejetematicos")
 }
 
 model OpcionPregunta {
@@ -60,7 +73,7 @@ model Pregunta {
   evidencia         Evidencia           @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   evidenciaId       String              @map("evidencia_id")
   SimulacroPregunta SimulacroPregunta[]
-
+ 
   @@index([evidenciaId])
   @@map("preguntas")
 }
@@ -148,7 +161,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   rol       Rol      @default(USER)
-
+ 
   simulacros       Simulacro[]
   UserSubscription UserSubscription[]
 

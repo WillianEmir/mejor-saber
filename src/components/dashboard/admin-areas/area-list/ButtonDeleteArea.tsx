@@ -8,17 +8,17 @@ import { TrashIcon } from '@heroicons/react/24/outline'
 import { deleteArea } from '@/src/lib/actions/area.actions'
 
 // Types
-import type { Areatype } from '@/src/lib/schemas/area.schema'
+import type { Areatype, AreaWithRelationsType } from '@/src/lib/schemas/area.schema'
 
 interface ButtonDeleteAreaProps {
-  area: Areatype
+  area: AreaWithRelationsType
 }
 
 export default function ButtonDeleteArea({ area }: ButtonDeleteAreaProps) {
 
   const router = useRouter()
   const initialState = { message: '' }
-  const deleteAreaWithId = deleteArea.bind(null, area.id!)
+  const deleteAreaWithId = deleteArea.bind(null, area?.id!)
   const [state, dispatch] = useActionState(deleteAreaWithId, initialState)
 
   useEffect(() => {

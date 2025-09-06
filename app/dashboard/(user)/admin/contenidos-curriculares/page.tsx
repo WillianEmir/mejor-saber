@@ -1,20 +1,19 @@
-import ContenidosCurriculares from '@/src/components/dashboard/admin-contenidos/ContenidosCurriculares'
+import ContenidosCurricularesList from '@/src/components/dashboard/admin-contenidos/contenidos-list/ContenidosCurricularesList';
 import { getAreas } from '@/src/lib/data/areas.data';
-import { getContenidosCurriculares } from '@/src/lib/data/ContenidosCurriculares.data';
+import { getContenidosWithRelations } from '@/src/lib/data/contenidosCurriculares.data';
 import { Areatype } from '@/src/lib/schemas/area.schema';
-import { ContenidoAreaType, ContenidoCurricularType } from '@/src/lib/schemas/contenidoCurricular.schema';
 import { ToastContainer } from 'react-toastify';
 
 export default async function page() {
 
   const areas: Areatype[] = await getAreas();
-  const contenidosCurriculares: ContenidoAreaType[] = await getContenidosCurriculares();  
+  const contenidosCurriculares = await getContenidosWithRelations();  
 
   return (
     <>
-      <ContenidosCurriculares
+      <ContenidosCurricularesList 
         areas={areas}
-        contenidosCurriculares={contenidosCurriculares}
+        contenidosCurriculares={contenidosCurriculares} 
       />
       <ToastContainer />
     </>

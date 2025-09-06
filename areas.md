@@ -104,7 +104,36 @@ Esta prueba evalúa las competencias para enfrentarse a situaciones que requiera
         - Resuelve problemas de conteo que requieren el uso de permutaciones.
         - Justifica si hay falta de información en una situación problema para tomar una decisión.
         - Toma decisiones sobre la veracidad o falsedad de una afirmación cuando requiere el uso de varias propiedades o conceptualizaciones formales.
-- Distribución de preguntas por competencias
+
+- Contenidos Curriculares
+    - Estadística
+        - Diferentes tipos de representación de datos (tablas y gráficas)
+        - Intersección, unión y contenencia de conjuntos
+        - Promedio y rango estadístico
+        - Conteos simples que utilizan principios de suma y multiplicación
+        - Noción de población, muestra e inferencia muestral
+        - Estimación del error
+        - Varianza, percentiles, mediana y correlación
+        - Combinaciones y permutaciones
+
+    - Geometría
+        - Triángulos, círculos, paralelogramos, esferas, paralelepípedos rectos, cilindros y sus medidas
+        - Relaciones de paralelismo y ortogonalidad entre rectas
+        - Desigualdad triangular
+        - Sistemas de coordenadas cartesianas
+        - Sólidos y figuras geométricas, como pirámides y polígonos de más de cuatro lados
+        - Relaciones de congruencia y semejanza
+        - Teoremas clásicos, como el de Pitágoras y el de Tales
+        - Coordenadas polares y tridimensionales
+        - Transformaciones en el plano (translaciones, rotaciones, homotecias, reflexiones)
+
+    - Álgebra y cálculo
+        - Los números racionales expresados como fracciones, razones, números decimales o porcentajes
+        - Propiedades básicas de las operaciones aritméticas de suma, resta, multiplicación, división y potenciación (incluida notación científica)
+        - Relaciones lineales y afines y razones de cambio (tasas de interés, tasas cambiarias, velocidad, aceleración, etcétera)
+        - Expresiones algebraicas; propiedades, relaciones y operaciones entre ellas
+        - Representación gráfica y algebraica de funciones racionales, trigonométricas, polinomiales, exponenciales y logarítmicas; además de propiedades básicas, periodicidad, dominios y rangos, condiciones de crecimiento e intersecciones con otras funciones
+        - Sucesiones y sus límites
 
 ### Lectura Crítica
 
@@ -187,6 +216,29 @@ la educación media cuenten con las capacidades lectoras para tomar posturas cr�
         - Selecciona elementos locales y construye argumentos que sustentan una tesis con base en textos relacionados. Asume una postura crítica frente a los planteamientos de un texto.
         - Plantea hipótesis de lectura a partir de las ideas presentes en un texto.
 
+- Contenidos Curriculares
+    - Textos Continuos Literarios
+        - Novela
+        - Cuento
+        - Poesía
+        - Canción
+        - Dramaturgia
+    - Textos Continuos Informativo
+        - Ensayo
+        - Columna de opinión
+        - Crónica
+    - Textos Discontinuos Literarios
+        - Caricatura
+        - cómic
+    - Textos Discontinuos Informativo
+        - Etiqueta
+        - Infografía
+        - Tabla
+        - Diagrama
+        - Aviso publicitario
+        - Manual
+        - Reglamento
+
 ### Sociales y Ciudadanas
 
 Esta prueba evalúa los conocimientos y habilidades que les permiten a los evaluados comprender el mundo social a partir de las ciencias sociales y establecer esa comprensión como referente para su ejercicio ciudadano. Asimismo, evalúa la habilidad para analizar distintos eventos, argumentos, posturas, conceptos, modelos, dimensiones y contextos, al igual que la capacidad para reflexionar y emitir juicios críticos de estos. En concordancia, la prueba no les pide a los evaluados que respondan desde su opinión, ni desde lo que se considera “políticamente correcto” o desde el “deber ser”, entendido este último como una forma correcta de actuar o pensar, que es aceptada o valorada positivamente por la sociedad.
@@ -264,6 +316,29 @@ Esta prueba evalúa los conocimientos y habilidades que les permiten a los evalu
         - Establece relaciones entre las perspectivas de los individuos presentes en un conflicto y las propuestas de solución.
         - Comprende que Colombia es un estado social de derecho e identifica sus características.
         - Analiza los efectos en distintas dimensiones que tendría una solución a un problema enmarcado en un contexto ciudadano.
+
+- Contenidos Curriculares
+    - Conceptos básicos de las ciencias sociales
+        - Fundamentos de la Constitución política de Colombia
+        - Derechos y deberes de los ciudadanos
+        - Organización del Estado
+        - Mecanismos de participación ciudadana
+    - Dimensiones temporales y espaciales de eventos y problemáticas sociales
+        - Analizar las dimensiones históricas de eventos o problemáticas
+        - Problemáticas sociales
+    - Reconocimiento de diversas opiniones, posturas e intereses
+        - Perspectivas de diferentes actores sociales o colectivos
+        - Comprensión a cerca de los conflictos, su origen y actores
+    - Análisis crítico de fuentes y argumentos
+        - Valorar fuentes primarias y secundarias
+        - Discursos
+        - Acto comunicativo
+        - confiabilidad de un enunciado
+    - Modelos conceptuales que orientan decisiones sociales
+        - Uso de modelos conceptuales en determinados contextos
+    - Dimensiones presentes en una situación problemática y sus posibles alternativas de solución
+        - Dimensiones de la vida social
+        - Relaciones entre los ámbitos (social, económico, ambiental y político, entre otros)
 
 ### Ciencias Naturales
 
@@ -387,6 +462,40 @@ conceptos propios del conocimiento científico. La prueba, además, involucra en
         - Comunica resultados de procesos de investigación científica.
         - Analiza fenómenos naturales con base en los procedimientos propios de la investigación científica.
 
+- Contenidos Curriculares
+    - Componente biológico
+        - Homeostasis en los seres vivos
+        - Herencia
+        - Reproducción
+        - Relaciones ecológicas
+        - Evolución y transformación de la vida en el planeta
+        - Conservación de energía
+    - Componente físico
+        - Cinemática
+        - Dinámica
+        - Energía mecánica
+        - Ondas
+        - Energía térmica
+        - Electromagnetismo
+        - Campo gravitacional
+        - Transformación y conservación de energía
+    - Componente químico
+        - Cambios químicos
+        - El átomo
+        - Tipos de enlaces
+        - Propiedades de la materia
+        - Estequiometría
+        - Separación de mezclas
+        - Solubilidad
+        - Gases ideales
+        - Transformación y conservación de energía
+    - Componente de Ciencia, Tecnología y Sociedad (CTS)
+        - Deforestación
+        - Efecto invernadero
+        - Producción de transgénicos
+        - Explotación de recursos
+        - Tratamiento de basuras
+
 ### Inglés
 
 Esta prueba evalúa la competencia comunicativa en lengua inglesa del estudiante con el fin de dar cuenta de lo que es capaz de hacer, según lo expresado en el Marco Común Europeo, a través de tareas de lectura, gramática y léxico. Las preguntas de esta prueba se dividen en 7 partes.
@@ -420,3 +529,33 @@ Esta prueba evalúa la competencia comunicativa en lengua inglesa del estudiante
     - Parte 7
         
         El ejercicio consiste en elegir las palabras más adecuadas para completar el texto. Para ello, se debe seleccionar la palabra correcta, es decir, aquella que completa cada uno de los espacios en el texto presentado, entre cuatro opciones dadas (A, B, C o D) y marcarla en la hoja de respuestas.
+
+- Niveles de desempeño
+    - Nivel Pre A1: Puntaje entre 0 - 36
+        - Reconoce y comprende información simple e identifica vocabulario básico de su entorno
+        - Comprende oraciones, preguntas, instrucciones o conversaciones cuando se utiliza vocabulario simple
+        - Identifica palabras simples en frases sencillas que incluyen personas o lugares que le son familiares en su cotidianidad
+    - Nivel A1: Puntaje entre 37 - 57
+        - Comprende enunciados simples relacionados con situaciones comunicativas sencillas y cotidianas, que incluyen la interpretación y la descripción de su entorno
+        - Identifica el uso de lenguaje básico para proporcionar información personal, saludos, despedidas, indicaciones de lugares y acciones del presente
+        - Entiende información e indicaciones que encuentra en avisos de acuerdo con el contexto donde se aplica
+    - Nivel A2: Puntaje entre 58 - 70
+        - Comprende información específica en textos informativos y descriptivos sencillos
+        - Comprende textos que abordan temáticas relacionadas con sus contextos inmediatos, tales como ocupaciones, personas, objetos, lugares o situaciones familiares
+        - Identifica vocabulario simple en textos cortos que narran acciones o eventos presentes, pasados o futuros
+        - Interpreta enunciados que expresan puntos de vista particulares en una situación comunicativa simple
+        - Identifica y comprende información literal o parafraseada en textos cortos
+    - Nivel B1: Puntaje entre 71 - 100
+        - Posee vocabulario y estructuras del lenguaje que le permiten inferir y comprender un mayor rango de textos que abarcan temáticas de diferentes campos
+        - Comprende textos sobre temas generales y específicos en ámbitos como el laboral, académico, cultural y personal
+        - Infiere el significado de palabras desconocidas a partir del contexto dado
+        - Identifica puntos de vista como sentimientos, deseos e intenciones en escritos determinados
+
+- Contenidos Curriculares
+    - Conocimiento lexical
+    - Conocimiento pragmático
+    - Conocimiento comunicativo
+    - Conocimiento gramatical
+    - Comprensión de lectura literal de un texto
+    - Lectura inferencial
+    - Conocimiento gramatical y lexical
