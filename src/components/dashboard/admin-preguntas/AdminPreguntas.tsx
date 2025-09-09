@@ -5,24 +5,25 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-import { Pregunta } from '@/src/generated/prisma';
-import { AreasFullType } from '@/src/lib/schemas/area.schema';
+import { AreaWithRelationsType } from '@/src/lib/schemas/area.schema';
 import { deletePregunta } from '@/src/lib/actions/pregunta.action';
 import PreguntaModal from './pregunta-modal/PreguntaModal';
-import { PreguntaType } from '@/src/lib/schemas/pregunta.schema';
+import { PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema';
+import { ContenidoWithRelationsType } from '@/src/lib/schemas/contenidoCurricular.schema';
 
 interface AdminPreguntasProps {
-  preguntas: PreguntaType[];
-  areasFull: AreasFullType[];
+  preguntas: PreguntaWithRelationsType[]; 
+  areas: AreaWithRelationsType[];
+  contenidosCurriculares: ContenidoWithRelationsType[]; 
 }
 
-export default function AdminPreguntas({ preguntas, areasFull }: AdminPreguntasProps) {
+export default function AdminPreguntas({ preguntas, areas, contenidosCurriculares }: AdminPreguntasProps) { 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const [selectedPregunta, setSelectedPregunta] = useState<PreguntaType | undefined>( undefined );
+  const [selectedPregunta, setSelectedPregunta] = useState<PreguntaWithRelationsType | null>( null );
 
   const handlePreguntaAdd = (): void => {
     const params = new URLSearchParams();
@@ -30,14 +31,14 @@ export default function AdminPreguntas({ preguntas, areasFull }: AdminPreguntasP
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const handleEdit = (pregunta: PreguntaType) => {
+  const handleEdit = (pregunta: PreguntaWithRelationsType) => {
     setSelectedPregunta(pregunta);
     const params = new URLSearchParams();
     params.set('edit-question', 'true');
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const handleView = (pregunta: PreguntaType) => {
+  const handleView = (pregunta: PreguntaWithRelationsType) => {
     setSelectedPregunta(pregunta);
     const params = new URLSearchParams();
     params.set('view-question', 'true');
@@ -55,14 +56,14 @@ export default function AdminPreguntas({ preguntas, areasFull }: AdminPreguntasP
         }
       });
     }
-  };
+  }; 
 
   const getAreaName = (evidenciaId: string) => {
-    for (const area of areasFull) {
-      for (const competencia of area.competencias) {
+    for (const area of areas) {
+      for (const competencia of area!.competencias) {
         for (const afirmacion of competencia.afirmaciones) {
           if (afirmacion.evidencias.some(ev => ev.id === evidenciaId)) {
-            return area.nombre;
+            return area!.nombre;
           }
         }
       }
@@ -113,8 +114,8 @@ export default function AdminPreguntas({ preguntas, areasFull }: AdminPreguntasP
                     {preguntas.map((pregunta) => (
                       <tr key={pregunta.id}>
                         <td className="py-4 pl-4 pr-3 text-sm sm:pl-6">
-                          <div className="font-medium text-gray-900 dark:text-white truncate w-[200px]">{pregunta.contexto}</div>
-                          <div className="mt-1 text-gray-500 dark:text-gray-400 truncate w-[200px]">{pregunta.enunciado}</div>
+                          <div className="font-medium text-gray-900 dark:text-white truncate w-[90px] sm:w-[250px] md:w-[350px] xl:w-[600px] 2xl:w-[900px]">{pregunta.contexto}</div>
+                          <div className="mt-1 text-gray-500 dark:text-gray-400 truncate w-[90px] sm:w-[250px] md:w-[350px] xl:w-[600px] 2xl:w-[900px]">{pregunta.enunciado}</div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
                           <span className="inline-flex items-center rounded-md bg-green-50 dark:bg-green-900/10 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-600/20">
@@ -161,9 +162,10 @@ export default function AdminPreguntas({ preguntas, areasFull }: AdminPreguntasP
 
       {(searchParams.has('add-question') || searchParams.has('edit-question') || searchParams.has('view-question')) && (
         <PreguntaModal
-          areasFull={areasFull}
-          pregunta={searchParams.has('edit-question') || searchParams.has('view-question') ? selectedPregunta : undefined}
+          areas={areas}
+          pregunta={searchParams.has('edit-question') || searchParams.has('view-question') ? selectedPregunta : null}
           isViewMode={searchParams.has('view-question')}
+          contenidosCurriculares={contenidosCurriculares}
         />
       )}
     </div>

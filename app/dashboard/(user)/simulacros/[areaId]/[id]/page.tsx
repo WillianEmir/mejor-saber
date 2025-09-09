@@ -2,7 +2,7 @@ import SimulacrumQuestions from '@/src/components/dashboard/simulacrum/Simulacru
 import { getPreguntasByCompetencia } from '@/src/lib/data/preguntas.data';
 import { notFound } from 'next/navigation';
 
-interface pageProps {
+interface pageProps { 
   params: Promise<{
     id: string
   }>
@@ -16,9 +16,7 @@ export default async function Page({ params }: pageProps) {
   console.log(preguntas);
   
 
-  if (!preguntas || preguntas.length === 0) {
-    notFound();
-  }
+  if (!preguntas || preguntas.length === 0)  notFound()
 
   return (
     <>

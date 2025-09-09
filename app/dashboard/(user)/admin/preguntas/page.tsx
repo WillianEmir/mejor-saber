@@ -1,23 +1,24 @@
 import AdminPreguntas from '@/src/components/dashboard/admin-preguntas/AdminPreguntas'
-import { Pregunta } from '@/src/generated/prisma'
-import { getAreasFull } from '@/src/lib/data/areas.data'
-import { getPreguntas } from '@/src/lib/data/preguntas.data'
-import { AreasFullType } from '@/src/lib/schemas/area.schema'
-import { PreguntaType } from '@/src/lib/schemas/pregunta.schema'
+import { getAreasWithRelations } from '@/src/lib/data/areas.data'
+import { getContenidosWithRelations } from '@/src/lib/data/contenidosCurriculares.data'
+import { getPreguntasWithRelations } from '@/src/lib/data/preguntas.data'
+
 import { ToastContainer } from 'react-toastify'
 
-export default async function page() {
+export default async function page() { 
 
-  const preguntas : PreguntaType[] = await getPreguntas()
-  const areasFull : AreasFullType[] = await getAreasFull()
+  const preguntas = await getPreguntasWithRelations()
+  const areas = await getAreasWithRelations()
+  const contenidosCurriculares = await getContenidosWithRelations()
 
-  return (
+  return ( 
     <>
       <AdminPreguntas
         preguntas={preguntas} 
-        areasFull={areasFull}
+        areas={areas}
+        contenidosCurriculares={contenidosCurriculares}
       />
       <ToastContainer /> 
-    </>
+    </> 
   )
 }

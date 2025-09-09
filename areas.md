@@ -515,8 +515,7 @@ Esta prueba evalúa la competencia comunicativa en lengua inglesa del estudiante
         
     - Parte 4
         
-        Puntualmente, los evaluados deben elegir las palabras más adecuadas para completar un texto. Para ello, los evaluados deben leer y prestar atención a una serie de espacios, puesto que, para cada uno de
-        estos, se debe seleccionar la palabra correcta entre las tres opciones presentadas (A, B o C) y marcarla en la hoja de respuestas.
+        Puntualmente, los evaluados deben elegir las palabras más adecuadas para completar un texto. Para ello, los evaluados deben leer y prestar atención a una serie de espacios, puesto que, para cada uno de estos, se debe seleccionar la palabra correcta entre las tres opciones presentadas (A, B o C) y marcarla en la hoja de respuestas.
         
     - Parte 5
         
@@ -529,7 +528,7 @@ Esta prueba evalúa la competencia comunicativa en lengua inglesa del estudiante
     - Parte 7
         
         El ejercicio consiste en elegir las palabras más adecuadas para completar el texto. Para ello, se debe seleccionar la palabra correcta, es decir, aquella que completa cada uno de los espacios en el texto presentado, entre cuatro opciones dadas (A, B, C o D) y marcarla en la hoja de respuestas.
-
+ 
 - Niveles de desempeño
     - Nivel Pre A1: Puntaje entre 0 - 36
         - Reconoce y comprende información simple e identifica vocabulario básico de su entorno

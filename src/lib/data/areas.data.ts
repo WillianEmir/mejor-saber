@@ -2,7 +2,7 @@
 
 import { Area } from '@/src/generated/prisma';
 import prisma from '../prisma';
-import { AreasFullType, Areatype, AreaWithRelationsType } from '../schemas/area.schema';
+import { Areatype, AreaWithRelationsType } from '../schemas/area.schema';
 
 // Obtiene todas id y name de todas las áreas
 export async function getAreas(): Promise<Areatype[]> { 
@@ -42,13 +42,12 @@ export async function getAreaById(id: Area['id']): Promise<AreaWithRelationsType
     return area;
   } catch (error) {
     console.error('Error de base de datos al obtener el área:', error);
-    throw new Error('No se pudo obtener el área.');
+    throw new Error('No se pudo obtener el área.'); 
   }
 }
 
-
-
-export async function getAreasFull() : Promise<AreasFullType[]> {
+// Obtiene todas las áreas con sus relaciones
+export async function getAreasWithRelations() : Promise<AreaWithRelationsType[]> {
   try {
     const areas = await prisma.area.findMany({
       include: {

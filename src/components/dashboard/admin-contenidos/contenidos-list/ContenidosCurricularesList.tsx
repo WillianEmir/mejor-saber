@@ -14,7 +14,7 @@ import EjeTematicoModal from '../EjesTematicosModal'
 import ContenidoCurricularItem from './ContenidoCurricularItem'
 import { deleteContenidoCurricular } from '@/src/lib/actions/contenidosCurricular.action'
 
-interface ContenidosCurricularesListProps {
+interface ContenidosCurricularesListProps { 
   areas: Areatype[];
   contenidosCurriculares: ContenidoWithRelationsType[];
 }

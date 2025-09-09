@@ -15,18 +15,21 @@ export async function createOrUpdatePregunta(
     contexto: formData.get('contexto'),
     imagen: formData.get('imagen') || undefined,
     enunciado: formData.get('enunciado'),
-    opciones: ['a', 'b', 'c', 'd'].map(key => ({
-      respuesta: formData.get(`respuesta_${key}`),
-      correcta: formData.get(`correcta_${key}`) === null ? false : true,
-      retroalimentacion: formData.get(`retroalimentacion_${key}`),
-    })),
+    englishFlag: formData.get('englishFlag') || undefined,
+    opciones: ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+      .filter(key => formData.get(`respuesta_${key}`) !== null && formData.get(`respuesta_${key}`) !== '')
+      .map(key => ({
+        respuesta: formData.get(`respuesta_${key}`) as string,
+        correcta: formData.get(`correcta_${key}`) !== null,
+        retroalimentacion: formData.get(`retroalimentacion_${key}`) as string | null,
+      })),
     evidenciaId: formData.get('evidenciaId'),
-    contenidosCurriculares: formData.getAll('contenidoCurricular').map(id => String(id)),
+    ejesTematicos: formData.getAll('ejeTematico').map(id => String(id)),
   };
 
   // 2. Validar los campos del formulario usando Zod.
   const validatedFields = PreguntaSchema.safeParse(rawData);
-
+  
   // 3. Si la validación del formulario falla, devolver los errores.
   if (!validatedFields.success) {
     return {
@@ -35,7 +38,7 @@ export async function createOrUpdatePregunta(
     };
   }
 
-  const { id, contenidosCurriculares, opciones, ...preguntaData } = validatedFields.data;
+  const { id, ejesTematicos, opciones, ...preguntaData } = validatedFields.data;
 
   try {
     if (id) {
@@ -48,8 +51,8 @@ export async function createOrUpdatePregunta(
             deleteMany: {},
             create: opciones,
           },
-          contenidosCurriculares: {
-            set: contenidosCurriculares.map((id) => ({ id: String(id) })),
+          ejesTematicos: {
+            set: ejesTematicos.map((id) => ({ id: String(id) })),
           },
         },
       });
@@ -62,8 +65,8 @@ export async function createOrUpdatePregunta(
           opciones: {
             create: opciones,
           },
-          contenidosCurriculares: {
-            connect: contenidosCurriculares.map((id) => ({ id: String(id) })),
+          ejesTematicos: {
+            connect: ejesTematicos.map((id) => ({ id: String(id) })),
           },
         },
       });

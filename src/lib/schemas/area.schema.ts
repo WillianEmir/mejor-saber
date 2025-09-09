@@ -1,8 +1,4 @@
 import { z } from 'zod';
-import { AfirmacionSchema } from './afirmacion.schema';
-import { CompetenciaSchema } from './competencia.schema';
-import { EvidenciaSchema } from './evidencia.schema';
-import { ContenidoCurricularSchema } from './contenidoCurricular.schema';
 import { Afirmacion, Area, Competencia, ContenidoCurricular, Evidencia } from '@/src/generated/prisma';
 
 // Esquema de validación para la creación/edición de un Área
@@ -27,26 +23,6 @@ export type AreaWithRelationsType = Areatype & {
   )[],
   contenidosCurriculares: Omit<ContenidoCurricular, 'createdAt' | 'updatedAt'>[]
 } | null
-
-
-
-
-// Esquema para las áreas con todas sus relaciones 
-export const AreasFullSchema = AreaSchema.extend({
-  competencias: z.array(
-    CompetenciaSchema.extend({
-      afirmaciones: z.array(
-        AfirmacionSchema.extend({
-          evidencias: z.array(EvidenciaSchema),
-        })
-      ),
-    })
-  ),
-  contenidosCurriculares: z.lazy(() => z.array(ContenidoCurricularSchema)),
-});
-
-// Type para las áreas con todas sus relaciones
-export type AreasFullType = z.infer<typeof AreasFullSchema>;
 
 // Tipo para el estado del formulario que será usado por useFormState
 export type AreaFormState = {

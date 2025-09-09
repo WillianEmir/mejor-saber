@@ -1,4 +1,4 @@
-import { AreasFullType } from '@/src/lib/schemas/area.schema';
+import { AreaWithRelationsType } from '@/src/lib/schemas/area.schema';
 import {
   BookOpenIcon,
   CalculatorIcon,
@@ -14,7 +14,7 @@ interface Area {
 }
 
 interface SimulacrumProps {
-  areas: AreasFullType[];
+  areas: AreaWithRelationsType[];
 }
 
 const areaDetails: { [key: string]: { description: string; icon: React.ElementType } } = {
@@ -30,7 +30,7 @@ const areaDetails: { [key: string]: { description: string; icon: React.ElementTy
     description: 'Pon a prueba tus conocimientos en historia, geografía y cívica.',
     icon: GlobeAltIcon,
   },
-  'Ciencias Naturales': {
+  'Ciencias Naturales': { 
     description: 'Demuestra tu entendimiento de la biología, física y química.',
     icon: BeakerIcon,
   },
@@ -52,7 +52,7 @@ export default function Simulacrum({ areas }: SimulacrumProps) {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {areas.map((area) => {
-          const details = areaDetails[area.nombre] || {
+          const details = areaDetails[area!.nombre] || {
             description: 'Descripción no disponible.',
             icon: LanguageIcon, // Un ícono por defecto
           };
@@ -60,7 +60,7 @@ export default function Simulacrum({ areas }: SimulacrumProps) {
 
           return (
             <div
-              key={area.id}
+              key={area!.id}
               className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 ease-in-out hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
             >
               <div className="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-gray-100 transition-transform duration-500 group-hover:scale-150 dark:bg-gray-700/50"></div>
@@ -69,12 +69,12 @@ export default function Simulacrum({ areas }: SimulacrumProps) {
                   <Icon className="h-6 w-6" aria-hidden="true" />
                 </div>
                 <div className="mt-4">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{area.nombre}</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{area!.nombre}</h3>
                   <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{description}</p>
                 </div>
                 <div className="mt-6">
                   <Link
-                    href={`/dashboard/simulacros/${area.id}`}
+                    href={`/dashboard/simulacros/${area!.id}`}
                     className="inline-block w-full rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                   >
                     Iniciar Simulacro

@@ -6,9 +6,9 @@ import { ContenidoCurricularType, ContenidoWithRelationsType } from '../schemas/
 export async function getContenidosWithRelations(): Promise<ContenidoWithRelationsType[]> {
   try {
     const contenidosCurriculares = await prisma.contenidoCurricular.findMany({ 
-      include: {
+      include: { 
         area: true,
-        Ejetematico: true
+        ejesTematicos: true 
       }
     });
     return contenidosCurriculares;

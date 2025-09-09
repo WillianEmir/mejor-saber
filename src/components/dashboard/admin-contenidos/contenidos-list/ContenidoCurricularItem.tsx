@@ -57,10 +57,10 @@ export default function ContenidoCurricularItem({
 
       {isOpen && (
         <div className="p-4 space-y-4">
-          {contenidoCurricular.Ejetematico && contenidoCurricular.Ejetematico.length > 0 ? (
+          {contenidoCurricular.ejesTematicos && contenidoCurricular.ejesTematicos.length > 0 ? (
 
             <ul className="space-y-1 list-inside text-gray-600 dark:text-gray-400 border-l border-gray-200 dark:border-gray-700 pl-4">
-              {contenidoCurricular.Ejetematico.map((eje) => (
+              {contenidoCurricular.ejesTematicos.map((eje) => (
               <EjeTematicoItem
                 key={eje.id}
                 eje={eje}

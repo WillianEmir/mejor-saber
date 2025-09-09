@@ -26,7 +26,7 @@ function SubmitButton({ editMode }: { editMode: boolean }) {
     >
       {pending ? (editMode ? 'Guardando...' : 'Creando...') : (editMode ? 'Guardar Cambios' : 'Crear Eje Temático')}
     </button>
-  )
+  ) 
 }
 
 export default function EjeTematicoModal({ isOpen, onClose, contenidoCurricularId, ejeTematico }: Props) {

@@ -9,7 +9,7 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
-datasource db { 
+datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
@@ -24,11 +24,8 @@ model ContenidoCurricular {
   area   Area   @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   areaId String @map("area_id")
 
-  preguntas Pregunta[] @relation("ContenidoCurricularPreguntas")
-  Ejetematico EjeTematico[]
+  ejesTematicos EjeTematico[]
 
-  @@unique([areaId, nombre])
-  @@index([areaId])
   @@map("contenidos_curriculares")
 }
 
@@ -36,8 +33,10 @@ model EjeTematico {
   id     String @id @default(uuid())
   nombre String
 
-  contenidoCurricular ContenidoCurricular @relation(fields: [contenidoCurricularId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  contenidoCurricularId String @map("contenido_curricular_id")
+  contenidoCurricular   ContenidoCurricular @relation(fields: [contenidoCurricularId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  contenidoCurricularId String              @map("contenido_curricular_id")
+
+  preguntas Pregunta[] @relation("EjeTematicoPreguntas")
 
   @@unique([contenidoCurricularId, nombre])
   @@index([contenidoCurricularId])
@@ -50,30 +49,32 @@ model OpcionPregunta {
   correcta          Boolean
   retroalimentacion String?
 
-  pregunta          Pregunta            @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
-  preguntaId        String              @map("pregunta_id")
+  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+  preguntaId String   @map("pregunta_id")
+
   SimulacroPregunta SimulacroPregunta[]
 
   @@index([preguntaId])
   @@map("opciones_pregunta")
-} 
+}
 
 model Pregunta {
-  id        String           @id @default(uuid())
-  contexto  String
-  imagen    String?
-  enunciado String
-  opciones  OpcionPregunta[]
+  id          String  @id @default(uuid())
+  contexto    String
+  imagen      String?
+  enunciado   String
+  englishFlag String?
+
+  evidencia   Evidencia @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  evidenciaId String    @map("evidencia_id")
+
+  ejesTematicos     EjeTematico[]       @relation("EjeTematicoPreguntas")
+  opciones          OpcionPregunta[]
+  SimulacroPregunta SimulacroPregunta[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  contenidosCurriculares ContenidoCurricular[] @relation("ContenidoCurricularPreguntas")
-
-  evidencia         Evidencia           @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  evidenciaId       String              @map("evidencia_id")
-  SimulacroPregunta SimulacroPregunta[]
- 
   @@index([evidenciaId])
   @@map("preguntas")
 }
@@ -87,7 +88,6 @@ model Area {
 
   contenidosCurriculares ContenidoCurricular[]
   competencias           Competencia[]
-  Simulacro              Simulacro[]
 
   @@map("areas")
 }
@@ -99,8 +99,9 @@ model Competencia {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  afirmaciones Afirmacion[]
   area         Area         @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  afirmaciones Afirmacion[]
+  Simulacro    Simulacro[]
   areaId       String       @map("area_id")
 
   @@unique([areaId, nombre])
@@ -115,8 +116,8 @@ model Afirmacion {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  evidencias    Evidencia[]
   competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  evidencias    Evidencia[]
   competenciaId String      @map("competencia_id")
 
   @@unique([competenciaId, nombre])
@@ -125,7 +126,7 @@ model Afirmacion {
 }
 
 model Evidencia {
-  id     String @id @default(uuid()) 
+  id     String @id @default(uuid())
   nombre String
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -153,6 +154,7 @@ model User {
   password      String
   firstName     String?
   lastName      String?
+  school        String?
   isActived     Boolean   @default(false)
   avatar        String?
   phone         String?
@@ -161,7 +163,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   rol       Rol      @default(USER)
- 
+
   simulacros       Simulacro[]
   UserSubscription UserSubscription[]
 
@@ -169,42 +171,45 @@ model User {
 }
 
 model Simulacro {
-  id     String @id @default(uuid())
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id String @id @default(uuid())
 
-  areaId String @map("area_id")
-  area   Area   @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  score           Float? // The score of the simulacro
+  duracionMinutos Int? // The duration of the simulacro in minutes
 
-  score     Float? // The score of the simulacro
-  completed Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Cascade)
+  competenciaId String      @map("competencia_id")
 
   preguntas SimulacroPregunta[]
 
   @@index([userId])
-  @@index([areaId])
+  @@index([competenciaId])
   @@map("simulacros")
 }
 
 model SimulacroPregunta {
   id String @id @default(uuid())
 
-  simulacroId String    @map("simulacro_id")
   simulacro   Simulacro @relation(fields: [simulacroId], references: [id], onDelete: Cascade)
+  simulacroId String    @map("simulacro_id")
 
-  preguntaId String   @map("pregunta_id")
   pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+  preguntaId String   @map("pregunta_id")
 
-  opcionSeleccionadaId String?         @map("opcion_seleccionada_id")
   opcionSeleccionada   OpcionPregunta? @relation(fields: [opcionSeleccionadaId], references: [id], onDelete: SetNull)
+  opcionSeleccionadaId String?         @map("opcion_seleccionada_id")
 
   correcta Boolean? // Was the selected answer correct?
 
   @@unique([simulacroId, preguntaId])
   @@index([simulacroId])
   @@index([preguntaId])
+  @@index([opcionSeleccionadaId])
   @@map("simulacro_preguntas")
 }
 

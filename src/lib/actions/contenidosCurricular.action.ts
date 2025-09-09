@@ -38,7 +38,7 @@ export async function createOrUpdateContenidoCurricular(
           areaId,
           nombre,
         },
-      });
+      }); 
     } 
   } catch (e) {
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {

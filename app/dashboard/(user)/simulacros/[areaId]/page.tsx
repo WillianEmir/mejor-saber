@@ -31,6 +31,10 @@ export default async function Page({ params }: pageProps) {
 
   const area = await getAreaById(areaId);
 
+  if(!area) notFound() 
+
+  console.log(area)
+
   return (
     <>
       <SimulacrumArea area={area} />

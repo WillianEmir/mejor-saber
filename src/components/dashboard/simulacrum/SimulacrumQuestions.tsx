@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { ClockIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { Pregunta, OpcionPregunta } from '@/src/generated/prisma';
-import { PreguntaType } from '@/src/lib/schemas/pregunta.schema';
+import { PreguntaType, PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema';
 
 interface SimulacrumQuestionsProps {
-  preguntas: PreguntaType[];
+  preguntas: PreguntaWithRelationsType[];
 }
 
 const Timer = () => {

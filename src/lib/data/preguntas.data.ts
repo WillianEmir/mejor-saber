@@ -1,20 +1,22 @@
 import 'server-only'; 
 
 import prisma from '@/src/lib/prisma';
-import { PreguntaType } from '../schemas/pregunta.schema';
+import { PreguntaWithRelationsType } from '../schemas/pregunta.schema';
 import { CompetenciaType } from '../schemas/competencia.schema';
 
-export async function getPreguntas(): Promise<PreguntaType[]> {
+// Obtiene todas las preguntas con sus relaciones
+export async function getPreguntasWithRelations(): Promise<PreguntaWithRelationsType[]> {
   const preguntas = await prisma.pregunta.findMany({
     include: {
       opciones: true,
-      contenidosCurriculares: true,
+      ejesTematicos: true,
     },
   });
   return preguntas;
 }
 
-export async function getPreguntasByCompetencia(competenciaId: CompetenciaType['id']): Promise<PreguntaType[]> {
+// Obtiene las preguntas por Competencia con sus relaciones
+export async function getPreguntasByCompetencia(competenciaId: CompetenciaType['id']): Promise<PreguntaWithRelationsType[]> {
   const preguntas = await prisma.pregunta.findMany({
     where: {
       evidencia: {
@@ -25,9 +27,9 @@ export async function getPreguntasByCompetencia(competenciaId: CompetenciaType['
     },
     include: {
       opciones: true,
-      contenidosCurriculares: true,
+      ejesTematicos: true,
     },
   });
  
-  return preguntas;
+  return preguntas; 
 }

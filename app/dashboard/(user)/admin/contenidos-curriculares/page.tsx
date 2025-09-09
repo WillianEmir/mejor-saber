@@ -15,7 +15,7 @@ export default async function page() {
         areas={areas}
         contenidosCurriculares={contenidosCurriculares} 
       />
-      <ToastContainer />
+      <ToastContainer /> 
     </>
   )
 }

@@ -64,7 +64,7 @@ export async function deleteEjeTematico(id: string): Promise<{ message: string }
     return {message: 'Eje Temático eliminado exitosamente.'}
   } catch (e) { 
     if (e instanceof Error) {
-      return { message: e.message };
+      return { message: e.message }; 
     }
     return { message: 'Error de base de datos: No se pudo procesar la solicitud.' };
   }
