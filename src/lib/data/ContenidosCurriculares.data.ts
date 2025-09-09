@@ -1,6 +1,6 @@
 import 'server-only';
 
-import prisma from '../prisma';
+import prisma from '../prisma'; 
 import { ContenidoCurricularType, ContenidoWithRelationsType } from '../schemas/contenidoCurricular.schema';
 
 export async function getContenidosWithRelations(): Promise<ContenidoWithRelationsType[]> {

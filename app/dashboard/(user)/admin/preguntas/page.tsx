@@ -1,6 +1,6 @@
 import AdminPreguntas from '@/src/components/dashboard/admin-preguntas/AdminPreguntas'
 import { getAreasWithRelations } from '@/src/lib/data/areas.data'
-import { getContenidosWithRelations } from '@/src/lib/data/contenidosCurriculares.data'
+import { getContenidosWithRelations } from '@/src/lib/data/ContenidosCurriculares.data'
 import { getPreguntasWithRelations } from '@/src/lib/data/preguntas.data'
 
 import { ToastContainer } from 'react-toastify'
@@ -11,7 +11,7 @@ export default async function page() {
   const areas = await getAreasWithRelations()
   const contenidosCurriculares = await getContenidosWithRelations()
 
-  return ( 
+  return (  
     <>
       <AdminPreguntas
         preguntas={preguntas} 
