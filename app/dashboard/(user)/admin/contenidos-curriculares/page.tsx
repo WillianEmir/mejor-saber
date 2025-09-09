@@ -1,6 +1,6 @@
 import ContenidosCurricularesList from '@/src/components/dashboard/admin-contenidos/contenidos-list/ContenidosCurricularesList';
 import { getAreas } from '@/src/lib/data/areas.data';
-import { getContenidosWithRelations } from '@/src/lib/data/contenidosCurriculares.data';
+import { getContenidosWithRelations } from '@/src/lib/data/ContenidosCurriculares.data';
 import { Areatype } from '@/src/lib/schemas/area.schema';
 import { ToastContainer } from 'react-toastify';
 
