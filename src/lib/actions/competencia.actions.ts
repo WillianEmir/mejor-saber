@@ -16,7 +16,6 @@ export async function createOrUpdateCompetencia(
   });
 
   if (!validatedFields.success) {
-    console.log(validatedFields.data);
     
     return {
       errors: validatedFields.error.flatten().fieldErrors,
@@ -54,14 +53,14 @@ export async function createOrUpdateCompetencia(
     };
   }
 
-  revalidatePath(`/dashboard/admin/areas/${id}`);
+  revalidatePath(`/dashboard/admin/admin/areas/${id}`);
   return { message: id ? 'Competencia actualizada exitosamente.' : 'Competencia creada exitosamente.' };
 }
 
 export async function deleteCompetencia(id: string): Promise<{ message: string } | void> {
   try {
     await prisma.competencia.delete({ where: { id } });
-    revalidatePath(`/dashboard/admin/areas/${id}`)
+    revalidatePath(`/dashboard/admin/admin/areas/${id}`)
     return {message: 'Competencia eliminada exitosamente.'}
   } catch (e) { 
     if (e instanceof Error) {

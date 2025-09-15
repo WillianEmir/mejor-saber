@@ -1,4 +1,4 @@
-'use client';
+'use client'; 
 
 import { Checkbox } from "@headlessui/react";
 import Link from "next/link";
@@ -28,7 +28,7 @@ export default function SignUpForm() {
       } else if (result?.success) {
         setSuccess(true);
         setTimeout(() => {
-          router.push('/dashboard/auth/signin');
+          router.push('/auth/signin');
         }, 2000);
       }
     });
@@ -63,6 +63,7 @@ export default function SignUpForm() {
                   <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
                 </div>
               </div>
+
               <form onSubmit={handleSubmit}>
                 <div className="space-y-6">
                   <div>
@@ -70,8 +71,8 @@ export default function SignUpForm() {
                       Nombre Completo <span className="text-error-500">*</span>
                     </label>
                     <input
-                      id="name"
-                      name="name"
+                      id="firstName"
+                      name="firstName"
                       placeholder="John Doe"
                       type="text"
                       className="w-full border border-slate-300 rounded-sm p-3"
@@ -151,7 +152,7 @@ export default function SignUpForm() {
                 <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                   ¿Ya tienes una cuenta? {""}
                   <Link
-                    href="/dashboard/auth/signin"
+                    href="/auth/signin"
                     className="text-indigo-600 hover:underline"
                   >
                     Iniciar Sesión

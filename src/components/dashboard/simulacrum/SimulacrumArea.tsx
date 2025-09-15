@@ -10,7 +10,7 @@ interface Competencia {
 interface Area {
   id: string;
   nombre: string;
-  competencias: Competencia[];
+  competencias: Competencia[]; 
 }
 
 interface SimulacrumAreaProps {
@@ -31,7 +31,7 @@ export default function SimulacrumArea({ area }: SimulacrumAreaProps) {
             </p>
           </div>
           <Link
-            href="/dashboard/simulacros"
+            href="/dashboard/user/simulacros"
             className="rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
           >
             &larr; Volver a las áreas
@@ -51,7 +51,7 @@ export default function SimulacrumArea({ area }: SimulacrumAreaProps) {
               </div>
               <div className="mt-6">
                 <Link
-                  href={`/dashboard/simulacros/${area.id}/${competencia.id}`}
+                  href={`/dashboard/user/simulacros/${area.id}/${competencia.id}`}
                   className="inline-block w-full rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
                   Iniciar Práctica

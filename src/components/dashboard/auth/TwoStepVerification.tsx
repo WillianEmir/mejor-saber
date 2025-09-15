@@ -11,11 +11,11 @@ export default function TwoStepVerification() {
         <div className="flex flex-col items-center justify-center w-full h-screen">
           <div className="w-full max-w-md sm:pt-10 mx-auto mb-5">
             <Link
-              href="/dashboard"
+              href="/"
               className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
               <ChevronLeftIcon className="size-6" />
-              Back to dashboard
+              Back to home
             </Link>
           </div>
 
@@ -54,7 +54,7 @@ export default function TwoStepVerification() {
                 <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                   ¿No recibiste el código? {""}
                   <Link
-                    href="/dashboard/reset-password"
+                    href="/reset-password"
                     className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                   >
                     Reenviar

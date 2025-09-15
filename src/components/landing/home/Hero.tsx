@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <section className="bg-white py-16 sm:py-24 lg:py-32">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-24">
+        <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-24"> 
 
           {/* Text Content */}
           <div className="w-full lg:w-1/2 text-center lg:text-left">

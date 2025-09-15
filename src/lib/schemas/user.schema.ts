@@ -1,27 +1,24 @@
-import { User } from '@/src/generated/prisma';
+import { Role, User } from '@/src/generated/prisma';
 import { z } from 'zod';
 
-export const signupSchema = z.object({
-  name: z.string().optional(),
-  email: z.email("Email no válido"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+// Schema for Sign Up (public)
+export const SignupSchema = z.object({
+  firstName: z.string().min(1, 'El nombre es requerido'),
+  email: z.email('Email no válido'),
+  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
 });
 
-export type SignupFormType = z.infer<typeof signupSchema>;
+// Type for displaying user data safely (without password)
+export type UserType = Omit<User, 'password'>;
 
-export const UserSchema = z.object({
-  id: z.uuid({ error: 'El ID debe ser un UUID válido.' }).optional(),
-  name: z.string().nullable().optional(),
-  email: z.email().optional(),
-  firstName: z.string().nullable().optional(),
-  lastName: z.string().nullable().optional(),
-  isActived: z.boolean().nullable().optional(),
-  avatar: z.string().nullable().optional(),
-  phone: z.string().nullable().optional(),
-  createdAt: z.date().nullable().optional(),
-  rol: z.string().nullable().optional(),
-})
+// Schema for creating/updating users from the admin panel
+export const UpsertUserSchema = z.object({
+  id: z.string().optional(),
+  firstName: z.string().min(1, 'El nombre es requerido'),
+  lastName: z.string().min(1, 'El apellido es requerido'),
+  email: z.email({ message: 'Email no válido' }),
+  role: z.enum(Role),
+  isActive: z.boolean(),
+});
 
-export type UserType = z.infer<typeof UserSchema>;
-
-export type UserForAdminType = Omit<User, 'password'>;
+export type UpsertUserType = z.infer<typeof UpsertUserSchema>;

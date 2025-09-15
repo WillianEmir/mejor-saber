@@ -25,7 +25,7 @@ export default function ButtonDeleteArea({ area }: ButtonDeleteAreaProps) {
     if (state?.message) {
       if (state.message.includes('exitosamente')) {
         toast.success(state.message) // TODO: Estado Global para mostrar errores en otros componentes
-        router.push('/dashboard/admin/areas') 
+        router.push('/dashboard/areas') 
       } else {
         toast.error(state.message)
       }

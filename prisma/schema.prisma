@@ -40,7 +40,7 @@ model EjeTematico {
 
   @@unique([contenidoCurricularId, nombre])
   @@index([contenidoCurricularId])
-  @@map("ejetematicos")
+  @@map("ejes_tematicos")
 }
 
 model OpcionPregunta {
@@ -59,13 +59,13 @@ model OpcionPregunta {
 }
 
 model Pregunta {
-  id          String  @id @default(uuid())
-  contexto    String
-  imagen      String?
-  enunciado   String
-  englishFlag String?
+  id        String  @id @default(uuid())
+  contexto  String
+  imagen    String?
+  enunciado String
+  groupFlag String?
 
-  evidencia   Evidencia @relation(fields: [evidenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  evidencia   Evidencia @relation(fields: [evidenciaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   evidenciaId String    @map("evidencia_id")
 
   ejesTematicos     EjeTematico[]       @relation("EjeTematicoPreguntas")
@@ -142,32 +142,66 @@ model Evidencia {
   @@map("evidencias")
 }
 
-enum Rol {
-  USER
+enum Role {
   ADMIN
+  ADMINSCHOOL
+  USER
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  name          String?
-  password      String
-  firstName     String?
-  lastName      String?
-  school        String?
-  isActived     Boolean   @default(false)
-  avatar        String?
-  phone         String?
-  dateIsActived DateTime? @map("date_is_actived")
+  id             String    @id @default(uuid())
+  idDocument     String?
+  email          String    @unique
+  password       String
+  firstName      String
+  lastName       String?
+  address        String?
+  department     String?
+  city           String?
+  isActive       Boolean   @default(false) @map("is_active")
+  avatar         String?
+  phone          String?
+  degree         String?
+  activationDate DateTime? @map("activation_date")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  rol       Rol      @default(USER)
+  role      Role     @default(USER)
+
+  school   School? @relation(fields: [schoolId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  schoolId String? @map("school_id")
 
   simulacros       Simulacro[]
   UserSubscription UserSubscription[]
 
   @@map("users")
+}
+
+model School {
+  id         String  @id @default(uuid())
+  nombre     String
+  email      String? @unique
+  DANE       String  @unique
+  address    String?
+  department String?
+  city       String?
+
+  users User[]
+
+  sedes SchoolSede[]
+
+  @@map("schools")
+}
+
+model SchoolSede {
+  id     String @id @default(uuid())
+  nombre String
+  DANE   String @unique
+
+  school   School @relation(fields: [schoolId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  schoolId String @map("school_id")
+
+  @@map("school_sedes")
 }
 
 model Simulacro {
@@ -182,7 +216,7 @@ model Simulacro {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id")
 
-  competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Cascade)
+  competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   competenciaId String      @map("competencia_id")
 
   preguntas SimulacroPregunta[]
@@ -198,7 +232,7 @@ model SimulacroPregunta {
   simulacro   Simulacro @relation(fields: [simulacroId], references: [id], onDelete: Cascade)
   simulacroId String    @map("simulacro_id")
 
-  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   preguntaId String   @map("pregunta_id")
 
   opcionSeleccionada   OpcionPregunta? @relation(fields: [opcionSeleccionadaId], references: [id], onDelete: SetNull)

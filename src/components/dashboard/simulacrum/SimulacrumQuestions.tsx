@@ -1,26 +1,22 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { ClockIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect, useMemo, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { ClockIcon, ChevronLeftIcon, ChevronRightIcon, BookOpenIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { Pregunta, OpcionPregunta } from '@/src/generated/prisma';
-import { PreguntaType, PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema';
+import { Competencia, EjeTematico } from '@/src/generated/prisma';
+import { PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema';
+import { createSimulacro } from '@/src/lib/actions/simulacro.action';
+import { CompetenciaType } from '@/src/lib/schemas/competencia.schema';
 
-interface SimulacrumQuestionsProps {
-  preguntas: PreguntaWithRelationsType[];
+interface TimerProps {
+  time: number;
+  competenciaName: string;
+  onFinish: () => void;
+  isPending: boolean;
 }
 
-const Timer = () => {
-  const [time, setTime] = useState(3600); // 1 hour in seconds
-
-  useEffect(() => {
-    const timerInterval = setInterval(() => {
-      setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(timerInterval);
-  }, []);
-
+const Timer = ({ time, competenciaName, onFinish, isPending }: TimerProps) => {
   const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
     const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
@@ -32,29 +28,116 @@ const Timer = () => {
     <div className="sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <ClockIcon className="h-6 w-6 text-blue-500" />
-            <span className="text-lg font-mono font-semibold text-gray-900 dark:text-white">
-              {formatTime(time)}
-            </span>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <ClockIcon className="h-6 w-6 text-blue-500" />
+              <span className="text-lg font-mono font-semibold text-gray-900 dark:text-white">
+                {formatTime(time)}
+              </span>
+            </div>
+            <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100 hidden md:block">
+              {competenciaName}
+            </h1>
           </div>
-          <button className="rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700">
-            Finalizar Intento
+          <button 
+            onClick={onFinish}
+            disabled={isPending}
+            className="rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700 disabled:opacity-50">
+            {isPending ? 'Finalizando...' : 'Finalizar Intento'}
           </button>
         </div>
       </div>
     </div>
   );
-};
+};   
 
-export default function SimulacrumQuestions({ preguntas }: SimulacrumQuestionsProps) {
+interface SimulacrumQuestionsProps {
+  preguntas: PreguntaWithRelationsType[];
+  competencia: CompetenciaType;
+}
+
+export default function SimulacrumQuestions({ preguntas, competencia }: SimulacrumQuestionsProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [time, setTime] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string | null }>({});
+
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTime((prevTime) => prevTime + 1);
+    }, 1000);
+    return () => clearInterval(timerInterval);
+  }, []);
+
+  const groupedQuestions = useMemo(() => {
+    const groups: { [key: string]: { eje: EjeTematico, questions: { index: number }[] } } = {};
+    preguntas.forEach((p, index) => {
+      const eje = p.ejesTematicos[0];
+      if (eje) { 
+        if (!groups[eje.id]) {
+          groups[eje.id] = { eje, questions: [] };
+        }
+        groups[eje.id].questions.push({ index });
+      }
+    });
+    return Object.values(groups);
+  }, [preguntas]);
 
   const currentPregunta = preguntas[currentQuestionIndex];
+  const currentEjeTematico = currentPregunta.ejesTematicos[0];
 
   const handleSelectOption = (preguntaId: string, opcionId: string) => {
     setSelectedAnswers((prev) => ({ ...prev, [preguntaId]: opcionId }));
+  };
+
+  const handleFinish = () => {
+    startTransition(async () => {
+      const correctAnswers = preguntas.reduce((acc, pregunta) => {
+        const selectedOptionId = selectedAnswers[pregunta.id];
+        if (!selectedOptionId) return acc;
+
+        const correctOption = pregunta.opciones.find(o => o.correcta);
+        if (correctOption && correctOption.id === selectedOptionId) {
+          return acc + 1;
+        }
+        return acc;
+      }, 0);
+
+      const score = (correctAnswers / preguntas.length) * 100;
+      const duracionMinutos = Math.floor(time / 60);
+
+      const simulacroPreguntas = preguntas.map(p => {
+        const selectedOptionId = selectedAnswers[p.id] ?? null;
+        const correctOption = p.opciones.find(o => o.correcta);
+        return {
+          preguntaId: p.id,
+          opcionSeleccionadaId: selectedOptionId,
+          correcta: correctOption ? selectedOptionId === correctOption.id : false,
+        };
+      }).filter(p => p.opcionSeleccionadaId !== null) as { preguntaId: string; opcionSeleccionadaId: string; correcta: boolean }[];
+
+      if (simulacroPreguntas.length === 0) {
+        // Handle case with no answers, maybe show a notification
+        console.log("No answers selected");
+        return;
+      }
+
+      const result = await createSimulacro(
+        score,
+        duracionMinutos,        
+        competencia.id,
+        simulacroPreguntas
+      );
+
+      if (result.message) {
+        // TODO: Show success toast
+        router.push(`/dashboard/user/simulacros`);
+      } else {
+        // TODO: Show error toast
+        console.error(result.errors);
+      }
+    });
   };
 
   const goToNextQuestion = () => {
@@ -67,50 +150,66 @@ export default function SimulacrumQuestions({ preguntas }: SimulacrumQuestionsPr
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Timer />
+      <Timer 
+        time={time}
+        competenciaName={competencia.nombre}
+        onFinish={handleFinish}
+        isPending={isPending}
+      />
       <main className="py-8 md:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-            {/* Question List */}
             <aside className="lg:col-span-3">
               <div className="sticky top-24">
                 <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Preguntas</h2>
-                <div className="space-y-2">
-                  {preguntas.map((p, index) => (
-                    <button
-                      key={p.id}
-                      onClick={() => setCurrentQuestionIndex(index)}
-                      className={`w-full text-left px-4 py-2 rounded-md transition-colors duration-200 ${currentQuestionIndex === index
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
-                    >
-                      Pregunta {index + 1}
-                    </button>
+                <div className="space-y-4">
+                  {groupedQuestions.map(({ eje, questions }) => (
+                    <div key={eje.id}>
+                      <h3 className="text-md font-semibold text-gray-600 dark:text-gray-400 mb-2">{eje.nombre}</h3>
+                      <div className="space-y-2">
+                        {questions.map(({ index }) => (
+                          <button
+                            key={preguntas[index].id}
+                            onClick={() => setCurrentQuestionIndex(index)}
+                            className={`w-full text-left px-4 py-2 rounded-md transition-colors duration-200 text-sm ${currentQuestionIndex === index
+                                ? 'bg-blue-500 text-white font-semibold'
+                                : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
+                              }`}
+                          >
+                            Pregunta {index + 1}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
             </aside>
 
-            {/* Current Question */}
             <div className="lg:col-span-9">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8">
                 <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <BookOpenIcon className="h-5 w-5" />
+                    <span>{currentEjeTematico?.nombre || 'General'}</span>
+                  </div>
+
                   {currentPregunta.contexto && (
                     <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                       <h4 className="font-bold">Contexto</h4>
-                      <p>{currentPregunta.contexto}</p>
+                        <p className="whitespace-pre-line">{currentPregunta.contexto}</p>
                     </div>
                   )}
 
                   {currentPregunta.imagen && (
-                    <div className="my-6 relative h-80 w-full">
+                    <div className="my-6">
                       <Image
-                        src={currentPregunta.imagen}
-                        alt={`Imagen para la pregunta ${currentQuestionIndex + 1}`}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 70vw"
-                        className="rounded-lg object-contain"
+                      src={currentPregunta.imagen}
+                      alt={`Imagen para la pregunta ${currentQuestionIndex + 1}`}
+                      width={800}
+                      height={600}
+                      className="rounded-lg w-full h-auto object-contain"
+                      style={{ maxHeight: '100vh' }}
                       />
                     </div>
                   )}
@@ -119,10 +218,10 @@ export default function SimulacrumQuestions({ preguntas }: SimulacrumQuestionsPr
                   <p>{currentPregunta.enunciado}</p>
 
                   <div className="mt-6 space-y-4">
-                    {currentPregunta.opciones.map((opcion) => (
+                    {currentPregunta.opciones.map((opcion, index) => (
                       <label
                         key={opcion.id}
-                        className={`flex items-center p-4 rounded-lg border cursor-pointer transition-all duration-200 ${selectedAnswers[currentPregunta.id!] === opcion.id
+                        className={`flex items-center p-4 rounded-lg border cursor-pointer transition-all duration-200 ${selectedAnswers[currentPregunta.id] === opcion.id
                             ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/50 ring-2 ring-blue-500'
                             : 'border-gray-200 dark:border-gray-700 hover:border-blue-400'
                           }`}
@@ -130,17 +229,29 @@ export default function SimulacrumQuestions({ preguntas }: SimulacrumQuestionsPr
                         <input
                           type="radio"
                           name={`pregunta-${currentPregunta.id}`}
-                          checked={selectedAnswers[currentPregunta.id!] === opcion.id}
-                          onChange={() => handleSelectOption(currentPregunta.id!, opcion.id!)}
+                          checked={selectedAnswers[currentPregunta.id] === opcion.id}
+                          onChange={() => handleSelectOption(currentPregunta.id, opcion.id)}
                           className="sr-only"
                         />
-                        <span className="flex-1 text-gray-800 dark:text-gray-200">{opcion.respuesta}</span>
+                        <span className="mr-4 font-semibold">{String.fromCharCode(97 + index)}.</span>
+                        {opcion.respuesta.startsWith('http') ? (
+                          <div className="relative h-40 w-full">
+                            <Image
+                              src={opcion.respuesta}
+                              alt={`Opción para la pregunta ${currentQuestionIndex + 1}`}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                              className="rounded-md object-contain"
+                            />
+                          </div>
+                        ) : (
+                          <span className="flex-1 text-gray-800 dark:text-gray-200">{opcion.respuesta}</span>
+                        )}
                       </label>
                     ))}
                   </div>
                 </div>
 
-                {/* Navigation */}
                 <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                   <button
                     onClick={goToPreviousQuestion}
