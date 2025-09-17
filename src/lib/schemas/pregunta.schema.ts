@@ -7,14 +7,14 @@ export const OpcionRespuestaSchema = z.object({
   respuesta: z.string().min(1, { message: 'La respuesta no puede estar vacía.' }),
   correcta: z.boolean(),
   retroalimentacion: z.string().nullable(), 
-});
+}); 
 
-export const PreguntaSchema = z.object({ 
+export const PreguntaSchema = z.object({  
   id: z.uuid({ error: 'El ID debe ser un UUID válido.' }).optional(),
   contexto: z.string().min(1, { message: 'El contexto no puede estar vacío.' }),
   imagen: z.string().optional().nullable(),
   enunciado: z.string().min(1, { message: 'El enunciado no puede estar vacío.' }),
-  englishFlag: z.string().optional().nullable(),
+  groupFlag: z.string().optional().nullable(),
   opciones: z.array(OpcionRespuestaSchema),
   evidenciaId: z.string().min(1, { message: 'El ID de la evidencia no puede estar vacío.' }),
   ejesTematicos: z.union([

@@ -6,7 +6,7 @@ import Testimonials from "@/src/components/landing/home/Testimonials";
 
 export default function Home() {
   return (
-    <>
+    <> 
       <Hero />
       <SectionDestacados />
       <SectionBeneficios />

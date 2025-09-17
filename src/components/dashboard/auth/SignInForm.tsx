@@ -10,7 +10,7 @@ import { EyeIcon, EyeSlashIcon, ChevronLeftIcon } from "@heroicons/react/24/outl
 export default function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const error = searchParams.get("error");
 
   const [showPassword, setShowPassword] = useState(false);
@@ -129,7 +129,7 @@ export default function SignInForm() {
                       </span>
                     </div>
                     <Link
-                      href="/dashboard/auth/reset-password"
+                      href="/auth/reset-password"
                       className="text-sm text-indigo-600 hover:underline"
                     >
                       ¿Olvidaste tu contraseña?
@@ -152,7 +152,7 @@ export default function SignInForm() {
                 <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                   ¿No tienes una cuenta? {""}
                   <Link
-                    href="/dashboard/auth/signup"
+                    href="/auth/signup"
                     className="text-indigo-600 hover:underline"
                   >
                     Regístrate

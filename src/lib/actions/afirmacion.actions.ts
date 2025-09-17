@@ -52,7 +52,7 @@ export async function createOrUpdateAfirmacion(
     };
   }
 
-  revalidatePath('/dashboard/admin-afirmaciones');
+  revalidatePath('/dashboard/admin/admin-afirmaciones');
   return { message: id ? 'Afirmación actualizada exitosamente.' : 'Afirmación creada exitosamente.' };
 }
 

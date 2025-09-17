@@ -74,7 +74,7 @@ export default function Simulacrum({ areas }: SimulacrumProps) {
                 </div>
                 <div className="mt-6">
                   <Link
-                    href={`/dashboard/simulacros/${area!.id}`}
+                    href={`/dashboard/user/simulacros/${area!.id}`}
                     className="inline-block w-full rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                   >
                     Iniciar Simulacro

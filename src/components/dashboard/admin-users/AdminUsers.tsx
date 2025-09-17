@@ -1,30 +1,25 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  EyeIcon,
-  PencilSquareIcon,
-  TrashIcon,
-  UserPlusIcon,
-} from '@heroicons/react/24/outline';
-import type { User } from '@/src/generated/prisma';
+import { useState, useTransition } from 'react';
+import { EyeIcon, PencilSquareIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-toastify';
+
 import AdminUsersModal from './AdminUsersModal';
-import { UserForAdminType } from '@/src/lib/schemas/user.schema';
-
-// Creamos un tipo local para los usuarios que evite filtrar el password
-
+import { UserType } from '@/src/lib/schemas/user.schema';
+import { deleteUser } from '@/src/lib/actions/user.action';
 
 interface AdminUsersProps {
-  users: UserForAdminType[];
+  users: UserType[];
 }
 
-export default function AdminUsers({ users: initialUsers }: AdminUsersProps) {
-  const [users, setUsers] = useState<UserForAdminType[]>(initialUsers);
+export default function AdminUsers({ users }: AdminUsersProps) {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'add' | 'edit' | 'view'>('view');
-  const [selectedUser, setSelectedUser] = useState<UserForAdminType | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  const openModal = (mode: 'add' | 'edit' | 'view', user: UserForAdminType | null = null) => {
+  const openModal = (mode: 'add' | 'edit' | 'view', user: UserType | null = null) => {
     setModalMode(mode);
     setSelectedUser(user);
     setIsModalOpen(true);
@@ -35,31 +30,23 @@ export default function AdminUsers({ users: initialUsers }: AdminUsersProps) {
     setSelectedUser(null);
   };
 
-  const handleSaveUser = (user: UserForAdminType) => {
-    if (modalMode === 'add') {
-      // Aquí iría la lógica para llamar a un Server Action y crear el usuario en la BD
-      console.log('Adding user:', user);
-      // Simulando la adición en el cliente
-      setUsers([user, ...users]);
-    } else {
-      // Aquí iría la lógica para llamar a un Server Action y actualizar el usuario
-      console.log('Editing user:', user);
-      // Simulando la edición en el cliente
-      setUsers(users.map((u) => (u.id === user.id ? user : u)));
-    }
-    closeModal();
-  };
-
   const handleDeleteUser = (userId: string) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
-      // Aquí iría la lógica para llamar a un Server Action y eliminar el usuario
-      console.log('Deleting user:', userId);
-      // Simulando la eliminación en el cliente
-      setUsers(users.filter((u) => u.id !== userId));
+      startTransition(async () => {
+        const formData = new FormData();
+        formData.append('id', userId);
+        const result = await deleteUser(formData);
+        if (result.success) {
+          toast.success(result.message);
+        } else {
+          toast.error(result.message);
+        }
+      });
     }
   };
 
   return (
+
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
@@ -79,6 +66,7 @@ export default function AdminUsers({ users: initialUsers }: AdminUsersProps) {
           </button>
         </div>
       </div>
+
       <div className="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
         <table className="min-w-full divide-y divide-gray-300">
           <thead className="bg-gray-50">
@@ -96,31 +84,31 @@ export default function AdminUsers({ users: initialUsers }: AdminUsersProps) {
             {users.map((user) => (
               <tr key={user.id}>
                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-                  {user.name}
+                  {user.firstName} {user.lastName}
                   <dl className="font-normal lg:hidden">
                     <dt className="sr-only">Email</dt>
                     <dd className="mt-1 truncate text-gray-700">{user.email}</dd>
                   </dl>
                 </td>
                 <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{user.email}</td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{user.rol}</td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{user.role}</td>
                 <td className="px-3 py-4 text-sm text-gray-500">
-                    {user.isActived ? (
-                        <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Activo</span>
-                    ) : (
-                        <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">Inactivo</span>
-                    )}
+                  {user.isActive ? (
+                    <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Activo</span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">Inactivo</span>
+                  )}
                 </td>
                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                   <div className="flex justify-end space-x-2">
                     <button onClick={() => openModal('view', user)} className="text-indigo-600 hover:text-indigo-900">
-                        <EyeIcon className="h-5 w-5" />
+                      <EyeIcon className="h-5 w-5" />
                     </button>
                     <button onClick={() => openModal('edit', user)} className="text-yellow-600 hover:text-yellow-900">
-                        <PencilSquareIcon className="h-5 w-5" />
+                      <PencilSquareIcon className="h-5 w-5" />
                     </button>
-                    <button onClick={() => handleDeleteUser(user.id)} className="text-red-600 hover:text-red-900">
-                        <TrashIcon className="h-5 w-5" />
+                    <button onClick={() => handleDeleteUser(user.id)} disabled={isPending} className="text-red-600 hover:text-red-900 disabled:opacity-50">
+                      <TrashIcon className="h-5 w-5" />
                     </button>
                   </div>
                 </td>
@@ -129,14 +117,12 @@ export default function AdminUsers({ users: initialUsers }: AdminUsersProps) {
           </tbody>
         </table>
       </div>
-      
-      {/* Modal */}
-      <AdminUsersModal 
+
+      <AdminUsersModal
         isOpen={isModalOpen}
         mode={modalMode}
         user={selectedUser}
         onClose={closeModal}
-        onSave={handleSaveUser}
       />
     </div>
   );

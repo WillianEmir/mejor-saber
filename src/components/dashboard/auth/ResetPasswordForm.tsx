@@ -1,7 +1,7 @@
 "use client";
  
 import Link from "next/link";
-import Button from "../ui/button/Button";
+import Button from "../ui/button/Button"; 
 import ChevronLeftIcon from "@heroicons/react/24/outline/ChevronLeftIcon";
 
 export default function ResetPasswordForm() {
@@ -60,7 +60,7 @@ export default function ResetPasswordForm() {
                 <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                   Espera, recuerdo mi contraseña {""}
                   <Link
-                    href="/dashboard/auth/signin"
+                    href="/auth/signin"
                     className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                   >
                     Sign In

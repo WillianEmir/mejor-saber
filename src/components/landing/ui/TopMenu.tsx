@@ -19,7 +19,6 @@ export default function TopMenu() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const pathname = usePathname()
-  console.log(pathname);
   
 
   return (

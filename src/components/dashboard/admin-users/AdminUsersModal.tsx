@@ -1,37 +1,73 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import type { UserForAdmin } from './AdminUsers';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
+import { UpsertUserSchema, UpsertUserType, UserType } from '@/src/lib/schemas/user.schema';
+import { upsertUser } from '@/src/lib/actions/user.action';
+import { Role } from '@/src/generated/prisma';
 
 interface AdminUsersModalProps {
   isOpen: boolean;
   mode: 'add' | 'edit' | 'view';
-  user: UserForAdmin | null;
+  user: UserType | null;
   onClose: () => void;
-  onSave: (user: UserForAdmin) => void;
 }
 
-export default function AdminUsersModal({ isOpen, mode, user, onClose, onSave }: AdminUsersModalProps) {
+const defaultValues: UpsertUserType = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  role: Role.USER,
+  isActive: true,
+};
+
+export default function AdminUsersModal({ isOpen, mode, user, onClose }: AdminUsersModalProps) {
+
   const isViewMode = mode === 'view';
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const userData = {
-      id: user?.id || new Date().toISOString(), // Generar ID para nuevos usuarios
-      ...Object.fromEntries(formData.entries()),
-      // Asegurarse de que los tipos de datos correctos se pasen si es necesario
-      isActived: formData.get('isActived') === 'true',
-    } as unknown as UserForAdmin;
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<UpsertUserType>({
+    resolver: zodResolver(UpsertUserSchema),
+    defaultValues,
+  });
 
-    onSave(userData);
+  useEffect(() => {
+    if (isOpen) {
+      if (mode === 'edit' || mode === 'view') {
+        reset(user as UpsertUserType);
+      } else {
+        reset(defaultValues);
+      }
+    }
+  }, [isOpen, mode, user, reset]);
+
+  const onSubmit = async (data: UpsertUserType) => {
+    const result = await upsertUser(data);
+    if (result.success) {
+      toast.success(mode === 'add' ? 'Usuario agregado exitosamente' : 'Usuario actualizado exitosamente');
+      onClose();
+    } else {
+      if (result.error) {
+        // Handle specific field errors
+        if ('email' in result.error && result.error.email) {
+          toast.error(result.error.email[0]);
+        } else if ('_form' in result.error && result.error._form) {
+          toast.error(result.error._form[0]);
+        } else {
+          toast.error('Ocurrió un error.');
+        }
+      } else {
+        toast.error('Ocurrió un error inesperado.');
+      }
+    }
   };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className="relative z-50" onClose={onClose}>
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
@@ -65,57 +101,55 @@ export default function AdminUsersModal({ isOpen, mode, user, onClose, onSave }:
                   </button>
                 </DialogTitle>
 
-                <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-                  {isViewMode ? (
-                    <div className="space-y-2">
-                      <p><strong>ID:</strong> {user?.id}</p>
-                      <p><strong>Nombre:</strong> {user?.firstName} {user?.lastName}</p>
-                      <p><strong>Email:</strong> {user?.email}</p>
-                      <p><strong>Rol:</strong> {user?.rol}</p>
-                      <p><strong>Activo:</strong> {user?.isActived ? 'Sí' : 'No'}</p>
-                    </div>
-                  ) : (
-                    <>
-                      <div>
-                        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">Nombre</label>
-                        <input type="text" name="firstName" id="firstName" defaultValue={user?.firstName || ''} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
-                      </div>
-                      <div>
-                        <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Apellido</label>
-                        <input type="text" name="lastName" id="lastName" defaultValue={user?.lastName || ''} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" id="email" defaultValue={user?.email || ''} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
-                      </div>
-                      <div>
-                        <label htmlFor="rol" className="block text-sm font-medium text-gray-700">Rol</label>
-                        <select name="rol" id="rol" defaultValue={user?.rol || 'USER'} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                          <option value="USER">User</option>
-                          <option value="ADMIN">Admin</option>
-                        </select>
-                      </div>
-                       <div>
-                        <label htmlFor="isActived" className="block text-sm font-medium text-gray-700">Estado</label>
-                        <select name="isActived" id="isActived" defaultValue={user?.isActived ? 'true' : 'false'} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                          <option value="true">Activo</option>
-                          <option value="false">Inactivo</option>
-                        </select>
-                      </div>
-                    </>
-                  )}
-
-                  <div className="mt-6 flex justify-end space-x-2">
-                    <button type="button" onClick={onClose} className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                      Cancelar
-                    </button>
-                    {!isViewMode && (
-                      <button type="submit" className="rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        {mode === 'add' ? 'Agregar' : 'Guardar Cambios'}
-                      </button>
-                    )}
+                {isViewMode ? (
+                  <div className="mt-4 space-y-2">
+                    <p><strong>ID:</strong> {user?.id}</p>
+                    <p><strong>Nombre:</strong> {user?.firstName} {user?.lastName}</p>
+                    <p><strong>Email:</strong> {user?.email}</p>
+                    <p><strong>Rol:</strong> {user?.role}</p>
+                    <p><strong>Activo:</strong> {user?.isActive ? 'Sí' : 'No'}</p>
+                    <p><strong>Creado:</strong> {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</p>
                   </div>
-                </form>
+                ) : (
+                  <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
+                    <div>
+                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">Nombre</label>
+                      <input {...register('firstName')} id="firstName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm p-2" />
+                      {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Apellido</label>
+                      <input {...register('lastName')} id="lastName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm p-2" />
+                      {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                      <input {...register('email')} id="email" type="email" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm p-2" />
+                      {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="role" className="block text-sm font-medium text-gray-700">Rol</label>
+                      <select {...register('role')} id="role" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm p-2">
+                        {Object.values(Role).map(role => <option key={role} value={role}>{role}</option>)}
+                      </select>
+                      {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>}
+                    </div>
+                    <div className="flex items-center">
+                      <input {...register('isActive')} id="isActive" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" />
+                      <label htmlFor="isActive" className="ml-2 block text-sm text-gray-900">Activo</label>
+                    </div>
+                    {errors.isActive && <p className="mt-1 text-sm text-red-600">{errors.isActive.message}</p>}
+
+                    <div className="mt-6 flex justify-end space-x-2">
+                      <button type="button" onClick={onClose} className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Cancelar
+                      </button>
+                      <button type="submit" disabled={isSubmitting} className="rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50">
+                        {isSubmitting ? 'Guardando...' : (mode === 'add' ? 'Agregar' : 'Guardar Cambios')}
+                      </button>
+                    </div>
+                  </form>
+                )}
               </DialogPanel>
             </TransitionChild>
           </div>

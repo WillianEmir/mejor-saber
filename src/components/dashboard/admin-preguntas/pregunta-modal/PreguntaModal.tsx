@@ -32,9 +32,9 @@ function SubmitButton({ editMode }: { editMode: boolean }) {
           ? 'Guardando...'
           : 'Creando...'
         : editMode
-          ? 'Guardar Cambios'
+          ? 'Guardar Cambios' 
           : 'Crear Pregunta'}
-    </button>
+    </button> 
   ) 
 }
 
@@ -158,7 +158,7 @@ export default function PreguntaModal({ areas, pregunta, isViewMode, contenidosC
         toast.error(state.message);
       } else {
         toast.success(state.message);
-        router.push('/dashboard/admin/preguntas');
+        router.push('/dashboard/preguntas');
       }
     }
   }, [state, router]);
@@ -511,13 +511,13 @@ export default function PreguntaModal({ areas, pregunta, isViewMode, contenidosC
                         </div>
                       </div>
                       <div className='flex flex-col mt-6'>
-                        <label htmlFor="englishFlag" className='font-medium text-gray-900 dark:text-gray-300'>Bandera</label>
+                        <label htmlFor="groupFlag" className='font-medium text-gray-900 dark:text-gray-300'>Bandera</label>
                         <input 
                         type="text" 
                         className={`w-100 p-2 mt-4 rounded border border-gray-400 text-indigo-600 focus:ring-indigo-600 dark:bg-gray-700 dark:border-gray-600`}
-                        id='englishFlag'
-                        name='englishFlag'
-                        defaultValue={pregunta?.englishFlag || ''}
+                        id='groupFlag'
+                        name='groupFlag'
+                        defaultValue={pregunta?.groupFlag || ''}
                         disabled={isViewMode}
                       />
                       </div>

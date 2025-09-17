@@ -15,7 +15,7 @@ export async function createOrUpdatePregunta(
     contexto: formData.get('contexto'),
     imagen: formData.get('imagen') || undefined,
     enunciado: formData.get('enunciado'),
-    englishFlag: formData.get('englishFlag') || undefined,
+    groupFlag: formData.get('groupFlag') || undefined,
     opciones: ['a', 'b', 'c', 'd', 'e', 'f', 'g']
       .filter(key => formData.get(`respuesta_${key}`) !== null && formData.get(`respuesta_${key}`) !== '')
       .map(key => ({

@@ -53,7 +53,7 @@ export async function createOrUpdateEvidencia(
     };
   }
 
-  revalidatePath('/dashboard/admin-evidencias');
+  revalidatePath('/dashboard/admin/admin-evidencias');
   return { message: id ? 'Evidencia actualizada exitosamente.' : 'Evidencia creada exitosamente.' };
 }
 

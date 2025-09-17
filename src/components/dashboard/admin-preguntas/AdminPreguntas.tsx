@@ -12,7 +12,7 @@ import { PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema';
 import { ContenidoWithRelationsType } from '@/src/lib/schemas/contenidoCurricular.schema';
 
 interface AdminPreguntasProps {
-  preguntas: PreguntaWithRelationsType[]; 
+  preguntas: PreguntaWithRelationsType[];  
   areas: AreaWithRelationsType[];
   contenidosCurriculares: ContenidoWithRelationsType[]; 
 }
