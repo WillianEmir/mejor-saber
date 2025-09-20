@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   // If there's no token, redirect to login. 
   // This is a fallback, as the default middleware should handle this.
   if (!token) {
-    return NextResponse.redirect(new URL('/auth/signin', request.url));
+    return NextResponse.redirect(new URL('/auth/signin', request.url)); 
   }
 
   // const userRole = token.role as string;

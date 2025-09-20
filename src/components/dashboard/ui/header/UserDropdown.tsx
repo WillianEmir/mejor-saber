@@ -1,103 +1,120 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import React, { useState } from "react";
-import { Dropdown } from "../dropdown/Dropdown";
-import { DropdownItem } from "../dropdown/DropdownItem";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
-import { signOut } from "next-auth/react";
-import { LogOut } from "lucide-react";
+import Image from 'next/image';
+import { signOut, useSession } from 'next-auth/react';
+import { LogOut, UserCircle } from 'lucide-react';
+import { Menu, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import Link from 'next/link';
+
+function getInitials(firstName?: string, lastName?: string | null) {
+  const firstInitial = firstName?.[0] || '';
+  const lastInitial = lastName?.[0] || '';
+  return `${firstInitial}${lastInitial}`.toUpperCase();
+}
 
 export default function UserDropdown() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
 
-  function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.stopPropagation();
-    setIsOpen((prev) => !prev);
-  }
-
-  function closeDropdown() {
-    setIsOpen(false);
-  }
-
-  async function handleSignOut(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
+  async function handleSignOut() {
     await signOut({
-      callbackUrl: "/auth/signin",
+      callbackUrl: '/auth/signin',
     });
   }
+
+  if (!session) {
+    return null; 
+  }
+
+  const { user } = session;
+  const initials = getInitials(user.firstName, user.lastName);  
+
   return (
-    <div className="relative">
-      <button
-        onClick={toggleDropdown}
-        className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle"
-      >
-        <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <Image
-            width={44}
-            height={44}
-            src="/images/user/owner.jpg"
-            alt="User"
-          />
-        </span>
-
-        <span className="block mr-1 font-medium text-theme-sm">Willian</span>
-
-        <svg
-          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-          width="18"
-          height="20"
-          viewBox="0 0 18 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
-
-      <Dropdown
-        isOpen={isOpen}
-        onClose={closeDropdown}
-        className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
-      >
-        <div>
-          <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            Willian Emir
+    <Menu as="div" className="relative inline-block text-left">
+      <div>
+        <Menu.Button className="flex items-center justify-center gap-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
+          <div className="relative h-11 w-11">
+            {user.avatar ? (
+              <Image
+                width={44}
+                height={44}
+                src={user.avatar}
+                alt="User Avatar"
+                className="rounded-full"
+              />
+            ) : (
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                <span className="text-base font-semibold">{initials}</span>
+              </div>
+            )}
+          </div>
+          <span className="hidden font-medium text-gray-700 dark:text-gray-300 lg:block">
+            {user.firstName}
           </span>
-          <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            saberya@saberya.com.com
-          </span>
-        </div>
-
-        <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
-          <li>
-            <DropdownItem
-              onItemClick={closeDropdown}
-              tag="a"
-              href="/dashboard/profile"
-              className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-            >
-              <UserCircleIcon className="size-6" />
-              Editar Perfil
-            </DropdownItem>
-          </li>
-        </ul>
-        <button
-          onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-        >
-          <LogOut className="size-6" />
-          Cerrar Sesión
-        </button>
-      </Dropdown>
-    </div>
+          <svg
+            className="hidden stroke-gray-500 transition-transform duration-200 ui-open:rotate-180 dark:stroke-ray-400 lg:block"
+            width="18"
+            height="20"
+            viewBox="0 0 18 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Menu.Button>
+      </div>
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <Menu.Items className="absolute right-0 mt-2 w-64 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-gray-800 dark:divide-gray-700">
+          <div className="px-4 py-3">
+            <p className="text-sm font-medium text-gray-900 dark:text-white">
+              {user.firstName} {user.lastName || ''}
+            </p>
+            <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+              {user.email}
+            </p>
+          </div>
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <Link
+                  href="/dashboard/profile"
+                  className={`${active ? 'bg-gray-100 dark:bg-gray-700' : ''} group flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300`}
+                >
+                  <UserCircle className="h-5 w-5" />
+                  Editar Perfil
+                </Link>
+              )}
+            </Menu.Item>
+          </div>
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={handleSignOut}
+                  className={`${active ? 'bg-gray-100 dark:bg-gray-700' : ''} group flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300`}
+                >
+                  <LogOut className="h-5 w-5" />
+                  Cerrar Sesión
+                </button>
+              )}
+            </Menu.Item>
+          </div>
+        </Menu.Items>
+      </Transition>
+    </Menu>
   );
 }

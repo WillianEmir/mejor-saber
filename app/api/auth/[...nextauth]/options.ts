@@ -1,18 +1,9 @@
-
-import { AuthOptions } from "next-auth";
+import { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@/src/generated/prisma";
 import * as bcrypt from "bcrypt";
 import { z } from "zod";
-import "next-auth";
+import prisma from "@/src/lib/prisma";
 
-declare module "next-auth" {
-  interface User {
-    role: string;
-  }
-}
-
-const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -22,11 +13,13 @@ export const authOptions: AuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
-        const parsedCredentials = z.object({
-          email: z.string().email(),
-          password: z.string()
-        }).safeParse(credentials);
+      async authorize(credentials): Promise<User | null> {
+        const parsedCredentials = z
+          .object({
+            email: z.string().email(),
+            password: z.string(),
+          })
+          .safeParse(credentials);
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
@@ -42,7 +35,7 @@ export const authOptions: AuthOptions = {
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
-            return { id: user.id, email: user.email, name: user.name, role: user.role };
+            return user;
           }
         }
         return null;
@@ -51,7 +44,7 @@ export const authOptions: AuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, 
+    maxAge: 24 * 60 * 60,
   },
   pages: {
     signIn: "/auth/signin",
@@ -59,15 +52,24 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.role = user.role;
+        return {
+          ...token,
+          id: user.id,
+          role: user.role,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          avatar: user.avatar,
+        };
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token) {
         session.user.id = token.id;
         session.user.role = token.role;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
+        session.user.avatar = token.avatar;
       }
       return session;
     },

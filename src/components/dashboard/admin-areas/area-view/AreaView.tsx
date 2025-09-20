@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { notFound, useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation' 
 
 import { AreaWithRelationsType, Areatype } from '@/src/lib/schemas/area.schema'
 import { CompetenciaType } from '@/src/lib/schemas/competencia.schema'

@@ -15,7 +15,7 @@ interface Area {
 
 interface SimulacrumAreaProps {
   area: Area;
-}
+} 
 
 export default function SimulacrumArea({ area }: SimulacrumAreaProps) {
   return (

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'; 
 import { Afirmacion, Area, Competencia, ContenidoCurricular, Evidencia } from '@/src/generated/prisma';
 
 // Esquema de validación para la creación/edición de un Área

@@ -20,7 +20,7 @@ async function getAreaById(id: string) {
 }
 
 interface pageProps {
-  params: Promise<{
+  params: Promise<{ 
     areaId: string
   }>
 }

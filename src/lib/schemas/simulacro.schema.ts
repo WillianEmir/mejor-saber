@@ -7,7 +7,7 @@ export const SimulacroPreguntaSchema = z.object({
   correcta: z.boolean()
 })
 
-export type SimulacroPreguntaType = SimulacroPregunta;
+export type SimulacroPreguntaType = SimulacroPregunta; 
 
 export const SimulacroSchema = z.object({
   score: z.number().min(0).max(100),
@@ -17,4 +17,13 @@ export const SimulacroSchema = z.object({
   preguntas: z.array(SimulacroPreguntaSchema)
 })
 
-export type SimulacroType = Omit<Simulacro, 'createdAt'>;
+export type SimulacroType = Simulacro; 
+
+export type SimulacroWithRelationsType = SimulacroType & {
+  competencia: {
+    area: {
+      nombre: string;
+    };
+    nombre: string;
+  };
+}

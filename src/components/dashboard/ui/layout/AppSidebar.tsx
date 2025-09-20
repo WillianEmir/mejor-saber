@@ -37,6 +37,11 @@ const userPath: NavItem[] = [
     path: "/dashboard/user/mi-progreso",
   },
   {
+    icon: <RocketLaunchIcon className="size-5.5" />,
+    name: "Ranking",
+    path: "/dashboard/user/ranking",
+  },
+  {
     icon: <HandRaisedIcon className="size-5.5" />,
     name: "Ejercicios de Práctica",
     path: "/dashboard/user/ejercicios-practica",
@@ -65,7 +70,7 @@ const adminPath: NavItem[] = [
     name: "Admin Usuarios",
     path: '/dashboard/admin/users'
   },
-];
+]; 
 
 const adminSchoolPath: NavItem[] = [
   {
@@ -76,6 +81,14 @@ const adminSchoolPath: NavItem[] = [
     icon: <ChartBarIcon className="size-5.5" />,
     name: "Admin School Usuarios",
     path: '/dashboard/school/adminschool-users'
+  }, {
+    icon: <ChartBarIcon className="size-5.5" />,
+    name: "Reportes",
+    path: '/dashboard/school/reports'
+  }, {
+    icon: <ChartBarIcon className="size-5.5" />,
+    name: "Estudiantes",
+    path: '/dashboard/school/students'
   },
 ];
 

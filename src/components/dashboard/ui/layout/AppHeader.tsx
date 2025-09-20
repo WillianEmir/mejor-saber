@@ -3,7 +3,6 @@
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { ThemeToggleButton } from "../theme/ThemeToggleButton";
-import NotificationDropdown from "../header/NotificationDropdown";
 import UserDropdown from "../header/UserDropdown"; 
 import { useSidebarStore } from "@/src/store/sidebar.store";
 
@@ -81,7 +80,7 @@ const AppHeader: React.FC = () => {
                 />
               </svg>
             )}
-            {/* Cross Icon */}
+            {/* Cross Icon */} 
           </button>
 
           <Link href="/" className="lg:hidden">
@@ -150,10 +149,6 @@ const AppHeader: React.FC = () => {
           <div className="flex items-center gap-2 2xsm:gap-3">
             {/* <!-- Dark Mode Toggler --> */}
             <ThemeToggleButton />
-            {/* <!-- Dark Mode Toggler --> */}
-
-            <NotificationDropdown />
-            {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
           <UserDropdown />
