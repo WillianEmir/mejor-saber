@@ -1,5 +1,5 @@
 import { Simulacro, SimulacroPregunta } from '@/src/generated/prisma';
-import { z } from 'zod';
+import { z } from 'zod'; 
 
 export const SimulacroPreguntaSchema = z.object({
   preguntaId: z.uuid({ error: 'El ID de la pregunta debe ser un UUID válido.' }),
