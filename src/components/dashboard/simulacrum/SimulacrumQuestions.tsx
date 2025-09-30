@@ -49,8 +49,8 @@ const Timer = ({ time, competenciaName, onFinish, isPending }: TimerProps) => {
       </div>
     </div>
   );
-};   
-
+};
+ 
 interface SimulacrumQuestionsProps {
   preguntas: PreguntaWithRelationsType[];
   competencia: CompetenciaType;
@@ -70,28 +70,65 @@ export default function SimulacrumQuestions({ preguntas, competencia }: Simulacr
     return () => clearInterval(timerInterval);
   }, []);
 
-  const groupedQuestions = useMemo(() => {
-    const groups: { [key: string]: { eje: EjeTematico, questions: { index: number }[] } } = {};
-    preguntas.forEach((p, index) => {
-      const eje = p.ejesTematicos[0];
-      if (eje) { 
-        if (!groups[eje.id]) {
-          groups[eje.id] = { eje, questions: [] };
-        }
-        groups[eje.id].questions.push({ index });
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      const unansweredQuestions = preguntas.length - Object.keys(selectedAnswers).length;
+      if (unansweredQuestions > 0) {
+        e.preventDefault();
+        e.returnValue = ''; // Required for Chrome
       }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [preguntas, selectedAnswers]);
+
+  const groupedQuestions = useMemo(() => {
+    const groups: { [key: string]: { group: string, questions: { index: number }[] } } = {};
+    const hasGroupFlags = preguntas.some(p => p.groupFlag);
+
+    if (!hasGroupFlags) {
+      return null; // No grouping
+    }
+
+    preguntas.forEach((p, index) => {
+      const group = p.groupFlag || 'Otras';
+      if (!groups[group]) {
+        groups[group] = { group, questions: [] };
+      }
+      groups[group].questions.push({ index });
     });
-    return Object.values(groups);
+
+    // Sort questions within each group
+    for (const group in groups) {
+      groups[group].questions.sort((a, b) => a.index - b.index);
+    }
+
+    // Sort the groups themselves based on the index of their first question
+    const sortedGroups = Object.values(groups).sort((a, b) => {
+      return a.questions[0].index - b.questions[0].index;
+    });
+
+    return sortedGroups;
   }, [preguntas]);
 
   const currentPregunta = preguntas[currentQuestionIndex];
-  const currentEjeTematico = currentPregunta.ejesTematicos[0];
 
   const handleSelectOption = (preguntaId: string, opcionId: string) => {
     setSelectedAnswers((prev) => ({ ...prev, [preguntaId]: opcionId }));
   };
 
   const handleFinish = () => {
+    const unansweredQuestions = preguntas.length - Object.keys(selectedAnswers).length;
+    if (unansweredQuestions > 0) {
+      if (!window.confirm(`Aún tienes ${unansweredQuestions} preguntas sin responder. ¿Estás seguro de que quieres finalizar el intento?`)) {
+        return;
+      }
+    }
+
     startTransition(async () => {
       const correctAnswers = preguntas.reduce((acc, pregunta) => {
         const selectedOptionId = selectedAnswers[pregunta.id];
@@ -156,6 +193,7 @@ export default function SimulacrumQuestions({ preguntas, competencia }: Simulacr
         onFinish={handleFinish}
         isPending={isPending}
       />
+
       <main className="py-8 md:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
@@ -163,25 +201,54 @@ export default function SimulacrumQuestions({ preguntas, competencia }: Simulacr
               <div className="sticky top-24">
                 <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Preguntas</h2>
                 <div className="space-y-4">
-                  {groupedQuestions.map(({ eje, questions }) => (
-                    <div key={eje.id}>
-                      <h3 className="text-md font-semibold text-gray-600 dark:text-gray-400 mb-2">{eje.nombre}</h3>
-                      <div className="space-y-2">
-                        {questions.map(({ index }) => (
+                  {groupedQuestions ? (
+                    groupedQuestions.map(({ group, questions }) => (
+                      <div key={group}>
+                        {/* <h3 className="text-md font-semibold text-gray-600 dark:text-gray-400 mb-2">{group}</h3> */}
+                        <div className="space-y-2">
+                          {questions.map(({ index }) => {
+                            const isSelected = currentQuestionIndex === index;
+                            const isAnswered = selectedAnswers[preguntas[index].id];
+                            const buttonClass = isSelected
+                              ? 'bg-blue-500 text-white font-semibold'
+                              : isAnswered
+                                ? 'bg-green-100 dark:bg-green-800'
+                                : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700';
+                            return (
+                              <button
+                                key={preguntas[index].id}
+                                onClick={() => setCurrentQuestionIndex(index)}
+                                className={`w-full text-left px-4 py-2 rounded-md transition-colors duration-200 text-sm ${buttonClass}`}
+                              >
+                                Pregunta {index + 1}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="space-y-2">
+                      {preguntas.map((pregunta, index) => {
+                        const isSelected = currentQuestionIndex === index;
+                        const isAnswered = selectedAnswers[pregunta.id];
+                        const buttonClass = isSelected
+                          ? 'bg-blue-500 text-white font-semibold'
+                          : isAnswered
+                            ? 'bg-green-100 dark:bg-green-800'
+                            : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700';
+                        return (
                           <button
-                            key={preguntas[index].id}
+                            key={pregunta.id}
                             onClick={() => setCurrentQuestionIndex(index)}
-                            className={`w-full text-left px-4 py-2 rounded-md transition-colors duration-200 text-sm ${currentQuestionIndex === index
-                                ? 'bg-blue-500 text-white font-semibold'
-                                : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
-                              }`}
+                            className={`w-full text-left px-4 py-2 rounded-md transition-colors duration-200 text-sm ${buttonClass}`}
                           >
                             Pregunta {index + 1}
                           </button>
-                        ))}
-                      </div>
+                        );
+                      })}
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             </aside>
@@ -191,7 +258,7 @@ export default function SimulacrumQuestions({ preguntas, competencia }: Simulacr
                 <div className="prose prose-lg dark:prose-invert max-w-none">
                   <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
                     <BookOpenIcon className="h-5 w-5" />
-                    <span>{currentEjeTematico?.nombre || 'General'}</span>
+                    <span>{currentPregunta.ejesTematicos[0]?.nombre || 'General'}</span>
                   </div>
 
                   {currentPregunta.contexto && (

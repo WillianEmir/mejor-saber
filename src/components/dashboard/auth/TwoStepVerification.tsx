@@ -1,71 +1,113 @@
 "use client";
 
-import Link from "next/link";
-import Button from "../ui/button/Button";
-import ChevronLeftIcon from "@heroicons/react/24/outline/ChevronLeftIcon";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+import { NewPasswordSchema } from "@/src/lib/schemas/auth.schema";
+import { newPassword } from "@/src/lib/actions/auth.actions";
+
+import { Button } from "../../ui/Button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../ui/form";
+import { Input } from "../../ui/input";
+import { FormError } from "./FormError";
+import { FormSuccess } from "./FormSuccess";
 
 export default function TwoStepVerification() {
+  const router = useRouter();
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
+
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
+    defaultValues: {
+      password: "",
+      token: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      newPassword(values).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+
+        if (data?.success) {
+          router.push("/auth/signin");
+        }
+      });
+    });
+  };
+
   return (
-    <>
-      <div className="grid lg:grid-cols-2 max-md:p-3">
-        <div className="flex flex-col items-center justify-center w-full h-screen">
-          <div className="w-full max-w-md sm:pt-10 mx-auto mb-5">
-            <Link
-              href="/"
-              className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-            >
-              <ChevronLeftIcon className="size-6" />
-              Back to home
-            </Link>
-          </div>
-
-          <div className="flex flex-col justify-center flex-1 h-screen w-full max-w-md mx-auto">
-            <div className="mb-5 sm:mb-8">
-              <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-                Verificación de Dos Pasos
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Se ha enviado un código de verificación a tu email. Introdúcelo en el campo de abajo.
-              </p>
-            </div>
-            <div>
-              <form>
-                <div className="space-y-6">
-                  <div>
-                    <label>
-                      Escriba su código de seguridad de 6 dígitos <span className="text-error-500">*</span>{" "}
-                    </label>
-                    <input
-                      placeholder="Código de Seguridad"
-                      type="email"
-                      className="w-full border border-slate-300 rounded-sm p-3"
-                    />
-                  </div>
-
-                  <div>
-                    <Button className="w-full" size="sm">
-                      Verificar mi Cuenta
-                    </Button>
-                  </div>
-                </div>
-              </form>
-
-              <div className="mt-5">
-                <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                  ¿No recibiste el código? {""}
-                  <Link
-                    href="/reset-password"
-                    className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                  >
-                    Reenviar
-                  </Link>
-                </p>
-              </div>
-            </div>
-          </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Verificación de Dos Pasos
+          </h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Se ha enviado un código de verificación a tu email.
+          </p>
         </div>
-        <div className="bg-blue-light-100 w-full hidden lg:block"></div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="token"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Código de Verificación</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="123456"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nueva Contraseña</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="******"
+                      type="password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormError message={error} />
+            <FormSuccess message={success} />
+            <Button type="submit" className="w-full" disabled={isPending}>
+              Confirmar
+            </Button>
+          </form>
+        </Form>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,9 +1,9 @@
-import { z } from 'zod';
+import { z } from 'zod'; 
 import { Afirmacion, Area, Competencia, ContenidoCurricular, Evidencia } from '@/src/generated/prisma';
 
 // Esquema de validación para la creación/edición de un Área
 export const AreaSchema = z.object({
-  id: z.uuid().optional(), // Opcional, solo presente en edición
+  id: z.uuid().optional(), // Opcional, solo presente en edición 
   nombre: z.string({ error: 'El nombre es obligatorio.' }).trim().min(3, { message: 'El nombre debe tener al menos 3 caracteres.' }),
 });
 

@@ -13,7 +13,7 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   afirmacionId: string
-  evidencia: EvidenciaType | null
+  evidencia: EvidenciaType | null 
 }
 
 function SubmitButton({ editMode }: { editMode: boolean }) {

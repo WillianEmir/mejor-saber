@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { MoreVertical, Pencil, Trash2 } from 'lucide-react'
 import { Fragment } from 'react'
 
-interface ItemActionMenuProps {
+interface ItemActionMenuProps { 
   onEdit: () => void
   onDelete: () => void
 }

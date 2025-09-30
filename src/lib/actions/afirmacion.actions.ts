@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from 'next/cache'; 
 import prisma from '../prisma';
 import { AfirmacionSchema, type AfirmacionFormState } from '../schemas/afirmacion.schema';
 
@@ -8,6 +8,7 @@ export async function createOrUpdateAfirmacion(
   prevState: AfirmacionFormState,
   formData: FormData,
 ): Promise<AfirmacionFormState> {
+  
   // 1. Extraer y validar los datos del formulario del lado del servidor
   const validatedFields = AfirmacionSchema.safeParse({
     id: formData.get('id') || undefined,

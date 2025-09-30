@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { notFound, useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation' 
 
 import { AreaWithRelationsType, Areatype } from '@/src/lib/schemas/area.schema'
 import { CompetenciaType } from '@/src/lib/schemas/competencia.schema'
@@ -77,7 +77,7 @@ export default function AreaView({ area }: AreaViewProps) {
         areaName={area.nombre}
         onAddCompetencia={handleAddCompetencia}
         onEditArea={handleEditArea}
-        onDeleteArea={handleDeleteArea}
+        onDeleteArea={handleDeleteArea} 
       />
 
       <main className="px-4 sm:px-6 lg:px-8 py-6">

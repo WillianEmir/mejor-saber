@@ -10,7 +10,7 @@ import { SimulacroSchema } from '../schemas/simulacro.schema';
 type FormState = {
   success: boolean;
   message: string;
-  errors?: Record<string, string[] | undefined>;
+  errors?: Record<string, string[] | undefined>; 
 };
 
 export const createSimulacro = async (

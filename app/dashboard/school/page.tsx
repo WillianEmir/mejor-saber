@@ -1,10 +1,19 @@
-import React from 'react'
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { SchoolDashboard } from "@/src/components/dashboard/school/school-dashboard";
+import { getServerSession } from "next-auth";
 
-export default function SchoolAdminDashboardPage() {
+const SchoolPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if(!session || !session.user || !session.user.schoolId) {
+    return <div>No estás autorizado para ver esta página.</div>;
+  }
+  
   return (
-    <>
-      <h2 className='text-2xl'>Dashboard para Administradores de Colegio</h2>
-      <p>Aquí se mostrará la información relevante para los administradores de colegios.</p>
-    </>
-  )
-}
+    <div>
+      <SchoolDashboard session={session} />
+    </div>
+  );
+};
+
+export default SchoolPage;

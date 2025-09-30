@@ -1,6 +1,6 @@
 'use client'; 
 
-import { Checkbox } from "@headlessui/react"; 
+import { Checkbox } from "@headlessui/react";  
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';

@@ -14,9 +14,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// --------------------
+// --- CORE CONTENT MODELS ---
+// --------------------
+
+model Area {
+  id               String  @id @default(uuid())
+  nombre           String  @unique
+  descripcionCorta String?
+  descripcionLarga String?
+  imagen           String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  contenidosCurriculares ContenidoCurricular[]
+  competencias           Competencia[]
+
+  @@map("areas")
+}
+
 model ContenidoCurricular {
-  id     String @id @default(uuid())
-  nombre String
+  id               String  @id @default(uuid())
+  nombre           String
+  descripcionCorta String?
+  descripcionLarga String?
+  imagen           String?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -26,36 +49,217 @@ model ContenidoCurricular {
 
   ejesTematicos EjeTematico[]
 
+  @@index([areaId])
   @@map("contenidos_curriculares")
 }
 
 model EjeTematico {
-  id     String @id @default(uuid())
-  nombre String
+  id               String  @id @default(uuid())
+  nombre           String
+  descripcionCorta String?
+  descripcionLarga String?
+  imagen           String?
+  preguntaTematica String?
+  relevanciaICFES  String?
+  video            String?
+  orden            Int?
 
   contenidoCurricular   ContenidoCurricular @relation(fields: [contenidoCurricularId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   contenidoCurricularId String              @map("contenido_curricular_id")
 
-  preguntas Pregunta[] @relation("EjeTematicoPreguntas")
+  preguntas            Pregunta[]            @relation("EjeTematicoPreguntas")
+  objetivosAprendizaje ObjetivoAprendizaje[]
+  secciones            Seccion[]
 
   @@unique([contenidoCurricularId, nombre])
   @@index([contenidoCurricularId])
   @@map("ejes_tematicos")
 }
 
-model OpcionPregunta {
-  id                String  @id @default(uuid())
-  respuesta         String
-  correcta          Boolean
-  retroalimentacion String?
+model Seccion {
+  id          String      @id @default(uuid())
+  nombre      String
+  descripcion String?
+  tipo        TipoSeccion
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
 
-  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
-  preguntaId String   @map("pregunta_id")
+  ejeTematico   EjeTematico @relation(fields: [ejeTematicoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ejeTematicoId String      @map("eje_tematico_id")
 
-  SimulacroPregunta SimulacroPregunta[]
+  subTemas    SubTema[]
+  actividades ActividadInteractiva[]
+  progresos   ProgresoSeccion[]
 
-  @@index([preguntaId])
-  @@map("opciones_pregunta")
+  @@index([ejeTematicoId])
+  @@map("secciones")
+}
+
+model SubTema {
+  id          String  @id @default(uuid())
+  nombre      String
+  descripcion String
+  imagen      String?
+  video       String?
+  ejemplo     String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  seccion   Seccion @relation(fields: [seccionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  seccionId String  @map("seccion_id")
+
+  progresos ProgresoSubTema[]
+
+  @@index([seccionId])
+  @@map("sub_temas")
+}
+
+model ActividadInteractiva {
+  id                String                   @id @default(uuid())
+  nombre            String
+  tipo              TipoActividadInteractiva
+  match             String
+  retroalimentacion String
+  imagen            String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  seccion   Seccion @relation(fields: [seccionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  seccionId String  @map("seccion_id")
+
+  progresos ProgresoActividad[]
+
+  @@index([seccionId])
+  @@map("actividades_interactivas")
+}
+
+model ObjetivoAprendizaje {
+  id          String @id @default(uuid())
+  descripcion String
+
+  ejeTematico   EjeTematico @relation(fields: [ejeTematicoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ejeTematicoId String      @map("eje_tematico_id")
+
+  @@index([ejeTematicoId])
+  @@map("objetivos_aprendizaje")
+}
+
+// --------------------
+// --- USER PROGRESS MODELS ---
+// --------------------
+
+model ProgresoSeccion {
+  id         String  @id @default(uuid())
+  avance     Float   @default(0)
+  completada Boolean
+
+  usuario   User   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId String @map("usuario_id")
+
+  seccion   Seccion @relation(fields: [seccionId], references: [id], onDelete: Cascade)
+  seccionId String  @map("seccion_id")
+
+  @@unique([usuarioId, seccionId])
+  @@index([usuarioId])
+  @@index([seccionId])
+  @@map("progresos_seccion")
+}
+
+model ProgresoSubTema {
+  id         String  @id @default(uuid())
+  completado Boolean
+
+  usuario   User   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId String @map("usuario_id")
+
+  subTema   SubTema @relation(fields: [subTemaId], references: [id], onDelete: Cascade)
+  subTemaId String  @map("sub_tema_id")
+
+  @@unique([usuarioId, subTemaId])
+  @@index([usuarioId])
+  @@index([subTemaId])
+  @@map("progresos_sub_tema")
+}
+
+model ProgresoActividad {
+  id         String  @id @default(uuid())
+  completado Boolean
+  intentos   Int
+
+  usuario   User   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId String @map("usuario_id")
+
+  actividad   ActividadInteractiva @relation(fields: [actividadId], references: [id], onDelete: Cascade)
+  actividadId String               @map("actividad_id")
+
+  @@unique([usuarioId, actividadId])
+  @@index([usuarioId])
+  @@index([actividadId])
+  @@map("progresos_actividad")
+}
+
+// --------------------
+// --- ASSESSMENT & EXAM MODELS ---
+// --------------------
+
+model Competencia {
+  id               String  @id @default(uuid())
+  nombre           String
+  descripcionCorta String?
+  descripcionLarga String?
+  imagen           String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  area         Area         @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  areaId       String       @map("area_id")
+  afirmaciones Afirmacion[]
+  simulacros   Simulacro[]
+
+  @@unique([areaId, nombre])
+  @@index([areaId])
+  @@map("competencias")
+}
+
+model Afirmacion {
+  id               String  @id @default(uuid())
+  nombre           String
+  descripcionCorta String?
+  descripcionLarga String?
+  imagen           String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  competenciaId String      @map("competencia_id")
+  evidencias    Evidencia[]
+
+  @@unique([competenciaId, nombre])
+  @@index([competenciaId])
+  @@map("afirmaciones")
+}
+
+model Evidencia {
+  id               String  @id @default(uuid())
+  nombre           String
+  descripcionCorta String?
+  descripcionLarga String?
+  imagen           String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  afirmacion   Afirmacion @relation(fields: [afirmacionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  afirmacionId String     @map("afirmacion_id")
+  preguntas    Pregunta[]
+
+  @@unique([afirmacionId, nombre])
+  @@index([afirmacionId])
+  @@map("evidencias")
 }
 
 model Pregunta {
@@ -68,9 +272,9 @@ model Pregunta {
   evidencia   Evidencia @relation(fields: [evidenciaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   evidenciaId String    @map("evidencia_id")
 
-  ejesTematicos     EjeTematico[]       @relation("EjeTematicoPreguntas")
-  opciones          OpcionPregunta[]
-  SimulacroPregunta SimulacroPregunta[]
+  ejesTematicos      EjeTematico[]       @relation("EjeTematicoPreguntas")
+  opciones           OpcionPregunta[]
+  simulacroPreguntas SimulacroPregunta[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -79,102 +283,134 @@ model Pregunta {
   @@map("preguntas")
 }
 
-model Area {
-  id     String @id @default(uuid())
-  nombre String @unique
+model OpcionPregunta {
+  id                String  @id @default(uuid())
+  respuesta         String
+  correcta          Boolean
+  retroalimentacion String?
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Cascade)
+  preguntaId String   @map("pregunta_id")
 
-  contenidosCurriculares ContenidoCurricular[]
-  competencias           Competencia[]
+  respuestasSimulacro SimulacroPregunta[]
 
-  @@map("areas")
+  @@index([preguntaId])
+  @@map("opciones_pregunta")
 }
 
-model Competencia {
-  id     String @id @default(uuid())
-  nombre String
+model Simulacro {
+  id              String              @id @default(uuid())
+  score           Float?
+  duracionMinutos Int?
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String              @map("user_id")
+  competencia     Competencia         @relation(fields: [competenciaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  competenciaId   String              @map("competencia_id")
+  preguntas       SimulacroPregunta[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  area         Area         @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  afirmaciones Afirmacion[]
-  Simulacro    Simulacro[]
-  areaId       String       @map("area_id")
-
-  @@unique([areaId, nombre])
-  @@index([areaId])
-  @@map("competencias")
-}
-
-model Afirmacion {
-  id     String @id @default(uuid())
-  nombre String
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  evidencias    Evidencia[]
-  competenciaId String      @map("competencia_id")
-
-  @@unique([competenciaId, nombre])
+  @@index([userId])
   @@index([competenciaId])
-  @@map("afirmaciones")
+  @@map("simulacros")
 }
 
-model Evidencia {
-  id     String @id @default(uuid())
-  nombre String
+model SimulacroPregunta {
+  id                   String          @id @default(uuid())
+  correcta             Boolean?
+  simulacro            Simulacro       @relation(fields: [simulacroId], references: [id], onDelete: Cascade)
+  simulacroId          String          @map("simulacro_id")
+  pregunta             Pregunta        @relation(fields: [preguntaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  preguntaId           String          @map("pregunta_id")
+  opcionSeleccionada   OpcionPregunta? @relation(fields: [opcionSeleccionadaId], references: [id], onDelete: SetNull)
+  opcionSeleccionadaId String?         @map("opcion_seleccionada_id")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  afirmacion   Afirmacion @relation(fields: [afirmacionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  afirmacionId String     @map("afirmacion_id")
-
-  preguntas Pregunta[]
-
-  @@unique([afirmacionId, nombre])
-  @@index([afirmacionId])
-  @@map("evidencias")
+  @@unique([simulacroId, preguntaId])
+  @@index([simulacroId])
+  @@index([preguntaId])
+  @@index([opcionSeleccionadaId])
+  @@map("simulacro_preguntas")
 }
 
-enum Role {
-  ADMIN
-  ADMINSCHOOL
-  USER
-}
+// --------------------
+// --- USER & AUTH MODELS ---
+// --------------------
 
 model User {
-  id             String    @id @default(uuid())
-  idDocument     String?
-  email          String    @unique
-  password       String
-  firstName      String
-  lastName       String?
-  address        String?
-  department     String?
-  city           String?
-  isActive       Boolean   @default(false) @map("is_active")
-  avatar         String?
-  phone          String?
-  degree         String?
-  activationDate DateTime? @map("activation_date")
+  id                    String                 @id @default(uuid())
+  idDocument            String?
+  email                 String                 @unique
+  password              String
+  firstName             String
+  lastName              String?
+  address               String?
+  department            String?
+  city                  String?
+  isActive              Boolean                @default(false) @map("is_active")
+  avatar                String?
+  phone                 String?
+  degree                String?
+  activationDate        DateTime?              @map("activation_date")
+  role                  Role                   @default(USER)
+  twoFactorConfirmation TwoFactorConfirmation?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  role      Role     @default(USER)
 
   school   School? @relation(fields: [schoolId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   schoolId String? @map("school_id")
 
-  simulacros       Simulacro[]
-  UserSubscription UserSubscription[]
+  schoolSede   SchoolSede? @relation(fields: [schoolSedeId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  schoolSedeId String?     @map("school_sede_id")
 
+  simulacros         Simulacro[]
+  subscriptions      UserSubscription[]
+  progresosSeccion   ProgresoSeccion[]
+  progresosSubTema   ProgresoSubTema[]
+  progresosActividad ProgresoActividad[]
+
+  @@index([schoolId])
+  @@index([schoolSedeId])
   @@map("users")
+}
+
+model VerificationToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("verification_tokens")
+}
+
+model PasswordResetToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("password_reset_tokens")
+}
+
+model TwoFactorToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("two_factor_tokens")
+}
+
+model TwoFactorConfirmation {
+  id String @id @default(uuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("two_factor_confirmations")
 }
 
 model School {
@@ -187,7 +423,6 @@ model School {
   city       String?
 
   users User[]
-
   sedes SchoolSede[]
 
   @@map("schools")
@@ -201,62 +436,15 @@ model SchoolSede {
   school   School @relation(fields: [schoolId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   schoolId String @map("school_id")
 
+  users User[]
+
+  @@index([schoolId])
   @@map("school_sedes")
 }
 
-model Simulacro {
-  id String @id @default(uuid())
-
-  score           Float? // The score of the simulacro
-  duracionMinutos Int? // The duration of the simulacro in minutes
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @map("user_id")
-
-  competencia   Competencia @relation(fields: [competenciaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  competenciaId String      @map("competencia_id")
-
-  preguntas SimulacroPregunta[]
-
-  @@index([userId])
-  @@index([competenciaId])
-  @@map("simulacros")
-}
-
-model SimulacroPregunta {
-  id String @id @default(uuid())
-
-  simulacro   Simulacro @relation(fields: [simulacroId], references: [id], onDelete: Cascade)
-  simulacroId String    @map("simulacro_id")
-
-  pregunta   Pregunta @relation(fields: [preguntaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  preguntaId String   @map("pregunta_id")
-
-  opcionSeleccionada   OpcionPregunta? @relation(fields: [opcionSeleccionadaId], references: [id], onDelete: SetNull)
-  opcionSeleccionadaId String?         @map("opcion_seleccionada_id")
-
-  correcta Boolean? // Was the selected answer correct?
-
-  @@unique([simulacroId, preguntaId])
-  @@index([simulacroId])
-  @@index([preguntaId])
-  @@index([opcionSeleccionadaId])
-  @@map("simulacro_preguntas")
-}
-
-enum PlanName {
-  FREE
-  PREMIUM
-}
-
-enum SubscriptionStatus {
-  ACTIVE
-  CANCELED
-  EXPIRED
-}
+// --------------------
+// --- BILLING MODELS ---
+// --------------------
 
 model Plan {
   id             String   @id @default(uuid())
@@ -271,41 +459,69 @@ model Plan {
 }
 
 model UserSubscription {
-  id String @id @default(uuid())
-
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  planId String @map("plan_id")
-  plan   Plan   @relation(fields: [planId], references: [id], onDelete: Restrict)
-
-  startDate DateTime @map("start_date")
-  endDate   DateTime @map("end_date")
-
-  status SubscriptionStatus
-
-  payments Payment[]
+  id        String             @id @default(uuid())
+  startDate DateTime           @map("start_date")
+  endDate   DateTime           @map("end_date")
+  status    SubscriptionStatus
+  userId    String             @map("user_id")
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId    String             @map("plan_id")
+  plan      Plan               @relation(fields: [planId], references: [id], onDelete: Restrict)
+  payments  Payment[]
 
   @@index([userId])
   @@index([planId])
   @@map("user_subscriptions")
 }
 
+model Payment {
+  id                 String           @id @default(uuid())
+  amount             Float
+  status             PaymentStatus
+  paymentGatewayId   String?          @map("payment_gateway_id")
+  createdAt          DateTime         @default(now()) @map("created_at")
+  userSubscriptionId String           @map("user_subscription_id")
+  userSubscription   UserSubscription @relation(fields: [userSubscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([userSubscriptionId])
+  @@map("payments")
+}
+
+// --------------------
+// --- ENUMS ---
+// --------------------
+
+enum TipoSeccion {
+  TEORIA
+  INTERACTIVA
+}
+
+enum TipoActividadInteractiva {
+  RELACIONAR
+  IDENTIFICAR
+  GRAFICO
+}
+
+enum Role {
+  ADMIN
+  ADMINSCHOOL
+  USER
+  DOCENTE
+}
+
+enum PlanName {
+  FREE
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+}
+
 enum PaymentStatus {
   PENDING
   COMPLETED
   FAILED
-}
-
-model Payment {
-  id                 String           @id @default(uuid())
-  userSubscriptionId String           @map("user_subscription_id")
-  userSubscription   UserSubscription @relation(fields: [userSubscriptionId], references: [id], onDelete: Cascade)
-  amount             Float
-  status             PaymentStatus
-  paymentGatewayId   String?          @map("payment_gateway_id") // ID de la transacción en la pasarela de pago
-  createdAt          DateTime         @default(now()) @map("created_at")
-
-  @@index([userSubscriptionId])
-  @@map("payments")
 }

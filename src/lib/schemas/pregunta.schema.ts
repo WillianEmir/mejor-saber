@@ -27,7 +27,7 @@ export const PreguntaSchema = z.object({
 export type PreguntaType = Omit<Pregunta, 'createdAt' | 'updatedAt'>;
 
 // Type para las preguntas con sus relaciones
-export type PreguntaWithRelationsType = PreguntaType & {
+export type PreguntaWithRelationsType = PreguntaType & { 
   opciones: (
     OpcionPregunta
   )[],

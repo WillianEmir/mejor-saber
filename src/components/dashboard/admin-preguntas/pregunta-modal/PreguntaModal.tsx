@@ -290,7 +290,7 @@ export default function PreguntaModal({ areas, pregunta, isViewMode, contenidosC
                                 </div>
                               ) : (
                                 <CldUploadWidget
-                                  uploadPreset="app-saber-ya"
+                                  uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
                                   onSuccess={(result: any) => {
                                     if (!isViewMode) {
                                       setImageUrl(result.info.secure_url);
@@ -372,7 +372,7 @@ export default function PreguntaModal({ areas, pregunta, isViewMode, contenidosC
                                       ) : (
                                         <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 dark:border-gray-600 px-6 py-10">
                                           <CldUploadWidget
-                                            uploadPreset="app-saber-ya"
+                                            uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET} 
                                             onSuccess={(result: any) => {
                                               if (!isViewMode) {
                                                 setOpcionImageUrls(prev => ({ ...prev, [key]: result.info.secure_url }));
