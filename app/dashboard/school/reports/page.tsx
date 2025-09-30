@@ -1,17 +1,25 @@
-import React from 'react';
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { ReportsDashboard } from "@/src/components/dashboard/school/reports/reports-dashboard";
+import { getSimulacroResults, getStudentProgress } from "@/src/lib/actions/reports.actions";
+import { getServerSession } from "next-auth";
 
-export default function SchoolReportsPage() {
+const SchoolReportsPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user || !session.user.schoolId) {
+    return <div>No estás autorizado para ver esta página.</div>;
+  }
+
+  const schoolId = session.user.schoolId;
+  const simulacroResults = await getSimulacroResults(schoolId);
+  const studentProgress = await getStudentProgress(schoolId);
+
   return (
-    <div className="p-4 md:p-8">
-      <h2 className="text-3xl font-bold tracking-tight text-gray-800 dark:text-white">
-        Reportes de Rendimiento
-      </h2>
-      <p className="text-gray-600 dark:text-gray-400 mt-2">
-        Aquí podrás generar y visualizar reportes detallados del rendimiento de tu colegio.
-      </p>
-      <div className="mt-8 p-12 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center">
-        <p className="text-gray-500">Página de reportes en construcción.</p>
-      </div>
-    </div>
+    <ReportsDashboard
+      simulacroResults={simulacroResults}
+      studentProgress={studentProgress}
+    />
   );
-}
+};
+
+export default SchoolReportsPage;

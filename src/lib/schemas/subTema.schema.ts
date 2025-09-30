@@ -7,13 +7,13 @@ import { ProgresoSubTema, SubTema } from '@/src/generated/prisma';
 
 // Schema para la validación de los subtemas
 export const SubTemaSchema = z.object({
-  id: z.string().optional(),
+  id: z.string().uuid().optional(),
   nombre: z.string().min(1, 'El nombre no puede estar vacío.'),
   descripcion: z.string().min(1, 'La descripción no puede estar vacía.'),
   imagen: z.string().optional().nullable(),
   video: z.string().optional().nullable(),
   ejemplo: z.string().optional().nullable(),
-  seccionId: z.uuid({message: 'El ID de contenido curricular debe ser un UUID válido.'})
+  seccionId: z.string().uuid({message: 'El ID de la sección debe ser un UUID válido.'})
 })
 
 // Type para los subtemas
@@ -35,8 +35,8 @@ export type SubTemaFormState = {
 export const ProgresoSubTemaSchema = z.object({
   id: z.string().optional(),
   completado: z.boolean(),
-  usuarioId: z.uuid({message: 'El ID del usuario debe ser un UUID válido.'}),
-  subTemaId: z.uuid({message: 'El ID del subtema debe ser un UUID válido.'})
+  usuarioId: z.string().uuid({message: 'El ID del usuario debe ser un UUID válido.'}),
+  subTemaId: z.string().uuid({message: 'El ID del subtema debe ser un UUID válido.'})
 })
 
 // Type para el Progreso de un subtema

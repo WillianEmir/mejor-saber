@@ -10,7 +10,7 @@ interface AreaViewHeaderProps {
   onDeleteArea: () => void
 }
 
-export default function AreaViewHeader({
+export default function AreaViewHeader({ 
   areaName,
   onAddCompetencia,
   onEditArea,

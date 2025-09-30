@@ -1,4 +1,4 @@
-'use client';
+'use client'; 
 
 import { Fragment, useEffect } from 'react';
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';

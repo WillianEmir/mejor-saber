@@ -1,38 +1,59 @@
 'use server';
 
 import prisma from '@/src/lib/prisma';
+import { SchoolType, SchoolWithSedesType } from '../schemas/school.schema';
 
-// This is a placeholder for the actual data fetching logic for the school dashboard.
-// Implementing the full queries can be complex and is left for a future step.
+// ----- *********** ----- //
+// ----- SCHOOL SEDE ----- //
+// ----- *********** ----- //
 
-export async function getSchoolDashboardData(schoolId: string) {
-  console.log(`Fetching data for school: ${schoolId}`);
-  
-  // In a real implementation, you would perform queries like:
-  // const studentCount = await prisma.user.count({ where: { schoolId } });
-  // const simulacros = await prisma.simulacro.findMany({ where: { user: { schoolId } } });
-  // ... and so on.
+// Función para obtener todas las school sedes de una school específica
+export async function getSchoolSedesBySchoolId(id: string) : Promise<SchoolWithSedesType | null> {
+  try {
+    const schoolSedes = await prisma.school.findUnique({
+      where: { id },
+      include: { sedes: true }
+    });
 
-  // Returning mock data for now.
-  return {
-    schoolName: "Colegio Ejemplo",
-    stats: {
-      studentCount: 125,
-      averageScore: 72.5,
-      simulacrosCount: 540,
-      participationRate: 85,
-    },
-    performanceByCompetencia: [
-      { name: 'Matemáticas', avg: 68 },
-      { name: 'L. Crítica', avg: 82 },
-      { name: 'Sociales', avg: 75 },
-      { name: 'C. Naturales', avg: 65 },
-      { name: 'Inglés', avg: 78 },
-    ],
-    topStudents: [
-      { name: 'Ana Sofía Rojas', score: 92.1 },
-      { name: 'Carlos David Gómez', score: 89.5 },
-      { name: 'Valentina Torres', score: 88.0 },
-    ],
-  };
+    if (!schoolSedes) return null;
+
+    return schoolSedes;
+
+  } catch (error) {
+    throw new Error('No se pudieron obtener las sedes de la escuela.')  
+  }
+}
+
+// ----- ****** ----- //
+// ----- SCHOOL ----- //
+// ----- ****** ----- //
+
+// Función para obtener todas las schools
+export async function getSchools() : Promise<SchoolWithSedesType[] | null> {
+  try {
+    const schools = await prisma.school.findMany({ include: { sedes: true } });
+
+    if (!schools) return null;
+
+    return schools;
+
+  } catch (error) {
+    throw new Error('No se pudieron obtener los subtemas.')  
+  }
+}
+
+// Función para obtener una school por su ID
+export async function getSchoolById(id: string) : Promise<SchoolType | null> {
+  try {
+    const school = await prisma.school.findUnique({
+      where: { id }
+    });
+
+    if (!school) return null;
+
+    return school;
+
+  } catch (error) {
+    throw new Error('No se pudo obtener la escuela.')  
+  }
 }

@@ -12,7 +12,6 @@ import { EjeTematicoType } from '../schemas/ejeTematico.schema';
 export async function createOrUpdateActividadInteractiva(
   prevState: ActividadInteractivaFormState,
   formData: FormData,
-  ejeTematicoId: EjeTematicoType['id']
 ): Promise<ActividadInteractivaFormState> {
 
   // 1. Extraer y validar los datos del formulario del lado del servidor
@@ -37,23 +36,28 @@ export async function createOrUpdateActividadInteractiva(
       await prisma.actividadInteractiva.create({
         data: actividadData,
       });
-    } 
+    }
   } catch (e) {
     return {
       message: 'Error de base de datos: No se pudo procesar la solicitud.'
     };
   }
 
-  revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`); 
+  const ejeTematicoId = formData.get('ejeTematicoId') as string;
+  if (!ejeTematicoId) {
+    return { message: 'Error: El ID del eje temático es requerido.' };
+  }
+
+  revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
   return { message: id ? 'Actividad actualizada exitosamente.' : 'Actividad creada exitosamente.' };
 }
 
 export async function deleteActividadInteractiva(id: string, ejeTematicoId: EjeTematicoType['id']): Promise<{ message: string } | void> {
   try {
     await prisma.actividadInteractiva.delete({ where: { id } });
-    revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`); 
-    return {message: 'Actividad eliminada exitosamente.'}
-  } catch (e) { 
+    revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
+    return { message: 'Actividad eliminada exitosamente.' }
+  } catch (e) {
     return { message: 'Error de base de datos: No se pudo eliminar la actividad.' };
   }
 }
@@ -90,23 +94,23 @@ export async function createOrUpdateProgresoActividad(
       await prisma.progresoActividad.create({
         data: progresoData,
       });
-    } 
+    }
   } catch (e) {
     return {
       message: 'Error de base de datos: No se pudo procesar la solicitud.'
     };
   }
 
-  revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`); 
+  revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
   return { message: id ? 'Progreso de la Actividad actualizado exitosamente.' : 'Progreso de la Actividad  creado exitosamente.' };
 }
 
 export async function deleteProgresoActividad(id: string, ejeTematicoId: EjeTematicoType['id']): Promise<{ message: string } | void> {
   try {
     await prisma.progresoActividad.delete({ where: { id } });
-    revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`); 
-    return {message: 'Progreso de la Actividad eliminado exitosamente.'}
-  } catch (e) { 
+    revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
+    return { message: 'Progreso de la Actividad eliminado exitosamente.' }
+  } catch (e) {
     return { message: 'Error de base de datos: No se pudo eliminar la actividad.' };
   }
 }

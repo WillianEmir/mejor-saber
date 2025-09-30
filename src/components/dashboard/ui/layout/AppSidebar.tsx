@@ -41,11 +41,6 @@ const userPath: NavItem[] = [
     name: "Ranking",
     path: "/dashboard/user/ranking",
   },
-  {
-    icon: <HandRaisedIcon className="size-5.5" />,
-    name: "Ejercicios de Práctica",
-    path: "/dashboard/user/ejercicios-practica",
-  },
 ];
 
 const adminPath: NavItem[] = [
@@ -69,18 +64,22 @@ const adminPath: NavItem[] = [
     icon: <ChartBarIcon className="size-5.5" />,
     name: "Admin Usuarios",
     path: '/dashboard/admin/users'
+  }, {
+    icon: <ChartBarIcon className="size-5.5" />,
+    name: "Admin Schools",
+    path: '/dashboard/admin/schools'
   },
 ]; 
 
-const adminSchoolPath: NavItem[] = [
+const schoolPath: NavItem[] = [
   {
     icon: <ChartBarIcon className="size-5.5" />,
-    name: "Dashboard Admin School",
+    name: "Dashboard School",
     path: '/dashboard/school'
   }, {
     icon: <ChartBarIcon className="size-5.5" />,
-    name: "Admin School Usuarios",
-    path: '/dashboard/school/adminschool-users'
+    name: "School Usuarios",
+    path: '/dashboard/school/school-users'
   }, {
     icon: <ChartBarIcon className="size-5.5" />,
     name: "Reportes",
@@ -142,7 +141,7 @@ const AppSidebar: React.FC = () => {
           <SidebarMenu navItems={adminPath} title="Admin" />
         </nav>
         <nav className="mb-6">
-          <SidebarMenu navItems={adminSchoolPath} title="Admin School" />
+          <SidebarMenu navItems={schoolPath} title="School" />
         </nav>
       </div>
 

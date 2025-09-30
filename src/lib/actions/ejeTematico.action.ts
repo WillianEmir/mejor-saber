@@ -77,6 +77,9 @@ export async function createOrUpdateSeccion(
   // 1. Extraer y validar los datos del formulario del lado del servidor
   const validatedFields = SeccionSchema.safeParse(Object.fromEntries(formData.entries()));
 
+  console.log(Object.fromEntries(formData.entries()));
+  
+
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
@@ -111,7 +114,7 @@ export async function createOrUpdateSeccion(
     };
   }
 
-  revalidatePath(`/dashboard/admin/contenidos-curriculares${seccionData.ejeTematicoId}`);
+  revalidatePath(`/dashboard/admin/contenidos-curriculares/${seccionData.ejeTematicoId}`);
   return { message: id ? 'Sección actualizada exitosamente.' : 'Sección creada exitosamente.' };
 }
 
@@ -129,69 +132,69 @@ export async function deleteSeccion(id: SeccionType['id'], ejeTematicoId: EjeTem
 // ----- PROGRESO SECCION ----- //
 // ----- **************** ----- //
 
-export async function createOrUpdateProgresoSeccion(
-  prevState: ProgresoSeccionFormState,
-  formData: FormData,
-  ejeTematicoId: EjeTematicoType['id'],
-  seccionData: SeccionType
-): Promise<ProgresoSeccionFormState> {
+// export async function createOrUpdateProgresoSeccion(
+//   prevState: ProgresoSeccionFormState,
+//   formData: FormData,
+//   ejeTematicoId: EjeTematicoType['id'],
+//   seccionData: SeccionType
+// ): Promise<ProgresoSeccionFormState> {
 
-  // 1. Extraer y validar los datos del formulario del lado del servidor
-  const validatedFields = ProgresoSeccionSchema.safeParse(Object.fromEntries(formData.entries()));
+//   // 1. Extraer y validar los datos del formulario del lado del servidor
+//   const validatedFields = ProgresoSeccionSchema.safeParse(Object.fromEntries(formData.entries()));
 
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Error de validación. Por favor, corrija los campos.',
-    };
-  }
+//   if (!validatedFields.success) {
+//     return {
+//       errors: validatedFields.error.flatten().fieldErrors,
+//       message: 'Error de validación. Por favor, corrija los campos.',
+//     };
+//   }
 
-  const { id, ...progresoData } = validatedFields.data;
+//   const { id, ...progresoData } = validatedFields.data;
 
-  try {
-    if (id) {
-      await prisma.progresoSeccion.update({
-        where: { id },
-        data: progresoData,
-      });
-    } else {
-      await prisma.progresoSeccion.create({
-        data: progresoData,
-      });
-    }
-  } catch (e) {
-    if (e instanceof Error && e.message.includes('Unique constraint failed')) {
-      return {
-        errors: {
-          nombre: ['Ya existe un Progreso de Sección con este nombre en este contenido curricular.'],
-        },
-        message: 'Error: El nombre ya está en uso.',
-      };
-    }
-    return {
-      message: 'Error de base de datos: No se pudo procesar la solicitud.'
-    };
-  }
+//   try {
+//     if (id) {
+//       await prisma.progresoSeccion.update({
+//         where: { id },
+//         data: progresoData,
+//       });
+//     } else {
+//       await prisma.progresoSeccion.create({
+//         data: progresoData,
+//       });
+//     }
+//   } catch (e) {
+//     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
+//       return {
+//         errors: {
+//           nombre: ['Ya existe un Progreso de Sección con este nombre en este contenido curricular.'],
+//         },
+//         message: 'Error: El nombre ya está en uso.',
+//       };
+//     }
+//     return {
+//       message: 'Error de base de datos: No se pudo procesar la solicitud.'
+//     };
+//   }
 
-  revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
-  return { message: id ? 'Progreso de Sección actualizado exitosamente.' : 'Progreso de Sección creado exitosamente.' };
-}
+//   revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
+//   return { message: id ? 'Progreso de Sección actualizado exitosamente.' : 'Progreso de Sección creado exitosamente.' };
+// }
 
-export async function deleteProgresoSeccion(id: SeccionType['id'], ejeTematicoId: EjeTematicoType['id'], userId: UserType['id']): Promise<{ message: string } | void> {
-  try {
-    await prisma.progresoSeccion.delete(
-      {
-        where: {
-          usuarioId_seccionId: {
-            usuarioId: userId,
-            seccionId: id
-          }
-        }
-      }
-    );
-    revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`)
-    return { message: 'Progreso de Sección eliminado exitosamente.' }
-  } catch (e) {
-    return { message: 'Error de base de datos: No se pudo eliminar el progreso de la sección.' };
-  }
-}
+// export async function deleteProgresoSeccion(id: SeccionType['id'], ejeTematicoId: EjeTematicoType['id'], userId: UserType['id']): Promise<{ message: string } | void> {
+//   try {
+//     await prisma.progresoSeccion.delete(
+//       {
+//         where: {
+//           usuarioId_seccionId: {
+//             usuarioId: userId,
+//             seccionId: id
+//           }
+//         }
+//       }
+//     );
+//     revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`)
+//     return { message: 'Progreso de Sección eliminado exitosamente.' }
+//   } catch (e) {
+//     return { message: 'Error de base de datos: No se pudo eliminar el progreso de la sección.' };
+//   }
+// }

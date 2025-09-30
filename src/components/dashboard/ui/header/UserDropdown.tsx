@@ -1,8 +1,8 @@
-'use client';
+'use client'; 
 
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
-import { LogOut, UserCircle } from 'lucide-react';
+import { KeyRound, LogOut, UserCircle } from 'lucide-react';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ function getInitials(firstName?: string, lastName?: string | null) {
   return `${firstInitial}${lastInitial}`.toUpperCase();
 }
 
-export default function UserDropdown() {
+export default function UserDropdown() { 
   const { data: session } = useSession();
 
   async function handleSignOut() {

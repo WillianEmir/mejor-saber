@@ -80,7 +80,6 @@ model Seccion {
   id          String      @id @default(uuid())
   nombre      String
   descripcion String?
-  orden       Int?
   tipo        TipoSeccion
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @updatedAt @map("updated_at")
@@ -97,15 +96,15 @@ model Seccion {
 }
 
 model SubTema {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   nombre      String
   descripcion String
   imagen      String?
   video       String?
   ejemplo     String?
 
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   seccion   Seccion @relation(fields: [seccionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   seccionId String  @map("seccion_id")
@@ -124,8 +123,8 @@ model ActividadInteractiva {
   retroalimentacion String
   imagen            String?
 
-  createdAt         DateTime                 @default(now()) @map("created_at")
-  updatedAt         DateTime                 @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   seccion   Seccion @relation(fields: [seccionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   seccionId String  @map("seccion_id")
@@ -170,7 +169,7 @@ model ProgresoSeccion {
 
 model ProgresoSubTema {
   id         String  @id @default(uuid())
-  completado Boolean 
+  completado Boolean
 
   usuario   User   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   usuarioId String @map("usuario_id")
@@ -189,8 +188,8 @@ model ProgresoActividad {
   completado Boolean
   intentos   Int
 
-  usuario     User                 @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-  usuarioId   String               @map("usuario_id")
+  usuario   User   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId String @map("usuario_id")
 
   actividad   ActividadInteractiva @relation(fields: [actividadId], references: [id], onDelete: Cascade)
   actividadId String               @map("actividad_id")
@@ -338,26 +337,29 @@ model SimulacroPregunta {
 // --------------------
 
 model User {
-  id             String    @id @default(uuid())
-  idDocument     String?
-  email          String    @unique
-  password       String
-  firstName      String
-  lastName       String?
-  address        String?
-  department     String?
-  city           String?
-  isActive       Boolean   @default(false) @map("is_active")
-  avatar         String?
-  phone          String?
-  degree         String?
-  activationDate DateTime? @map("activation_date")
-  role           Role      @default(USER)
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  id                    String                 @id @default(uuid())
+  idDocument            String?
+  email                 String                 @unique
+  password              String
+  firstName             String
+  lastName              String?
+  address               String?
+  department            String?
+  city                  String?
+  isActive              Boolean                @default(false) @map("is_active")
+  avatar                String?
+  phone                 String?
+  degree                String?
+  activationDate        DateTime?              @map("activation_date")
+  role                  Role                   @default(USER)
+  twoFactorConfirmation TwoFactorConfirmation?
 
-  school       School?     @relation(fields: [schoolId], references: [id], onDelete: SetNull, onUpdate: Cascade)
-  schoolId     String?     @map("school_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  school   School? @relation(fields: [schoolId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  schoolId String? @map("school_id")
+
   schoolSede   SchoolSede? @relation(fields: [schoolSedeId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   schoolSedeId String?     @map("school_sede_id")
 
@@ -370,6 +372,45 @@ model User {
   @@index([schoolId])
   @@index([schoolSedeId])
   @@map("users")
+}
+
+model VerificationToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("verification_tokens")
+}
+
+model PasswordResetToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("password_reset_tokens")
+}
+
+model TwoFactorToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("two_factor_tokens")
+}
+
+model TwoFactorConfirmation {
+  id String @id @default(uuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("two_factor_confirmations")
 }
 
 model School {

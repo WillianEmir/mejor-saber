@@ -1,35 +1,25 @@
+import { EjeTematicoView } from "../../../../../src/components/dashboard/user-contenidos/eje-tematico-view";
+import { getEjeTematicodwithRelations } from "@/src/lib/data/ejeTematico.data";
 
-import { getEjeTematicoWithPreguntas } from '@/src/lib/data/study-material.data';
-import EjeTematicoViewer from '@/src/components/dashboard/user/study-material/EjeTematicoViewer';
-import { notFound } from 'next/navigation';
-
-interface PageProps {
-  params: {
+interface Props {
+  params: Promise<{
     ejeTematicoId: string;
-  };
+  }>;
 }
+export default async function EjeTematicoPage({ params }: Props) {
 
-export default async function EjeTematicoPage({ params }: PageProps) {
-  const { ejeTematicoId } = params;
+  const { ejeTematicoId } = await params;
 
-  if (!ejeTematicoId) {
-    notFound();
-  }
-
-  const ejeTematico = await getEjeTematicoWithPreguntas(ejeTematicoId);
+  const ejeTematico = await getEjeTematicodwithRelations(ejeTematicoId);
 
   if (!ejeTematico) {
-    notFound();
+    return <p>Eje temático no encontrado</p>;
   }
 
-  return <EjeTematicoViewer ejeTematico={ejeTematico} />;
-}
+  return (
+    <EjeTematicoView
+      ejeTematico={ejeTematico}
+    />
+  )
 
-// Optional: Add metadata generation
-export async function generateMetadata({ params }: PageProps) {
-  const ejeTematico = await getEjeTematicoWithPreguntas(params.ejeTematicoId);
-  if (!ejeTematico) {
-    return { title: 'Tema no encontrado' };
-  }
-  return { title: `Estudiando: ${ejeTematico.nombre}` };
 }

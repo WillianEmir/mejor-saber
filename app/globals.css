@@ -1,9 +1,11 @@
 @import 'tailwindcss';
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *)); 
 
 @theme {
+
+  
 
   --color-principal: var(--color-blue-600);
   --color-principal-hover: var(--color-blue-500);
@@ -166,6 +168,23 @@
   --z-index-9999: 9999;
   --z-index-99999: 99999;
   --z-index-999999: 999999;
+}
+
+/* En App.css */
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* Aspect ratio 16:9 */
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Para que el video se ajuste al contenedor */
+.player-wrapper .react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /*

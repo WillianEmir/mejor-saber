@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { Plus } from 'lucide-react'
 
-import {
+import { 
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -18,8 +18,8 @@ import { deleteEjeTematico } from '@/src/lib/actions/ejeTematico.action'
 import { deleteContenidoCurricular } from '@/src/lib/actions/contenidosCurricular.action'
 
 import HeaderContenidosCurriculares from './HeaderContenidosCurriculares'
-import ContenidosCurricularesModal from '../ContenidosCurricularesModal'
-import EjeTematicoModal from '../EjesTematicosModal'
+import ContenidosCurricularesModal from '../contenidos-modal/ContenidosCurricularesModal'
+import EjeTematicoModal from '../eje-tematico-modal/EjesTematicosModal'
 import ItemActionMenu from '../../admin-areas/area-view/ItemActionMenu'
 
 interface ContenidosCurricularesListProps {

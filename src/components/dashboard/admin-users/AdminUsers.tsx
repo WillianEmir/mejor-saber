@@ -1,4 +1,4 @@
-'use client';
+'use client'; 
 
 import { useState, useTransition } from 'react';
 import { EyeIcon, PencilSquareIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/outline';

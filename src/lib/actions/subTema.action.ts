@@ -6,18 +6,19 @@ import { ProgresoSubTemaFormState, ProgresoSubTemaSchema, SubTemaFormState, SubT
 import { EjeTematicoType } from '../schemas/ejeTematico.schema';
 
 // ----- ******* ----- //
-// ----- SUBTEMA ----- //
+// ----- SUBTEMA ----- // 
 // ----- ******* ----- //
 
 export async function createOrUpdateSubTema(
   prevState: SubTemaFormState,
-  formData: FormData,
-  ejeTematicoId: EjeTematicoType['id']
+  formData: FormData
 ): Promise<SubTemaFormState> {
   
   // 1. Extraer y validar los datos del formulario del lado del servidor
   const validatedFields = SubTemaSchema.safeParse(Object.fromEntries(formData.entries()));
-
+  
+  console.log(Object.fromEntries(formData.entries()));
+  
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
@@ -50,6 +51,11 @@ export async function createOrUpdateSubTema(
     return {
       message: 'Error de base de datos: No se pudo procesar la solicitud.',
     };
+  }
+
+  const ejeTematicoId = formData.get('ejeTematicoId') as string;
+  if (!ejeTematicoId) {
+    return { message: 'Error: El ID del eje temático es requerido.' };
   }
 
   revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);

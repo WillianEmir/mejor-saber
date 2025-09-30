@@ -1,5 +1,3 @@
-'use server';
-
 import { ObjetivoAprendizaje } from '@/src/generated/prisma';
 import { z } from 'zod';
 
@@ -17,7 +15,7 @@ export type ObjetivoAprendizajeType = Omit<ObjetivoAprendizaje, 'createdAt' | 'u
 export type ObjetivoAprendizajeFormState = {
   errors?: {
     descripcion?: string[],
-    EjeTematicoId?: string[]
+    EjeTematicoId?: string[] 
   };
   message?: string | null;
 }

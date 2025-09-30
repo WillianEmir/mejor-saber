@@ -1,6 +1,6 @@
+import { getAllAreasWithContenidos } from '@/src/lib/data/areas.data';
 import { Search, BookCheck, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { getAllAreasWithContenidos } from '@/src/lib/data/study-material.data';
 
 // --- Componentes de UI (definidos aquí para ser autocontenidos) ---
 const Accordion = ({ children }: { children: React.ReactNode }) => <div className="space-y-3">{children}</div>;

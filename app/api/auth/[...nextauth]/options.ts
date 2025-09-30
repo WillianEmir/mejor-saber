@@ -50,7 +50,7 @@ export const authOptions: AuthOptions = {
     signIn: "/auth/signin",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }) { 
       if (user) {
         return {
           ...token,
@@ -59,6 +59,14 @@ export const authOptions: AuthOptions = {
           firstName: user.firstName,
           lastName: user.lastName,
           avatar: user.avatar,
+          idDocument: user.idDocument,
+          phone: user.phone,
+          address: user.address,
+          department: user.department,
+          city: user.city,
+          schoolId: user.schoolId,
+          schoolSedeId: user.schoolSedeId,
+          degree: user.degree,
         };
       }
       return token;
@@ -70,6 +78,14 @@ export const authOptions: AuthOptions = {
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
         session.user.avatar = token.avatar;
+        session.user.idDocument = token.idDocument;
+        session.user.phone = token.phone;
+        session.user.address = token.address;
+        session.user.department = token.department;
+        session.user.city = token.city;
+        session.user.schoolId = token.schoolId;
+        session.user.schoolSedeId = token.schoolSedeId;
+        session.user.degree = token.degree;
       }
       return session;
     },

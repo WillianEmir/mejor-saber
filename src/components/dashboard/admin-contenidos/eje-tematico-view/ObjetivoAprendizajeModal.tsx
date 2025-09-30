@@ -1,19 +1,19 @@
 'use client'
 
-import { Fragment, useActionState, useEffect, useRef } from 'react'  
+import { Fragment, useActionState, useEffect, useRef } from 'react' 
 import { useFormStatus } from 'react-dom'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-toastify'
 import { Dialog, Transition } from '@headlessui/react'
 
-import { EjeTematicoType } from '@/src/lib/schemas/ejeTematico.schema'
-import { createOrUpdateEjeTematico } from '@/src/lib/actions/ejeTematico.action'
+import { ObjetivoAprendizajeType } from '@/src/lib/schemas/objetivoAprendizaje.schema'
+import { createOrUpdateObjetivoAprendizaje } from '@/src/lib/actions/objetivoAprendizaje.action'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
-  contenidoCurricularId: string
-  ejeTematico: EjeTematicoType | null
+  ejeTematicoId: string
+  objetivo: ObjetivoAprendizajeType | null
 }
 
 function SubmitButton({ editMode }: { editMode: boolean }) {
@@ -24,17 +24,17 @@ function SubmitButton({ editMode }: { editMode: boolean }) {
       disabled={pending}
       className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-400 disabled:cursor-not-allowed"
     >
-      {pending ? (editMode ? 'Guardando...' : 'Creando...') : (editMode ? 'Guardar Cambios' : 'Crear Eje Temático')}
+      {pending ? (editMode ? 'Guardando...' : 'Creando...') : (editMode ? 'Guardar Cambios' : 'Crear Objetivo')}
     </button>
-  ) 
+  )
 }
 
-export default function EjeTematicoModal({ isOpen, onClose, contenidoCurricularId, ejeTematico }: Props) {
+export default function ObjetivoAprendizajeModal({ isOpen, onClose, ejeTematicoId, objetivo }: Props) {
   const formRef = useRef<HTMLFormElement>(null)
-  const editMode = !!ejeTematico?.id
+  const editMode = !!objetivo?.id
 
   const initialState = { message: null, errors: {} }
-  const [state, dispatch] = useActionState(createOrUpdateEjeTematico, initialState)
+  const [state, dispatch] = useActionState(createOrUpdateObjetivoAprendizaje, initialState)
 
   useEffect(() => {
     if (!isOpen) return
@@ -87,9 +87,9 @@ export default function EjeTematicoModal({ isOpen, onClose, contenidoCurricularI
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-gray-800">
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-gray-800">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">
-                  {editMode ? 'Editar Eje Temático' : 'Agregar Nuevo Eje Temático'}
+                  {editMode ? 'Editar Objetivo de Aprendizaje' : 'Agregar Nuevo Objetivo de Aprendizaje'}
                 </Dialog.Title>
                 <button
                   type="button"
@@ -101,23 +101,23 @@ export default function EjeTematicoModal({ isOpen, onClose, contenidoCurricularI
                 </button>
 
                 <form ref={formRef} action={dispatch} className="mt-4 space-y-4">
-                  {editMode && <input type="hidden" name="id" value={ejeTematico.id} />}
-                  <input type="hidden" name="contenidoCurricularId" value={contenidoCurricularId} />
+                  {editMode && <input type="hidden" name="id" value={objetivo.id} />}
+                  <input type="hidden" name="ejeTematicoId" value={ejeTematicoId} />
 
                   <div>
-                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                      Nombre del Eje Temático
+                    <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                      Descripción del Objetivo
                     </label>
-                    <input
-                      type="text"
-                      id="nombre"
-                      name="nombre"
-                      defaultValue={ejeTematico?.nombre || ''}
+                    <textarea
+                      id="descripcion"
+                      name="descripcion"
+                      rows={3}
+                      defaultValue={objetivo?.descripcion || ''}
                       className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       required
                     />
-                    {state?.errors?.nombre && (
-                      <p className="text-red-500 text-sm mt-1">{state.errors.nombre[0]}</p>
+                    {state?.errors?.descripcion && (
+                      <p className="text-red-500 text-sm mt-1">{state.errors.descripcion[0]}</p>
                     )}
                   </div>
 

@@ -77,7 +77,7 @@ export default function AreaView({ area }: AreaViewProps) {
         areaName={area.nombre}
         onAddCompetencia={handleAddCompetencia}
         onEditArea={handleEditArea}
-        onDeleteArea={handleDeleteArea}
+        onDeleteArea={handleDeleteArea} 
       />
 
       <main className="px-4 sm:px-6 lg:px-8 py-6">
