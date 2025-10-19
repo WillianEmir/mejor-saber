@@ -2,7 +2,7 @@ import 'server-only';
 
 import prisma from '../prisma';
 import { ActividadInteractivaType, ProgresoActividadInteractivaType } from '../schemas/actividadInteractiva.schema';
-import { EjeTematicoType, SeccionType } from '../schemas/ejeTematico.schema';
+import { EjeTematicoType, SeccionType } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 
 // ----- ********************* ----- //
 // ----- ACTIVIDAD INTERACTIVA ----- //

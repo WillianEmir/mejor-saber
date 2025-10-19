@@ -1,7 +1,7 @@
 import 'server-only';
 
 import prisma from '../prisma';
-import { EjeTematicoType, EjeTematicoWithRelationsType, SeccionType } from '../schemas/ejeTematico.schema';
+import { EjeTematicoType, EjeTematicoWithRelationsType, SeccionType } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 import { ContenidoCurricularType } from '../schemas/contenidoCurricular.schema';
 import { Seccion } from '@/src/generated/prisma';
 import { UserType } from '../schemas/user.schema';
@@ -80,7 +80,7 @@ export async function getEjeTematicoById(id: EjeTematicoType['id']): Promise<Eje
   }
 }
 
-// Obtine un eje temático por su Id con todas sos relaciones 
+// Obtine un eje temático por su Id con todas sus relaciones 
 export async function getEjeTematicodwithRelations(id: EjeTematicoType['id']): Promise<EjeTematicoWithRelationsType | null> {
   try {
     const ejeTematico = await prisma.ejeTematico.findUnique({

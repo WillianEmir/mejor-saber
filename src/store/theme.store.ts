@@ -7,7 +7,7 @@ type Theme = "light" | "dark";
 
 interface ThemeState {
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme: () => void; 
 }
 
 export const useThemeStore = create(

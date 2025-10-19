@@ -368,6 +368,7 @@ model User {
   progresosSeccion   ProgresoSeccion[]
   progresosSubTema   ProgresoSubTema[]
   progresosActividad ProgresoActividad[]
+  testimonios        Testimonio[]
 
   @@index([schoolId])
   @@index([schoolSedeId])
@@ -440,6 +441,26 @@ model SchoolSede {
 
   @@index([schoolId])
   @@map("school_sedes")
+}
+
+// --------------------
+// --- TESTIMONIALS ---
+// --------------------
+
+model Testimonio {
+  id         String  @id @default(uuid())
+  rating     Int
+  comentario String
+  publicado  Boolean @default(false)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  @@index([userId])
+  @@map("testimonios")
 }
 
 // --------------------

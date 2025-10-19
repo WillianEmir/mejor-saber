@@ -1,4 +1,4 @@
-import Prices from "@/src/components/landing/prices/Prices";
+import Prices from "@/app/(landingpage)/precios/components/Prices";
 
 export default function Precios() {
   return (

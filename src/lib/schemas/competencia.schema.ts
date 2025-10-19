@@ -1,5 +1,5 @@
 import { Afirmacion, Competencia, Evidencia } from '@/src/generated/prisma';
-import { z } from 'zod';
+import { z } from 'zod'; 
 
 // Esquema de validación para la creación/edición de una Competencia
 export const CompetenciaSchema = z.object({

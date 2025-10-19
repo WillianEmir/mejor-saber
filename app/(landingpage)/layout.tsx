@@ -1,12 +1,14 @@
-import Footer from "@/src/components/landing/ui/Footer";
-import TopMenu from "@/src/components/landing/ui/TopMenu";
+import Footer from "@/app/(landingpage)/components/Footer";
+import TopMenu from "@/app/(landingpage)/components/TopMenu";
 
-export default function ShopLayout({ children }: { children: React.ReactNode }) {
+export default function LandingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <TopMenu />
-      {children}
-      <Footer />
-    </main>
+      <main className="flex-grow">
+        {children}
+      </main>
+      <Footer /> 
+    </div>
   );
 }

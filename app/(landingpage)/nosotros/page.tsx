@@ -1,4 +1,4 @@
-import About from "@/src/components/landing/nosotros/About"
+import About from "@/app/(landingpage)/nosotros/components/About"
 
 export default function Nosotros() {
   return (

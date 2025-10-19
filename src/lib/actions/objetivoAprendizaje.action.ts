@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import prisma from '../prisma';
 import { ObjetivoAprendizajeSchema, type ObjetivoAprendizajeFormState } from '../schemas/objetivoAprendizaje.schema';
-import { EjeTematicoType } from '../schemas/ejeTematico.schema';
+import { EjeTematicoType } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 
 // Server Action para crear y editar un objetivo de aprendizaje
 export async function createOrUpdateObjetivoAprendizaje(

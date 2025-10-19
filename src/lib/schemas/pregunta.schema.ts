@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { EjeTematico, OpcionPregunta, Pregunta } from '@/src/generated/prisma';
-import { EjeTematicoSchema } from './ejeTematico.schema';
+import { EjeTematicoSchema } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 
 export const OpcionRespuestaSchema = z.object({
   id: z.uuid({ error: 'El ID debe ser un UUID válido.' }).optional(),

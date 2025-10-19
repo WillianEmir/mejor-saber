@@ -1,8 +1,8 @@
 import { getServerSession } from 'next-auth/next';
-import { ProfileForm } from '@/src/components/dashboard/profile/profile-form';
+import { ProfileForm } from '@/app/dashboard/profile/components/ProfileForm';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { getUserById } from '@/src/lib/data/user.data';
+import { getUserById } from './lib/profile.data';
 
 export default async function ProfilePage() {
 
@@ -15,7 +15,7 @@ export default async function ProfilePage() {
   const user = await getUserById(session.user.id);
 
   if (!user) {
-    return redirect('/auth/signin');
+    return redirect('/auth/signin'); 
   }
 
   return (

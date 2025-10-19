@@ -2,7 +2,7 @@ import 'server-only';
 
 import prisma from '../prisma';
 import { ObjetivoAprendizajeType } from '../schemas/objetivoAprendizaje.schema';
-import { EjeTematicoType } from '../schemas/ejeTematico.schema';
+import { EjeTematicoType } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 
 // Obtiene los objetivos de aprendizaje
 export async function getObjetivosAprendizaje(): Promise<ObjetivoAprendizajeType[] | null> {

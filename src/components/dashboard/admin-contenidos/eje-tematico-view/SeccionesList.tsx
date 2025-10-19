@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/src
 import { Button } from '@/src/components/ui/Button'
 import { PlusCircle, Edit, Trash2, BookOpen, Puzzle, Info } from 'lucide-react'
 
-import { EjeTematicoWithRelationsType, SeccionType } from '@/src/lib/schemas/ejeTematico.schema'
+import { EjeTematicoWithRelationsType, SeccionType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 import { deleteSubTema } from '@/src/lib/actions/subTema.action'
 import { deleteActividadInteractiva } from '@/src/lib/actions/actividadInteractiva.action'
 import { deleteSeccion } from '@/src/lib/actions/ejeTematico.action'

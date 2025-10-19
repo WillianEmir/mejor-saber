@@ -15,7 +15,7 @@ import {
 import { ObjetivoAprendizajeType } from '@/src/lib/schemas/objetivoAprendizaje.schema'
 import { deleteObjetivoAprendizaje } from '@/src/lib/actions/objetivoAprendizaje.action'
 import ObjetivoAprendizajeModal from './ObjetivoAprendizajeModal'
-import { EjeTematicoWithRelationsType } from '@/src/lib/schemas/ejeTematico.schema'
+import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 
 interface EjeTematicoObjetivosProps {
   ejeTematico: EjeTematicoWithRelationsType

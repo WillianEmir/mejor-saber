@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import prisma from '../prisma';
-import { EjeTematicoFormState, EjeTematicoSchema, EjeTematicoType, ProgresoSeccionFormState, ProgresoSeccionSchema, SeccionFormState, SeccionSchema, SeccionType } from '../schemas/ejeTematico.schema';
+import { EjeTematicoFormState, EjeTematicoSchema, EjeTematicoType, ProgresoSeccionFormState, ProgresoSeccionSchema, SeccionFormState, SeccionSchema, SeccionType } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 import { UserType } from '../schemas/user.schema';
 
 // ----- ************ ----- //

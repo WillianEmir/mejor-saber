@@ -2,7 +2,7 @@ import 'server-only'
 
 import { ProgresoSubTemaType, SubTemaType } from '../schemas/subTema.schema';
 import prisma from '../prisma';
-import { SeccionType } from '../schemas/ejeTematico.schema';
+import { SeccionType } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 import { UserType } from '../schemas/user.schema';
 
 // ----- ******* ----- //

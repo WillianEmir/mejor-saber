@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardDescription, 
 } from '@/src/components/ui/card'
-import { EjeTematicoWithRelationsType } from '@/src/lib/schemas/ejeTematico.schema'
+import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 import { Edit, Trash2 } from 'lucide-react'
 
 interface EjeTematicoHeaderProps {

@@ -13,7 +13,7 @@ import {
 } from '@/src/components/ui/accordion'
 import type { Areatype } from '@/src/lib/schemas/area.schema'
 import type { ContenidoWithRelationsType } from '@/src/lib/schemas/contenidoCurricular.schema'
-import type { EjeTematicoType } from '@/src/lib/schemas/ejeTematico.schema'
+import type { EjeTematicoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 import { deleteEjeTematico } from '@/src/lib/actions/ejeTematico.action'
 import { deleteContenidoCurricular } from '@/src/lib/actions/contenidosCurricular.action'
 

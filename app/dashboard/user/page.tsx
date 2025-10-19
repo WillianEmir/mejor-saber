@@ -1,9 +1,9 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { getSimulacrosByUserId } from '@/src/lib/data/simulacro.data';
 // import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/dashboard/ui/card'; // Assuming these components exist
 import { BookOpen, BrainCircuit, ClipboardList, Target } from 'lucide-react';
 import Link from 'next/link';
+import { getSimulacrosByUserId } from './simulacros/lib/simulacro.data';
 
 // Mock Card components if they don't exist
 const MockCard = ({ className, children }: { className?: string; children: React.ReactNode }) => (
@@ -30,7 +30,7 @@ export default async function UserDashboardPage() {
     : 0;
 
   const StatCard = ({ icon: Icon, title, value, subtext }: { icon: React.ElementType, title: string, value: string, subtext: string }) => (
-    <MockCard>
+    <MockCard> 
       <MockCardHeader>
         <MockCardTitle>{title}</MockCardTitle>
         <Icon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
@@ -81,7 +81,7 @@ export default async function UserDashboardPage() {
         />
         <StatCard 
           icon={BookOpen}
-          title="Material de Estudio"
+          title="Material de Repaso"
           value="12"
           subtext="Temas y guías disponibles"
         />
@@ -96,8 +96,8 @@ export default async function UserDashboardPage() {
         />
         <ActionCard 
           icon={BookOpen}
-          title="Explorar Material de Estudio"
-          href="/dashboard/user/material-estudio"
+          title="Explorar Material de Repaso"
+          href="/dashboard/user/material-repaso"
         />
         <ActionCard 
           icon={BrainCircuit}

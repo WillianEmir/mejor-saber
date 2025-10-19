@@ -15,33 +15,32 @@ import {
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { changePassword } from '@/src/lib/actions/user.actions';
-
-const ChangePasswordSchema = z.object({
-  currentPassword: z.string().min(1, 'La contraseña actual es requerida'),
-  newPassword: z.string().min(6, 'La nueva contraseña debe tener al menos 6 caracteres'),
-  confirmPassword: z.string(),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: 'Las contraseñas no coinciden',
-  path: ['confirmPassword'],
-});
-
-type ChangePasswordValues = z.infer<typeof ChangePasswordSchema>;
+import { changePassword } from './lib/changePassword.action';
+import { ChangePasswordSchema, ChangePasswordType } from './lib/changePassword.schema';
+import { toast } from 'sonner';
 
 export default function ChangePasswordPage() {
 
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<ChangePasswordValues>({
-    resolver: zodResolver(ChangePasswordSchema), defaultValues: {
+  const form = useForm<ChangePasswordType>({
+    defaultValues: {
       currentPassword: '',
       newPassword: '',
       confirmPassword: '',
     },
   });
 
-  const onSubmit = async (values: ChangePasswordValues) => {
+  const onSubmit = async (values: ChangePasswordType) => {
+
+    const parsedData = ChangePasswordSchema.safeParse(values);
+
+    if (!parsedData.success) {
+      parsedData.error.issues.forEach(issue => {
+        toast.error(issue.message);
+      });
+      return;
+    }
 
     setLoading(true);    
 
@@ -66,14 +65,14 @@ export default function ChangePasswordPage() {
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className='dark:text-neutral-light'>
         <h3 className="text-lg font-medium">Cambiar Contraseña</h3>
         <p className="text-sm text-muted-foreground">
           Actualiza tu contraseña aquí.
         </p>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-md">
           <FormField
             control={form.control}
             name="currentPassword"

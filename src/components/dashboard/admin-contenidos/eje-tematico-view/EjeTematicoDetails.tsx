@@ -5,7 +5,7 @@ import {
   CardContent,
 } from '@/src/components/ui/card'
 import { Separator } from '@/src/components/ui/separator'
-import { EjeTematicoWithRelationsType } from '@/src/lib/schemas/ejeTematico.schema'
+import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 
 interface EjeTematicoDetailsProps { 
   ejeTematico: EjeTematicoWithRelationsType

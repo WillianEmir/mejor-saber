@@ -1,5 +1,5 @@
 import AreaView from '@/src/components/dashboard/admin-areas/area-view/AreaView'
-import { getAreaById, getAreaWithRelationsById } from '@/src/lib/data/areas.data';
+import { getAreaWithRelationsById } from '@/src/lib/data/areas.data';
 import { notFound } from 'next/navigation';
 
 interface pageProps {

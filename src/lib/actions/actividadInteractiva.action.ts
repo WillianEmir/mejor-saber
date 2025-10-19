@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import prisma from '../prisma';
 import { ActividadInteractivaFormState, ActividadInteractivaSchema, ProgresoActividadInteractivaFormState, ProgresoActividadInteractivaSchema } from '../schemas/actividadInteractiva.schema';
-import { EjeTematicoType } from '../schemas/ejeTematico.schema';
+import { EjeTematicoType } from '../../../app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema';
 
 // ----- ********************* ----- //
 // ----- ACTIVIDAD INTERACTIVA ----- //

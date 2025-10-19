@@ -43,6 +43,11 @@ export const ProgresoActividadInteractivaSchema = z.object({
 // Type para el progreso de la actividad interactiva
 export type ProgresoActividadInteractivaType = Omit<ProgresoActividad, 'createdAt' | 'updatedAt'>
 
+// Type para la actividad interactiva con sus progreso
+export type ActividadWithProgresoType = ActividadInteractivaType & {
+  progresos: ProgresoActividadInteractivaType[]
+}
+
 // Tipo para el estado del formulario que será usado por useFormState
 export type ProgresoActividadInteractivaFormState = {
   errors?: {

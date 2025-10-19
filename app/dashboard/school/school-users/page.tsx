@@ -1,6 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import AdminschoolUsers from '@/src/components/dashboard/adminschool-users/AdminschoolUsers'
-import { getUserBySchoolId } from '@/src/lib/data/user.data';
+// import { getUserBySchoolId } from '@/src/lib/data/user.data';
 import { getServerSession } from 'next-auth';
 import React from 'react'
 
@@ -14,7 +14,7 @@ export default async function page() {
     return <div>No se pudo obtener el ID de la escuela.</div>;
   }
 
-  const users = await getUserBySchoolId(schoolId);
+  // const users = await getUserBySchoolId(schoolId);
 
   return (
     <>

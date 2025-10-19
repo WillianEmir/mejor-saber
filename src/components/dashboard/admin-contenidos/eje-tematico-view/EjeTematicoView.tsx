@@ -1,5 +1,5 @@
 'use client'
-import { EjeTematicoWithRelationsType } from '@/src/lib/schemas/ejeTematico.schema'
+import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 import EjeTematicoModal from '../eje-tematico-modal/EjesTematicosModal'
 import EjeTematicoHeader from './EjeTematicoHeader'
 import EjeTematicoDetails from './EjeTematicoDetails'

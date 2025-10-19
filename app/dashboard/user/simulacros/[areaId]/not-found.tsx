@@ -1,11 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 
-
-/**
- * Componente para mostrar una página "404 Not Found" con un diseño moderno.
- * Utiliza Tailwind CSS para el estilo y react-router-dom para la navegación.
- */
 const NotFound: React.FC = () => {
   return (
     <main className="grid h-full place-items-center px-6 py-24 sm:py-32 lg:px-8 dark:bg-gray-900">

@@ -1,35 +1,28 @@
-import Simulacrum from '@/src/components/dashboard/simulacrum/Simulacrum';
-import SimulacrumArea from '@/src/components/dashboard/simulacrum/SimulacrumArea';
-import SimulacrumResult from '@/src/components/dashboard/simulacrum/SimulacrumResult';
-import { getSimulacroResult, getSimulacrosHistory } from '@/src/lib/data/simulacros.data';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { getAreas, getAreaWithRelationsById } from '@/src/lib/data/areas.data';
+import { notFound } from 'next/navigation';
 
-export default async function Simulacros({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-  const { view, id, areaId } = searchParams;
+import { getAreas } from '@/src/lib/data/areas.data';
+import { getSimulacrosByUserId } from './lib/simulacro.data';
+
+import SimulacroAreasList from '@/app/dashboard/user/simulacros/components/SimulacroAreasList';
+import SimulacroAreasListHeader from './components/SimulacroAreasListHeader';
+import SimulacroHistory from './components/SimulacroHistory';
+
+export default async function Simulacros() { 
+
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
-  if (view === 'result' && typeof id === 'string') {
-    const simulacroPreguntas = await getSimulacroResult(id);
-    return <SimulacrumResult simulacroPreguntas={simulacroPreguntas} />;
-  }
+  if (!userId) notFound()
 
-  if (typeof areaId === 'string') {
-    const area = await getAreaWithRelationsById(areaId);
-    if (!area) {
-      return <div>Área no encontrada</div>;
-    }
-    return <SimulacrumArea area={area} />;
-  }
+  const [areas, simulacros] = await Promise.all([ getAreas(), getSimulacrosByUserId(userId) ]);
 
-  if (!userId) {
-    return <div>Inicia sesión para ver tu historial de simulacros.</div>;
-  }
-
-  const areas = await getAreas();
-  const simulacros = await getSimulacrosHistory(userId);
-
-  return <Simulacrum areas={areas} simulacros={simulacros} />;
+  return (
+    <>
+      <SimulacroAreasListHeader />
+      <SimulacroAreasList areas={areas}  />
+      <SimulacroHistory simulacros={simulacros}/>
+    </>
+  );
 }

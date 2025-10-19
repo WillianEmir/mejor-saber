@@ -6,7 +6,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-toastify'
 import { Dialog, Transition } from '@headlessui/react'
 
-import { EjeTematicoType } from '@/src/lib/schemas/ejeTematico.schema'
+import { EjeTematicoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 import { createOrUpdateEjeTematico } from '@/src/lib/actions/ejeTematico.action'
 import { CldUploadButton } from '@/src/components/ui/CldUploadButton'
 

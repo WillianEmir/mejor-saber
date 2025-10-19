@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { Dialog, Transition } from '@headlessui/react'
 import { TipoSeccion } from '@/src/generated/prisma'
 
-import { SeccionType } from '@/src/lib/schemas/ejeTematico.schema'
+import { SeccionType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 import { createOrUpdateSeccion } from '@/src/lib/actions/ejeTematico.action'
 
 interface Props {
