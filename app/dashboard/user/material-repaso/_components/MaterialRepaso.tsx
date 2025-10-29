@@ -3,14 +3,15 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, BookCheck, ChevronRight, CheckCircle, Circle } from 'lucide-react';
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/src/components/ui/accordion';
 import { Input } from '@/src/components/ui/input';
 import { Card, CardContent } from '@/src/components/ui/card';
 import { Progress } from '@/src/components/ui/progress';
 
-import { MaterialRepasoType } from '@/src/lib/schemas/area.schema';
+import { MaterialRepasoType } from '@/app/dashboard/admin/areas/_lib/area.schema';
 
-interface MaterialRepasoClientProps {
+interface MaterialRepasoClientProps { 
   areas: MaterialRepasoType[];
 }
 

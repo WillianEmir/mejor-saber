@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { AreaWithRelationsType } from '@/src/lib/schemas/area.schema';
-import { CompetenciaWithRelations } from '@/src/lib/schemas/competencia.schema';
-import { AfirmacionWithEvidencias } from '@/src/lib/schemas/afirmacion.schema';
-import { EvidenciaType } from '@/src/lib/schemas/evidencia.schema';
+import { AreaWithRelationsType } from '@/app/dashboard/admin/areas/_lib/area.schema';
+import { CompetenciaWithRelations } from '@/app/dashboard/admin/areas/_lib/competencia.schema';
+import { AfirmacionWithEvidencias } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema';
+import { EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema';
 
 interface PreguntasFiltersProps {
   areas: AreaWithRelationsType[];

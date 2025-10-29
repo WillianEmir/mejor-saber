@@ -5,7 +5,7 @@ interface DeleteDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  isPending: boolean;
+  isPending: boolean; 
 }
 
 export default function DeleteConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: DeleteDialogProps) {

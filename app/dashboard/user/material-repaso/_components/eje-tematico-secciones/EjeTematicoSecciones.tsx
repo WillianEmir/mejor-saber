@@ -6,10 +6,9 @@ import ActividadesRelacionar from "./ActividadesRelacionar";
 import ActividadesGrafico from "./ActividadesGrafico";
 import ActividadesIdentificar from "./ActividadesIdentificar";
 
-// Types
 import { SeccionWithRelationsType } from "@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema";
 
-interface EjeTematicoSeccionesProps { 
+interface EjeTematicoSeccionesProps {  
   seccion: SeccionWithRelationsType; 
   progreso: { [key: string]: boolean };
   handleSubTemaToggle: (subTemaId: string) => void;

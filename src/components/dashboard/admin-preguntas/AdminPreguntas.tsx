@@ -5,11 +5,11 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-import { AreaWithRelationsType } from '@/src/lib/schemas/area.schema';
+import { AreaWithRelationsType } from '@/app/dashboard/admin/areas/_lib/area.schema';
 import { deletePregunta } from '@/src/lib/actions/pregunta.action';
 import PreguntaModal from './pregunta-modal/PreguntaModal';
 import { PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema';
-import { ContenidoWithRelationsType } from '@/src/lib/schemas/contenidoCurricular.schema';
+import { ContenidoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.schema';
 import Pagination from './Pagination';
 import PreguntasFilters from './PreguntasFilters';
 

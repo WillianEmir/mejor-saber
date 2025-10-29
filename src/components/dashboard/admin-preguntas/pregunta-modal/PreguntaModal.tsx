@@ -3,12 +3,12 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useFormStatus } from 'react-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { AreaWithRelationsType } from '@/src/lib/schemas/area.schema'
+import { AreaWithRelationsType } from '@/app/dashboard/admin/areas/_lib/area.schema'
 import { toast } from 'react-toastify'
 import { createOrUpdatePregunta } from '@/src/lib/actions/pregunta.action'
 import { PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema'
 import { CldUploadWidget } from 'next-cloudinary'
-import { ContenidoWithRelationsType } from '@/src/lib/schemas/contenidoCurricular.schema'
+import { ContenidoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.schema'
 
 interface AdminAddPreguntasProps {
   areas: AreaWithRelationsType[]
@@ -239,7 +239,7 @@ export default function PreguntaModal({ areas, pregunta, isViewMode, contenidosC
                   onClick={onClose}
                   className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                   aria-label="Cerrar modal"
-                >
+                > 
                   <XMarkIcon className="h-6 w-6" />
                 </button>
 

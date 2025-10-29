@@ -2,7 +2,7 @@ import 'server-only';
 
 import prisma from '@/src/lib/prisma';
 import { PreguntaWithRelationsType } from '../schemas/pregunta.schema';
-import { CompetenciaType } from '../schemas/competencia.schema';
+import { CompetenciaType } from '../../../app/dashboard/admin/areas/_lib/competencia.schema';
 
 interface GetPreguntasFilters {
   areaId?: string;

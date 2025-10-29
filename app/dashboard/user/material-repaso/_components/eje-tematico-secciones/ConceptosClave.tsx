@@ -1,7 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/src/components/ui/accordion'
 import ReactPlayer from 'react-player'
-import { SubTemaType } from '@/src/lib/schemas/subTema.schema';
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/src/components/ui/accordion'
 import { Checkbox } from '@/src/components/ui/checkbox';
+
+import { SubTemaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.schema'; 
 
 interface ConceptosClaveProps {
   subtema: SubTemaType;
@@ -13,9 +15,9 @@ interface ConceptosClaveProps {
 export default function ConceptosClave({ subtema, progreso, handleSubTemaToggle, isPending}: ConceptosClaveProps) {
   return (
     <Accordion type="single" collapsible defaultValue={`${subtema.id}`} className="w-full">
-      <AccordionItem value={`subtema-${subtema.id}`} className="rounded-md border bg-white dark:bg-gray-800">
-        <div className="flex items-center p-3">
-          <div onClick={(e) => e.stopPropagation()}>
+      <AccordionItem value={`subtema-${subtema.id}`} className="rounded-md border bg-white dark:bg-gray-800 p-3">
+        <div className="flex items-center">
+          <div onClick={(e) => e.stopPropagation()} className="mr-3">
             <Checkbox
               checked={progreso[subtema.id] || false}
               onCheckedChange={() => handleSubTemaToggle(subtema.id)}
@@ -23,7 +25,7 @@ export default function ConceptosClave({ subtema, progreso, handleSubTemaToggle,
               className="h-5 w-5"
             />
           </div>
-          <AccordionTrigger className="flex-1 pl-3 text-left font-semibold hover:no-underline">
+          <AccordionTrigger className="text-left font-semibold hover:no-underline">
             {subtema.nombre}
           </AccordionTrigger>
         </div>

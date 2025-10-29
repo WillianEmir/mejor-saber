@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useTransition } from 'react'
 import { notFound, usePathname } from 'next/navigation'
+import { toast } from 'sonner'
 
 import { toggleSeccionProgreso, toggleSubTemaProgreso, toggleActividadProgreso } from '@/app/dashboard/user/material-repaso/_lib/progreso.actions'
 
@@ -11,7 +12,6 @@ import EjeTematicoObjetivos from './EjeTematicoObjetivos'
 import EjeTematicoSecciones from './eje-tematico-secciones/EjeTematicoSecciones'
 
 import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
-import { toast } from 'sonner'
 
 interface EjeTematicoViewProps {
   ejeTematico: EjeTematicoWithRelationsType

@@ -2,9 +2,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { notFound, redirect } from "next/navigation";
 
-import SimulacrumQuestions from "@/app/dashboard/user/simulacros/components/SimulacroQuestions";
+import SimulacrumQuestions from "@/app/dashboard/user/simulacros/_components/SimulacroQuestions";
 import { getPreguntasByArea } from "@/src/lib/data/preguntas.data";
-import { getAreaById } from "@/src/lib/data/areas.data";
+import { getAreaById } from "@/app/dashboard/admin/areas/_lib/area.data";
 import { getUserByEmail } from "@/src/lib/data/user.data";
 
 interface Props {

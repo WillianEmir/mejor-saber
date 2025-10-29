@@ -18,7 +18,7 @@ export interface NavItem {
 const userPath: NavItem[] = [
   {
     icon: <ChartBarIcon className="size-5.5" />,
-    name: "Dashboard User",
+    name: "Mi Progreso",
     path: "/dashboard/user",
   },
   {
@@ -29,23 +29,7 @@ const userPath: NavItem[] = [
   {
     icon: <BookOpenIcon className="size-5.5" />,
     name: "Material de Repaso",
-    subItems: [
-      {
-        name: 'Todo el Material',
-        path: "/dashboard/user/material-repaso",
-        icon: <BookOpenIcon className="size-5.5" />,
-      },
-      {
-        name: 'Ruta Personalizada',
-        path: "/dashboard/user/material-personalizado",
-        icon: <BookOpenIcon className="size-5.5" />,
-      },
-    ]
-  },
-  {
-    icon: <ChartBarIcon className="size-5.5" />,
-    name: "Mi Progreso",
-    path: "/dashboard/user/progreso",
+    path: "/dashboard/user/material-repaso",
   },
   {
     icon: <UsersIcon className="size-5.5" />,
@@ -74,6 +58,11 @@ const adminPath: NavItem[] = [
     icon: <BookOpenIcon className="size-5.5" />,
     name: "Contenidos Curriculares",
     path: "/dashboard/admin/contenidos-curriculares",
+  },
+  {
+    icon: <BookOpenIcon className="size-5.5" />,
+    name: "Niveles de Desempeño",
+    path: "/dashboard/admin/niveles-desempeno",
   },
   {
     icon: <UserGroupIcon className="size-5.5" />,

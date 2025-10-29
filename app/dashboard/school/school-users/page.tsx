@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import AdminschoolUsers from '@/src/components/dashboard/adminschool-users/AdminschoolUsers'
+// import AdminschoolUsers from '@/src/components/dashboard/adminschool-users/AdminschoolUsers'
 // import { getUserBySchoolId } from '@/src/lib/data/user.data';
 import { getServerSession } from 'next-auth';
 import React from 'react'
@@ -18,9 +18,10 @@ export default async function page() {
 
   return (
     <>
-      <AdminschoolUsers
+      {/* <AdminschoolUsers
         users={users}
-      />
+      /> */}
+      <h1>Hola Mundo</h1>
     </>
   )
 }

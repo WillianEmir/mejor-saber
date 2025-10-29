@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-import { ActividadWithProgresoType } from "@/src/lib/schemas/actividadInteractiva.schema"
+import { ActividadWithProgresoType } from "@/app/dashboard/admin/contenidos-curriculares/_lib/actividadInteractiva.schema"
 
 interface ActividadesGraficoProps {
   actividadesGrafico: ActividadWithProgresoType[]

@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 import prisma from "../prisma";
 import { NewPasswordSchema, ResetSchema } from "../schemas/auth.schema";
-import { getUserByEmail } from "../data/user";
+import { getUserByEmail } from "../data/user.data";
 import { sendTwoFactorTokenEmail } from "../mail";
 import { generateTwoFactorToken } from "../tokens";
 import { getTwoFactorTokenByToken } from "../data/two-factor-token";

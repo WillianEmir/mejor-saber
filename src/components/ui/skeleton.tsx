@@ -1,4 +1,4 @@
-import { cn } from "@/src/lib/utils"
+import { cn } from "@/src/lib/utils.client"
 
 function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (

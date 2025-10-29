@@ -30,6 +30,7 @@ model Area {
 
   contenidosCurriculares ContenidoCurricular[]
   competencias           Competencia[]
+  nivelesDesempeno       NivelDesempeno[]
 
   @@map("areas")
 }
@@ -144,6 +145,23 @@ model ObjetivoAprendizaje {
 
   @@index([ejeTematicoId])
   @@map("objetivos_aprendizaje")
+}
+
+model NivelDesempeno {
+  id          String @id @default(uuid())
+  descripcion String
+  puntajeMin  Int
+  puntajeMax  Int
+  nivel       Nivel
+
+  area   Area   @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  areaId String @map("area_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([areaId])
+  @@map("niveles_desempeno")
 }
 
 // --------------------
@@ -331,6 +349,8 @@ model SimulacroPregunta {
   @@index([opcionSeleccionadaId])
   @@map("simulacro_preguntas")
 }
+
+
 
 // --------------------
 // --- USER & AUTH MODELS ---
@@ -545,4 +565,11 @@ enum PaymentStatus {
   PENDING
   COMPLETED
   FAILED
+}
+
+enum Nivel {
+  NIVEL1
+  NIVEL2
+  NIVEL3
+  NIVEL4
 }

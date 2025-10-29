@@ -29,7 +29,7 @@ export default function Testimonios({ initialTestimonios, users }: TestimoniosPr
   const [isDeletePending, startDeleteTransition] = useTransition();
 
   useEffect(() => {
-    setTestimonios(initialTestimonios);
+    setTestimonios(initialTestimonios); 
   }, [initialTestimonios]);
 
   const handleEdit = (testimonio: TestimonioType) => {

@@ -7,7 +7,7 @@ interface TestimonioModalProps {
   isOpen: boolean;
   onClose: () => void;
   testimonio: TestimonioType | null; 
-  users: UserForSelect[];
+  users: UserForSelect[]; 
 }
 
 export default function TestimonioModal({ isOpen, onClose, testimonio, users }: TestimonioModalProps) {

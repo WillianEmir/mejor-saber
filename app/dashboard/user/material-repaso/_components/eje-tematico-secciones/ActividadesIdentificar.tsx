@@ -2,10 +2,10 @@ import { useState, useEffect, useMemo } from 'react'
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent, useDroppable, useDraggable } from '@dnd-kit/core'
 
 // Types
-import { ActividadWithProgresoType } from '@/src/lib/schemas/actividadInteractiva.schema'
+import { ActividadWithProgresoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/actividadInteractiva.schema'
 
 interface RelacionarActividadProps {
-  actividadesIdentificar: ActividadWithProgresoType[];
+  actividadesIdentificar: ActividadWithProgresoType[]; 
   progresoInicial: { [key: string]: boolean };
   handleActividadToggle: (actividadId: string) => void;
 }

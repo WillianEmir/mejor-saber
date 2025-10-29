@@ -1,4 +1,4 @@
-'use client' 
+'use client'
 
 import { Bar } from 'react-chartjs-2'
 import {
@@ -23,17 +23,33 @@ ChartJS.register(
   ChartDataLabels
 )
 
+export interface BarChartDataType {
+  labels: string[]
+  datasets: {
+    label: string
+    data: number[]
+    backgroundColor: string | string[]
+    borderColor?: string | string[]
+    borderWidth?: number
+    borderRadius?: number | number[]
+    borderSkipped?: 'left' | 'right' | 'top' | 'bottom' | false
+    categoryPercentage?: number
+    barPercentage?: number
+    maxBarThickness?: number
+    minBarLength?: number
+    offsetGridLines?: boolean
+    datalabels?: {
+      anchor?: 'start' | 'end' | 'center'
+      align?: 'start' | 'end' | 'center'
+      offset?: number
+    }
+    barThickness?: number
+    indexAxis?: 'x' | 'y'
+  }[]
+}
+
 interface BarChartProps {
-  data: {
-    labels: string[]
-    datasets: {
-      label: string
-      data: number[]
-      backgroundColor: string | string[]
-      borderColor?: string | string[]
-      borderWidth?: number
-    }[]
-  }
+  data: BarChartDataType
   options?: ChartOptions<'bar'>
 }
 
@@ -47,7 +63,7 @@ export const BarChart = ({ data, options }: BarChartProps) => {
       },
       title: {
         display: true,
-        text: 'Rendimiento por Área',
+        text: 'TODO: Agregar variable',
       },
       datalabels: {
         anchor: 'end',
@@ -69,6 +85,8 @@ export const BarChart = ({ data, options }: BarChartProps) => {
             return value + '%'
           },
         },
+        min: 0,
+        max: 100,
       },
     },
   }

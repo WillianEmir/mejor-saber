@@ -3,7 +3,7 @@
 import * as React from "react" 
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"
-import { cn } from "@/src/lib/utils"
+import { cn } from "@/src/lib/utils.client"
 
 
 const Accordion = AccordionPrimitive.Root 

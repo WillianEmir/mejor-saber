@@ -1,5 +1,5 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { cn } from '@/src/lib/utils';
+import { cn } from '@/src/lib/utils.client';
 
 interface Tier {
   name: string;

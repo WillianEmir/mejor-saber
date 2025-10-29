@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { getEjeTematicodwithRelations } from "@/src/lib/data/ejeTematico.data";
+import { getEjeTematicodwithRelations } from "@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.data";
 
 import { EjeTematicoView } from "../_components/EjeTematicoView";
 

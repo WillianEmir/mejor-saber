@@ -1,29 +1,23 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { redirect } from 'next/navigation';
+import GeneralMaterialRepaso from "./_components/GeneralMaterialRepaso";
+import PersonalizadoMaterialRepaso from "./_components/PersonalizadoMaterialRepaso";
 
-import { getMaterialRepasoByUserId } from '@/src/lib/data/areas.data';
-
-import MaterialRepaso from './_components/MaterialRepaso';
-
-export default async function MaterialRepasoPage() {
-
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.id) redirect('/auth/signin');
-
-  const areasWithProgress = await getMaterialRepasoByUserId(session.user.id);
-
+export default function MaterialRepasoPage() {
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8">
-      <h2 className="text-3xl font-bold tracking-tight text-gray-800 dark:text-white">
-        Material de Repaso
-      </h2>
-      <p className="text-gray-600 dark:text-gray-400 mt-1">
-        Explora los temas, revisa el contenido y prepárate para tus pruebas.
-      </p>
-      <MaterialRepaso areas={areasWithProgress} />
+      <Tabs defaultValue="general" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="general">Todo el Material de Repaso</TabsTrigger>
+          <TabsTrigger value="personalizado">Material Personalizado</TabsTrigger>
+        </TabsList>
+        <TabsContent value="general">
+          <GeneralMaterialRepaso />
+        </TabsContent>
+        <TabsContent value="personalizado">
+          <PersonalizadoMaterialRepaso />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
