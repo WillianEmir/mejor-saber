@@ -43,7 +43,7 @@ export async function getOverallProgressChartData() : Promise<BarChartDataType> 
       
     ],
   };
-
+ 
   return generalProgressData;
 }
 

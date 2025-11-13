@@ -2,8 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { notFound, redirect } from "next/navigation";
 
-import { getUserByEmail } from "@/src/lib/data/user.data";
-import { getPreguntasByCompetencia } from "@/src/lib/data/preguntas.data";
+import { getUserByEmail } from "@/app/dashboard/admin/users/_lib/user.data";
+import { getPreguntasByCompetencia } from "@/app/dashboard/admin/preguntas/_lib/pregunta.data";
 import { getCompetenciaById } from "@/app/dashboard/admin/areas/_lib/competencia.data";
 
 import SimulacroQuestions from "@/app/dashboard/user/simulacros/_components/SimulacroQuestions";
@@ -12,7 +12,7 @@ interface Props {
   params: Promise<{
     competenciaId: string;
   }>
-}
+} 
 
 export default async function SimulacroByCompetenciaPage({ params }: Props) {
 

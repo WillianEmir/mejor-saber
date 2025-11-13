@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useTransition } from 'react'
+import { useEffect, useTransition } from 'react' 
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline'
@@ -25,7 +25,7 @@ export default function AfirmacionModal({ isOpen, onClose, competenciaId, afirma
 
   const editMode = !!afirmacion?.id
 
-  const form = useForm<AfirmacionType>({
+  const form = useForm<AfirmacionType>({ 
     defaultValues: {
       id: afirmacion?.id || undefined,
       nombre: afirmacion?.nombre || '',
@@ -48,14 +48,14 @@ export default function AfirmacionModal({ isOpen, onClose, competenciaId, afirma
 
     if (!parsedData.success) {
       parsedData.error.issues.forEach(issue => {
-        toast.error(issue.message)
+        toast.error(issue.message) 
       })
       return
-    }
+    } 
 
     const formData = new FormData();
     formData.append('id', data.id || '');
-    formData.append('nombre', data.nombre);
+    formData.append('nombre', data.nombre); 
     formData.append('competenciaId', data.competenciaId);
 
     startTransition(async () => {

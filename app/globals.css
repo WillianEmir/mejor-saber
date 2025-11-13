@@ -20,7 +20,7 @@
   --color-warning: oklch(75% 0.18 80);
   --color-danger: oklch(50% 0.2 20);
 
-  /* Colores Neutrales (Base) */ 
+  /* Colores Neutrales (Base) */
   --color-neutral-dark: oklch(30% 0.01 260);
   --color-neutral-light: oklch(90% 0.005 260);
 
@@ -31,7 +31,9 @@
   --foreground: var(--color-neutral-dark);
   --primary: var(--color-primary);
   --secondary: var(--color-secondary);
-  --success: var( --color-success); /* Mapeamos los funcionales a variables semánticas también */
+  --success: var(
+    --color-success
+  ); /* Mapeamos los funcionales a variables semánticas también */
   --danger: var(--color-danger);
 
   --border: oklch(90% 0.01 260); /* Gris claro para bordes */
@@ -97,4 +99,14 @@
   .player-wrapper .react-player {
     @apply absolute top-0 left-0 w-full h-full;
   }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

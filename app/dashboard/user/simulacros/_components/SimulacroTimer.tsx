@@ -5,7 +5,7 @@ interface TimerProps {
   competenciaName?: string;
   areaName?: string;
   onFinish: () => void;
-  isPending: boolean;
+  isPending: boolean; 
 }
 
 export const Timer = ({ time, competenciaName, onFinish, isPending, areaName }: TimerProps) => {

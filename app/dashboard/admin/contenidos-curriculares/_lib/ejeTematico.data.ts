@@ -3,6 +3,16 @@
 import { EjeTematicoType, EjeTematicoWithRelationsType } from './ejeTematico.schema';
 import { ContenidoCurricularType } from './contenidoCurricular.schema';
 import prisma from '@/src/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+
+async function getUserId() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    throw new Error('Usuario no autenticado')
+  }
+  return session.user.id
+}
 
 // Obtiene todos los ejes temáticos
 export async function getEjesTematicos(): Promise<EjeTematicoType[] | null> {
@@ -33,6 +43,8 @@ export async function getEjeTematicoById(id: EjeTematicoType['id']): Promise<Eje
 // Obtine un eje temático por su Id con todas sus relaciones 
 export async function getEjeTematicodwithRelations(id: EjeTematicoType['id']): Promise<EjeTematicoWithRelationsType | null> {
   try {
+    const userId = await getUserId()
+    
     const ejeTematico = await prisma.ejeTematico.findUnique({
       where: { id },
       include: {
@@ -46,15 +58,21 @@ export async function getEjeTematicodwithRelations(id: EjeTematicoType['id']): P
           include: {
             subTemas: {
               include: {
-                progresos: true
+                progresos: {
+                  where: { usuarioId: userId }
+                }
               }
             },
             actividades: {
               include: {
-                progresos: true
+                progresos: {
+                  where: { usuarioId: userId }
+                }
               }
             },
-            progresos: true
+            progresos: {
+              where: { usuarioId: userId }
+            }
           }
         }
       }

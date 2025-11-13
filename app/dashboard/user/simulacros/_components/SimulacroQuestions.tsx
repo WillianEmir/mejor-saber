@@ -11,7 +11,7 @@ import { Timer } from './SimulacroTimer';
 
 import { CompetenciaType } from '@/app/dashboard/admin/areas/_lib/competencia.schema';
 import { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema';
-import { PreguntaWithRelationsType } from '@/src/lib/schemas/pregunta.schema';
+import { PreguntaWithRelationsType } from '@/app/dashboard/admin/preguntas/_lib/pregunta.schema';
 
 interface SimulacrumQuestionsProps {
   preguntas: PreguntaWithRelationsType[]; 

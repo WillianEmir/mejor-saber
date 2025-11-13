@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server' 
-import type { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server' 
 import { getToken } from 'next-auth/jwt'
 
 export async function middleware(request: NextRequest) {
@@ -12,24 +12,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/signin', request.url));  
   }
 
-  // const userRole = token.role as string;
-  // const dashboardRedirectUrl = new URL('/dashboard', request.url);
+  const userRole = token.role as string;
+  const dashboardRedirectUrl = new URL('/', request.url);
 
-  // // Role-based access control
-  // if (pathname.startsWith('/dashboard/admin') && userRole !== 'ADMIN') {
-  //   return NextResponse.redirect(dashboardRedirectUrl);
-  // }
+  // Role-based access control
+  if (pathname.startsWith('/dashboard/admin') && userRole !== 'ADMIN') {
+    return NextResponse.redirect(dashboardRedirectUrl);
+  }
 
-  // if (pathname.startsWith('/dashboard/school') && userRole !== 'ADMINSCHOOL') {
-  //   return NextResponse.redirect(dashboardRedirectUrl);
-  // }
+  if (pathname.startsWith('/dashboard/school') && userRole !== 'ADMINSCHOOL' && userRole !== 'ADMIN') {
+    return NextResponse.redirect(dashboardRedirectUrl);
+  }
 
-  // if (pathname.startsWith('/dashboard/user') && userRole !== 'USER') {
-  //   return NextResponse.redirect(dashboardRedirectUrl);
-  // }
+  if (pathname.startsWith('/dashboard/user') && userRole !== 'USER' && userRole !== 'ADMIN') {
+    return NextResponse.redirect(dashboardRedirectUrl);
+  }
 
   return NextResponse.next();
-}
+} 
 
 export const config = {
   matcher: [

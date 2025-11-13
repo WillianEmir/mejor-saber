@@ -1,5 +1,4 @@
-import TwoStepVerification from '@/src/components/dashboard/auth/TwoStepVerification'
-import React from 'react'
+import TwoStepVerification from '@/app/auth/two-step-verification/_components/TwoStepVerification'
 
 export default function page() {
   return (

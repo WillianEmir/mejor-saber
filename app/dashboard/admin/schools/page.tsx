@@ -1,13 +1,17 @@
-import AdminSchools from '@/src/components/dashboard/admin-schools/AdminSchools';
-import { getSchools } from '@/src/lib/data/school.data';
-import React from 'react';
+import { getSchools } from '@/app/dashboard/admin/schools/_lib/school.data';
+
+import SchoolList from '@/app/dashboard/admin/schools/_components/school/SchoolList';
+import { notFound } from 'next/navigation';
 
 export default async function page() {
+
   const schools = await getSchools();
+
+  if(!schools) notFound()
 
   return (
     <>
-      <AdminSchools schools={schools || []} />
+      <SchoolList schools={schools} />
     </>
   );
 }

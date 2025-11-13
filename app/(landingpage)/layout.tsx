@@ -1,5 +1,6 @@
-import Footer from "@/app/(landingpage)/components/Footer";
-import TopMenu from "@/app/(landingpage)/components/TopMenu";
+import Footer from "@/app/(landingpage)/_components/Footer";
+import ScrollToTopButton from "./_components/ScrollToTopButton";
+import TopMenu from "@/app/(landingpage)/_components/TopMenu";
 
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,6 +10,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
         {children}
       </main>
       <Footer /> 
+      <ScrollToTopButton />
     </div>
   );
 }

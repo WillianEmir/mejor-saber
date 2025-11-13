@@ -1,8 +1,7 @@
-import { getAreasWithRelations } from '@/app/dashboard/admin/areas/_lib/area.data'
 import { getContenidosWithRelations } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.data'
-import { getPreguntasCount, getPreguntasWithRelations } from '@/src/lib/data/preguntas.data'
+import { getAreasWithRelations, getPreguntasCount, getPreguntasWithRelations } from '@/app/dashboard/admin/preguntas/_lib/pregunta.data'
 
-import AdminPreguntas from '@/src/components/dashboard/admin-preguntas/AdminPreguntas' 
+import PreguntasList from '@/app/dashboard/admin/preguntas/_components/PreguntasList' 
 
 interface pageProps {
   searchParams: Promise<{
@@ -43,7 +42,7 @@ export default async function PreguntasPage({ searchParams }: pageProps) {
 
   return (
     <>
-      <AdminPreguntas
+      <PreguntasList
         preguntas={preguntas}
         totalPages={totalPages}
         currentPage={currentPage}

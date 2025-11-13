@@ -3,9 +3,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { notFound, redirect } from "next/navigation";
 
 import SimulacrumQuestions from "@/app/dashboard/user/simulacros/_components/SimulacroQuestions";
-import { getPreguntasByArea } from "@/src/lib/data/preguntas.data";
+import { getPreguntasByArea } from "@/app/dashboard/admin/preguntas/_lib/pregunta.data";
 import { getAreaById } from "@/app/dashboard/admin/areas/_lib/area.data";
-import { getUserByEmail } from "@/src/lib/data/user.data";
+import { getUserByEmail } from "@/app/dashboard/admin/users/_lib/user.data";
 
 interface Props {
   params: Promise<{

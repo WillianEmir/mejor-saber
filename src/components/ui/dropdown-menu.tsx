@@ -31,7 +31,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
       inset && "pl-8",
       className
     )}
-    {...props}
+    {...props} 
   >
     {children}
     <ChevronRight className="ml-auto" />

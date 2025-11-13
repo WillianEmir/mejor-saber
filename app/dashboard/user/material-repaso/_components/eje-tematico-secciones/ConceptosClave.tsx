@@ -1,9 +1,10 @@
 import ReactPlayer from 'react-player'
 
+import { SubTemaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.schema'; 
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/src/components/ui/accordion'
 import { Checkbox } from '@/src/components/ui/checkbox';
 
-import { SubTemaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.schema'; 
 
 interface ConceptosClaveProps {
   subtema: SubTemaType;

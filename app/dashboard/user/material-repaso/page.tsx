@@ -13,7 +13,7 @@ export default function MaterialRepasoPage() {
         </TabsList>
         <TabsContent value="general">
           <GeneralMaterialRepaso />
-        </TabsContent>
+        </TabsContent> 
         <TabsContent value="personalizado">
           <PersonalizadoMaterialRepaso />
         </TabsContent>

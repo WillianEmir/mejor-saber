@@ -15,10 +15,10 @@ export default async function EjeTematicoPage({ params }: Props) {
 
   const ejeTematico = await getEjeTematicodwithRelations(ejeTematicoId);
 
-  if (!ejeTematico) notFound()
+  if (!ejeTematico) notFound() 
 
   return ( 
-    <EjeTematicoView
+    <EjeTematicoView 
       ejeTematico={ejeTematico}
     />
   )

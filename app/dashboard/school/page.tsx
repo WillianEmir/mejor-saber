@@ -1,19 +1,34 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { SchoolDashboard } from "@/src/components/dashboard/school/school-dashboard";
-import { getServerSession } from "next-auth";
+import { getScoreDistributionData } from "./_lib/school.data";
 
-const SchoolPage = async () => {
-  const session = await getServerSession(authOptions);
+import SchoolProgressChart from "./_components/SchoolProgressChart";
+import SchoolStatsCards from "./_components/SchoolStatsCards";
+import { notFound } from "next/navigation";
 
-  if(!session || !session.user || !session.user.schoolId) {
-    return <div>No estás autorizado para ver esta página.</div>;
-  }
-  
+export default async function SchoolDashboardPage() { 
+
+  const scoreDistribution = await getScoreDistributionData();
+
+  if (!scoreDistribution) notFound()
+ 
+  const chartData = {
+    labels: ['Puntaje Inicial', 'Promedio General', 'Puntaje Actual'],
+    datasets: [
+      {
+        label: 'Progreso de la Escuela',
+        data: [
+          scoreDistribution.firstSimulacroAvg,
+          scoreDistribution.overallAvg,
+          scoreDistribution.lastSimulacroAvg,
+        ],
+        backgroundColor: ['#ef4444', '#eab308', '#22c55e'],
+      },
+    ],
+  };
+
   return (
-    <div>
-      <SchoolDashboard session={session} />
+    <div className="space-y-4">
+      <SchoolStatsCards />
+      <SchoolProgressChart chartData={chartData} />
     </div>
   );
-};
-
-export default SchoolPage;
+}

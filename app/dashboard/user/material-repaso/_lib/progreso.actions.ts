@@ -15,7 +15,7 @@ async function getUserId() {
 }
 
 export async function toggleSeccionProgreso(seccionId: string, path: string, isCompleted: boolean): Promise<FormState> {
-  try {
+  try { 
     const userId = await getUserId()
 
     await prisma.progresoSeccion.upsert({

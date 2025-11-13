@@ -16,7 +16,6 @@ import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
 
 import { deleteEjeTematico } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.actions'
 import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
-import EjeTematicoImage from '../UploadImage'
 
 interface EjeTematicoViewProps {
   ejeTematico: EjeTematicoWithRelationsType
@@ -65,7 +64,7 @@ export default function EjeTematicoView({ ejeTematico }: EjeTematicoViewProps) {
         onDelete={openDeleteDialog}
       />
 
-      <EjeTematicoDetails ejeTematico={ejeTematico} />
+      <EjeTematicoDetails ejeTematico={ejeTematico} /> 
 
       <EjeTematicoObjetivos 
         ejeTematicoId={ejeTematico?.id}

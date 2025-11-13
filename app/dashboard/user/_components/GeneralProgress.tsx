@@ -1,9 +1,9 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card' 
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'  
 import { BarChart, BarChartDataType } from '@/src/components/ui/charts/BarChart'
 
-interface GeneralProgressProps {
+interface GeneralProgressProps { 
   chartData:  BarChartDataType ;
 }
 

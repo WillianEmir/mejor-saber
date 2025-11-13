@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'
-import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar'
 import { Medal, User } from 'lucide-react'
 import { RankingBySchoolType } from '../_lib/ranking.schema'
 
@@ -12,7 +12,7 @@ export default function RankingBySchool({generalRanking}: RankingBySchoolProps) 
     <Card className="mb-8">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-center">Top 5 Estudiantes - Puntaje General</CardTitle>
-      </CardHeader>
+      </CardHeader> 
       <CardContent>
         <ul className="space-y-4">
           {generalRanking.slice(0, 5).map((user, index) => (
@@ -25,8 +25,8 @@ export default function RankingBySchool({generalRanking}: RankingBySchoolProps) 
                   />
                 )}
                 <span className={`text-xl font-bold ${index >= 3 && "ml-12"}`}>{index + 1}</span>
-                <Avatar>
-                  <AvatarImage src={user.avatar || undefined} alt={user.name || ""} />
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={user.image || undefined} alt={user.name || ""} />
                   <AvatarFallback>
                     <User className="h-6 w-6" />
                   </AvatarFallback>

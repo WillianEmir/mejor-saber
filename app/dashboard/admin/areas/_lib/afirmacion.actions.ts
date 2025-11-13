@@ -20,7 +20,7 @@ export async function createOrUpdateAfirmacion(formData: FormData): Promise<Form
       message: 'Error de validación. Por favor, corrija los campos.',
       errors: validatedFields.error.flatten().fieldErrors,
     }
-  }
+  } 
 
   const { id, nombre, competenciaId } = validatedFields.data
 

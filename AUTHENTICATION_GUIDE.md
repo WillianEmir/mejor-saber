@@ -34,10 +34,10 @@ model User {
   email         String    @unique
   name          String?
   password      String  // <-- Aquí se guarda el hash de la contraseña
-  firstName     String?
+  name     String?
   lastName      String?
   isActived     Boolean   @default(false)
-  avatar        String?
+  image        String?
   phone         String?
   dateIsActived DateTime? @map("date_is_actived")
 

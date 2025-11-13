@@ -1,4 +1,4 @@
-import Contact from "@/src/components/landing/contact/Contact";
+import Contact from "@/app/(landingpage)/contacto/_components/Contact";
 
 export default function Contacto() {
   return ( 

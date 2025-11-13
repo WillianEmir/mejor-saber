@@ -13,7 +13,7 @@ import EjeTematicoSecciones from './eje-tematico-secciones/EjeTematicoSecciones'
 
 import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 
-interface EjeTematicoViewProps {
+interface EjeTematicoViewProps { 
   ejeTematico: EjeTematicoWithRelationsType
 }
 

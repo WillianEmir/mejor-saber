@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/src/components/dashboard/auth/ResetPasswordForm";
+import ResetPasswordForm from "@/app/auth/reset-password/_components/ResetPasswordForm";
 
 
 export default function Signin() { 

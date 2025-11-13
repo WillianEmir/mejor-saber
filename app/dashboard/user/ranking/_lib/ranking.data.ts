@@ -27,8 +27,8 @@ export async function getRankingBySchool (schoolId: string) : Promise<RankingByS
       const averageScore = student.simulacros.length > 0 ? totalScore / student.simulacros.length : 0;
       return {
         id: student.id,
-        name: `${student.firstName} ${student.lastName || ''}`.trim(),
-        avatar: student.avatar,
+        name: `${student.name} ${student.lastName || ''}`.trim(),
+        image: student.image,
         score: averageScore,
       };
     }).sort((a, b) => b.score - a.score);
@@ -67,8 +67,8 @@ export async function getRankingByArea (schoolId: string, areaId: string) : Prom
       const averageScore = areaSimulacros.length > 0 ? totalScore / areaSimulacros.length : 0;
       return {
         id: student.id,
-        name: `${student.firstName} ${student.lastName || ''}`.trim(),
-        avatar: student.avatar,
+        name: `${student.name} ${student.lastName || ''}`.trim(),
+        image: student.image,
         score: averageScore,
       };
     }).sort((a, b) => b.score - a.score);

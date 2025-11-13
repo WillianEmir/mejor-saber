@@ -1,27 +1,15 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-// import AdminschoolUsers from '@/src/components/dashboard/adminschool-users/AdminschoolUsers'
-// import { getUserBySchoolId } from '@/src/lib/data/user.data';
-import { getServerSession } from 'next-auth';
-import React from 'react'
+import { getSchoolSedes } from './_lib/data';
+import { getUsersBySchoolId } from './_lib/actions';
 
-export default async function page() {
+import UserManagement from './_components/UserManagement';
 
-  const session = await getServerSession(authOptions);
+export default async function SchoolUsersPage() {
 
-  const schoolId = session?.user?.schoolId;  
-
-  if (!schoolId) {
-    return <div>No se pudo obtener el ID de la escuela.</div>;
-  }
-
-  // const users = await getUserBySchoolId(schoolId);
+  const [users, sedes] = await Promise.all([ getUsersBySchoolId(), getSchoolSedes() ]);
 
   return (
-    <>
-      {/* <AdminschoolUsers
-        users={users}
-      /> */}
-      <h1>Hola Mundo</h1>
-    </>
-  )
+    <div className="p-4 md:p-8">
+      <UserManagement initialUsers={users} sedes={sedes} />
+    </div>
+  );
 }

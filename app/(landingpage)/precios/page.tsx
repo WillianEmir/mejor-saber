@@ -1,8 +1,8 @@
-import Prices from "@/app/(landingpage)/precios/components/Prices";
+import Precios from "@/app/(landingpage)/precios/components/Precios";
 
-export default function Precios() {
+export default function page() {
   return (
-    <Prices />
+    <Precios />
   )
 }
   

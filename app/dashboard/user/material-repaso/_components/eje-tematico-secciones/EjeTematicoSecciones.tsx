@@ -1,12 +1,12 @@
 import { CheckCircle2 } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/src/components/ui/accordion";
 
+import { SeccionWithRelationsType } from "@/app/dashboard/admin/contenidos-curriculares/_lib/seccion.schema";
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/src/components/ui/accordion";
 import ConceptosClave from "./ConceptosClave";
 import ActividadesRelacionar from "./ActividadesRelacionar";
 import ActividadesGrafico from "./ActividadesGrafico";
 import ActividadesIdentificar from "./ActividadesIdentificar";
-
-import { SeccionWithRelationsType } from "@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema";
 
 interface EjeTematicoSeccionesProps {  
   seccion: SeccionWithRelationsType; 

@@ -1,6 +1,6 @@
 ### Matemáticas
 
-Esta prueba evalúa las competencias para enfrentarse a situaciones que requieran el uso de herramientas matemáticas de alguna de estas tres categorías: Álgebra y cálculo, Geometría y Estadística.
+Esta prueba evalúa las competencias para enfrentarse a situaciones que requieran el uso de herramientas matemáticas de alguna de estas tres categorías: Álgebra y cálculo, Geometría y Estadística. 
 
 - Competencias
     - **Interpretación y representación**

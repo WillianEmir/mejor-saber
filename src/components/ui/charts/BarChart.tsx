@@ -20,7 +20,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ChartDataLabels
+  ChartDataLabels 
 )
 
 export interface BarChartDataType {
@@ -77,7 +77,7 @@ export const BarChart = ({ data, options }: BarChartProps) => {
         color: 'black',
       }
     },
-    scales: {
+    scales: {      
       y: {
         beginAtZero: true,
         ticks: {

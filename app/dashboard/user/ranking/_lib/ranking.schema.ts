@@ -1,6 +1,6 @@
 export type RankingBySchoolType = {
   id: string;
   name: string;
-  avatar?: string | null;
+  image?: string | null;
   score: number;
 };

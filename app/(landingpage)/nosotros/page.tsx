@@ -1,9 +1,9 @@
-import About from "@/app/(landingpage)/nosotros/components/About"
+import Nosotros from "@/app/(landingpage)/nosotros/components/Nosotros"
 
-export default function Nosotros() {
+export default function page() {
   return (
     <>
-      <About />
+      <Nosotros />
     </>
   )
 }

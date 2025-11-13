@@ -7,7 +7,7 @@
   - You are about to drop the column `name` on the `users` table. All the data in the column will be lost.
   - You are about to drop the column `school` on the `users` table. All the data in the column will be lost.
   - You are about to drop the `ejetematicos` table. If the table is not empty, all the data it contains will be lost.
-  - Made the column `firstName` on table `users` required. This step will fail if there are existing NULL values in that column.
+  - Made the column `name` on table `users` required. This step will fail if there are existing NULL values in that column.
 
 */
 -- DropForeignKey
@@ -42,7 +42,7 @@ ADD COLUMN     "department" TEXT,
 ADD COLUMN     "idDocument" TEXT,
 ADD COLUMN     "is_active" BOOLEAN NOT NULL DEFAULT false,
 ADD COLUMN     "school_id" TEXT,
-ALTER COLUMN "firstName" SET NOT NULL;
+ALTER COLUMN "name" SET NOT NULL;
 
 -- DropTable
 DROP TABLE "public"."ejetematicos";

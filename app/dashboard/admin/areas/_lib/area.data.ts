@@ -49,38 +49,6 @@ export const getAreaById = async (id: string): Promise<Areatype | null> => {
   }
 };
 
-
-
-/**
- * Obtiene todas las áreas con sus relaciones completas.
- * @returns Un array de áreas con todas sus relaciones.
- */
-export const getAreasWithRelations = async (): Promise<AreaWithRelationsType[]> => {
-  try {
-    const areas = await prisma.area.findMany({
-      include: {
-        competencias: {
-          include: {
-            afirmaciones: {
-              include: {
-                evidencias: true,
-              },
-            },
-          },
-        },
-        contenidosCurriculares: true,
-      },
-      orderBy: {
-        nombre: 'asc',
-      },
-    });
-    return areas;
-  } catch (error) {
-    console.error('Error fetching areas with relations:', error);
-    throw new Error('No se pudieron obtener las áreas con sus relaciones.');
-  }
-};
-
 /**
  * Obtiene un área específica por su ID con todas sus relaciones.
  * @param id - El ID del área a obtener.
