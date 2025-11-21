@@ -1,12 +1,17 @@
-import AdminUsers from '@/src/components/dashboard/admin-users/AdminUsers';
-import { getUsers } from '@/src/lib/data/user.data';
 import { notFound } from 'next/navigation';
+
+import { getSchools } from '@/app/dashboard/admin/schools/_lib/school.data';
+import { getUsers } from '@/app/dashboard/admin/users/_lib/user.data';
+
+import UsersList from '@/app/dashboard/admin/users/_components/UsersList';
 
 export default async function AdminUsersPage() {
   
   const users = await getUsers();
+  const schools = await getSchools();
   
   if(!users) notFound()
   
-  return <AdminUsers users={users} />;
+  return <UsersList users={users} schools={schools} />;
 }
+ 

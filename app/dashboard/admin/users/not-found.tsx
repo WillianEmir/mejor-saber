@@ -27,7 +27,7 @@ export default function NotFound() {
         />
 
         <p className="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
-          Up's, al parecer no hay usuarios registrados en el sistema.
+          Up&apos;s, al parecer no hay usuarios registrados en el sistema.
         </p>
 
         <Link

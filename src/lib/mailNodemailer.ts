@@ -1,7 +1,7 @@
-import nodemailer from "nodemailer";
+import nodemailer from "nodemailer"; 
 
 // Create a test account or replace with real credentials.
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
   host: "sandbox.smtp.mailtrap.io",
   port: 2525,
   secure: false, // true for 465, false for other ports

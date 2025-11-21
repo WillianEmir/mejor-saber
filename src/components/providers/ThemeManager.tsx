@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect } from 'react' 
+import { useEffect } from 'react'  
 import { useThemeStore } from '@/src/store/theme.store'
 
 export function ThemeManager() {
+
   const { theme } = useThemeStore()
 
   useEffect(() => {

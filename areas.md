@@ -1,6 +1,6 @@
 ### Matemáticas
 
-Esta prueba evalúa las competencias para enfrentarse a situaciones que requieran el uso de herramientas matemáticas de alguna de estas tres categorías: Álgebra y cálculo, Geometría y Estadística.
+Esta prueba evalúa las competencias para enfrentarse a situaciones que requieran el uso de herramientas matemáticas de alguna de estas tres categorías: Álgebra y cálculo, Geometría y Estadística. 
 
 - Competencias
     - **Interpretación y representación**
@@ -81,7 +81,7 @@ Esta prueba evalúa las competencias para enfrentarse a situaciones que requiera
         - Cambia gráficas de barras a tablas de doble entrada.
         - Reconoce e interpreta, según el contexto, el significado de promedio simple, moda, mayor, menor, máximo y mínimo.
     - **Nivel 3: Punaje entre 51 - 70**
-        - Selecciona la gráfica (que puede ser de doble entrada correspondiente a la información de una tabla, o a partir de verbalizaciones (características de crecimiento o decrecimiento deseadas), teniendo en cuenta para la selección la escala, el tipo de variable y el tipo de gráfica.
+        - Selecciona la gráfica (que puede ser de doble entrada) correspondiente a la información de una tabla, o a partir de verbalizaciones (características de crecimiento o decrecimiento deseadas), teniendo en cuenta para la selección la escala, el tipo de variable y el tipo de gráfica.
         - Compara información gráfica que requiere algunas manipulaciones aritméticas.
         - Señala información representada en formatos no convencionales (mapas o infografías).
         - Reconoce errores ocurridos al realizar una trasformación entre diferentes tipos de registro.

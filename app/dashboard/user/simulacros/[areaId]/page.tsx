@@ -1,41 +1,26 @@
-import SimulacrumArea from '@/src/components/dashboard/simulacrum/SimulacrumArea';
-import prisma from '@/src/lib/prisma';
 import { notFound } from 'next/navigation';
 
-async function getAreaById(id: string) {
-  const area = await prisma.area.findUnique({
-    where: {
-      id: id,
-    },
-    include: {
-      competencias: true,
-    },
-  }); 
+import { getAreaCompetencias } from '@/app/dashboard/admin/areas/_lib/area.data';
 
-  if (!area) {
-    notFound();
-  }
+import SimulacroCompetenciasList from '@/app/dashboard/user/simulacros/_components/SimulacroCompetenciasList';
 
-  return area;
-}
-
-interface pageProps {
+interface pageProps { 
   params: Promise<{ 
-    areaId: string
+    areaId: string 
   }>
 }
 
 export default async function Page({ params }: pageProps) {
 
+  // Obtiene el Id del área desde la url
   const {areaId} = await params;
-
-  const area = await getAreaById(areaId);
+  const area = await getAreaCompetencias(areaId);
 
   if(!area) notFound() 
 
   return (
     <>
-      <SimulacrumArea area={area} />
+      <SimulacroCompetenciasList area={area} />
     </>
   );
 }

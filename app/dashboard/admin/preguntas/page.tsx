@@ -1,7 +1,7 @@
-import AdminPreguntas from '@/src/components/dashboard/admin-preguntas/AdminPreguntas'
-import { getAreasWithRelations } from '@/src/lib/data/areas.data'
-import { getContenidosWithRelations } from '@/src/lib/data/ContenidosCurriculares.data'
-import { getPreguntasCount, getPreguntasWithRelations } from '@/src/lib/data/preguntas.data'
+import { getContenidosWithRelations } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.data'
+import { getAreasWithRelations, getPreguntasCount, getPreguntasWithRelations } from '@/app/dashboard/admin/preguntas/_lib/pregunta.data'
+
+import PreguntasList from '@/app/dashboard/admin/preguntas/_components/PreguntasList' 
 
 interface pageProps {
   searchParams: Promise<{
@@ -13,7 +13,7 @@ interface pageProps {
   }>
 }
 
-export default async function page({ searchParams }: pageProps) {
+export default async function PreguntasPage({ searchParams }: pageProps) {
 
   const { page, areaId, competenciaId, afirmacionId, evidenciaId } = await searchParams;
 
@@ -35,12 +35,14 @@ export default async function page({ searchParams }: pageProps) {
 
   const totalPages = Math.ceil(preguntasCount / ITEMS_PER_PAGE);
 
-  const areas = await getAreasWithRelations()
-  const contenidosCurriculares = await getContenidosWithRelations()
+  const [areas, contenidosCurriculares] = await Promise.all([
+    getAreasWithRelations(),
+    getContenidosWithRelations(),
+  ]);
 
   return (
     <>
-      <AdminPreguntas
+      <PreguntasList
         preguntas={preguntas}
         totalPages={totalPages}
         currentPage={currentPage}

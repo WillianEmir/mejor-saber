@@ -1,14 +1,14 @@
 
-import * as React from "react"
-
-import { cn } from "@/src/lib/utils"
+import * as React from "react" 
+ 
+import { cn } from "@/src/lib/utils.client"
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
     <div className="relative w-full overflow-auto">
       <table
         ref={ref}
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn("w-full caption-bottom text-sm text-slate-800 dark:text-neutral-light", className)}
         {...props}
       />
     </div>
@@ -18,14 +18,14 @@ Table.displayName = "Table"
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+    <thead ref={ref} className={cn("[&_tr]:border-b border-slate-400 dark:border-neutral-light", className)} {...props} />
   )
 )
 TableHeader.displayName = "TableHeader"
 
 const TableBody = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />
+    <tbody ref={ref} className={cn("[&_tr:last-child]:border-0 border-slate-400 dark:border-neutral-light", className)} {...props} />
   )
 )
 TableBody.displayName = "TableBody"
@@ -35,7 +35,7 @@ const TableFooter = React.forwardRef<HTMLTableSectionElement, React.HTMLAttribut
     <tfoot
       ref={ref}
       className={cn(
-        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0 border-slate-400 dark:border-neutral-light",
         className
       )}
       {...props}
@@ -49,7 +49,7 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
     <tr
       ref={ref}
       className={cn(
-        "border-b transition-colors hover:bg-muted data-[state=selected]:bg-muted",
+        "border-b border-slate-400 dark:border-neutral-light transition-colors hover:bg-muted data-[state=selected]:bg-muted",
         className
       )}
       {...props}
@@ -63,7 +63,7 @@ const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<
     <th
       ref={ref}
       className={cn(
-        "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+        "h-12 px-4 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}

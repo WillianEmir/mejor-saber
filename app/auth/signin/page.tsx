@@ -1,8 +1,8 @@
-import SignInForm from '@/src/components/dashboard/auth/SignInForm'
+import SignInForm from '@/app/auth/signin/_components/SignInForm'
 
 export default function Signin() {
   return (
     <SignInForm />
-  )
+  ) 
 }
  

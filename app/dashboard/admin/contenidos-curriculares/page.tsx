@@ -1,12 +1,17 @@
-import ContenidosCurricularesList from '@/src/components/dashboard/admin-contenidos/contenidos-list/ContenidosCurricularesList';
-import { getAreas } from '@/src/lib/data/areas.data';
-import { getContenidosWithRelations } from '@/src/lib/data/ContenidosCurriculares.data';
-import { Areatype } from '@/src/lib/schemas/area.schema';
+import { getAreas } from '@/app/dashboard/admin/areas/_lib/area.data';
+import { getContenidosWithRelations } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.data';
+
+import ContenidosCurricularesList from '@/app/dashboard/admin/contenidos-curriculares/_components/contenidos/ContenidosCurricularesList';
+import { notFound } from 'next/navigation';
 
 export default async function page() {
 
-  const areas: Areatype[] = await getAreas();
-  const contenidosCurriculares = await getContenidosWithRelations();  
+  const [areas, contenidosCurriculares] = await Promise.all([
+    getAreas(),
+    getContenidosWithRelations(),
+  ]);
+
+  if(!areas || !contenidosCurriculares) notFound()
 
   return (
     <>
@@ -14,6 +19,6 @@ export default async function page() {
         areas={areas}
         contenidosCurriculares={contenidosCurriculares} 
       />
-    </>
+    </> 
   )
 }

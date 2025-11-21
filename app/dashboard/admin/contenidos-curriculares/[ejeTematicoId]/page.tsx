@@ -1,7 +1,8 @@
-import EjeTematicoView from '@/src/components/dashboard/admin-contenidos/eje-tematico-view/EjeTematicoView'
-import { getEjeTematicodwithRelations } from '@/src/lib/data/ejeTematico.data'
 import { notFound } from 'next/navigation'
-import React from 'react'
+
+import { getEjeTematicodwithRelations } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.data'
+
+import EjeTematicoView from '@/app/dashboard/admin/contenidos-curriculares/_components/ejes/EjeTematicoView'
 
 interface pageProps {
   params: Promise<{

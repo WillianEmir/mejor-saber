@@ -1,12 +1,20 @@
 import { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+import GoogleProvider from "next-auth/providers/google"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+
 import * as bcrypt from "bcrypt";
 import { z } from "zod";
 import prisma from "@/src/lib/prisma";
 
-
 export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -28,13 +36,17 @@ export const authOptions: AuthOptions = {
             where: { email },
           });
 
-          if (!user) {
+          if (!user || !user.password) {
             return null;
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
+            await prisma.user.update({
+              where: { id: user.id },
+              data: { lastLogin: new Date() },
+            });
             return user;
           }
         }
@@ -50,42 +62,19 @@ export const authOptions: AuthOptions = {
     signIn: "/auth/signin",
   },
   callbacks: {
-    async jwt({ token, user }) { 
+    async jwt({ token, user }) {
       if (user) {
-        return {
-          ...token,
-          id: user.id,
-          role: user.role,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          avatar: user.avatar,
-          idDocument: user.idDocument,
-          phone: user.phone,
-          address: user.address,
-          department: user.department,
-          city: user.city,
-          schoolId: user.schoolId,
-          schoolSedeId: user.schoolSedeId,
-          degree: user.degree,
-        };
+        token.id = user.id;
+        token.schoolId = user.schoolId;
+        token.role = user.role
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token) {
+      if (session.user && token.id) {
         session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.firstName = token.firstName;
-        session.user.lastName = token.lastName;
-        session.user.avatar = token.avatar;
-        session.user.idDocument = token.idDocument;
-        session.user.phone = token.phone;
-        session.user.address = token.address;
-        session.user.department = token.department;
-        session.user.city = token.city;
         session.user.schoolId = token.schoolId;
-        session.user.schoolSedeId = token.schoolSedeId;
-        session.user.degree = token.degree;
+        session.user.role = token.role
       }
       return session;
     },
