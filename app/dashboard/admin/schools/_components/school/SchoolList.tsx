@@ -20,7 +20,7 @@ import { MoreVertical } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/src/components/ui/dropdown-menu';
 
 interface AdminSchoolsProps {
-  schools: SchoolWithSedesType[];
+  schools: SchoolWithSedesType[]; 
 }
 
 export default function SchoolList({ schools }: AdminSchoolsProps) {

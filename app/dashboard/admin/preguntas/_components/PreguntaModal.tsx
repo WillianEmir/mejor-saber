@@ -3,7 +3,7 @@
 import { useEffect, useTransition, useState, Fragment } from 'react'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
-import { CldUploadWidget } from 'next-cloudinary'
+import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { UploadCloud } from 'lucide-react'
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
 import { z } from 'zod'
@@ -22,6 +22,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/ca
 import { Checkbox } from '@/src/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
+import Image from 'next/image'
 
 type PreguntaFormType = Omit<z.infer<typeof PreguntaSchema>, 'ejesTematicos'> & {
   areaId: string;
@@ -147,7 +148,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
         contenidoId: initialContenidoId,
       });
     }
-  }, [isOpen, pregunta, areas, form]);
+  }, [isOpen, pregunta, areas, form, numOpciones]);
 
   const onSubmit = (data: PreguntaFormType) => {
 
@@ -161,7 +162,18 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
     }
 
     startTransition(async () => {
-      const { areaId, competenciaId, afirmacionId, contenidoId, ...rest } = data;
+
+      const rest = {
+        id: data.id,
+        contexto: data.contexto,
+        imagen: data.imagen,
+        enunciado: data.enunciado,
+        groupFlag: data.groupFlag,
+        opciones: data.opciones,
+        evidenciaId: data.evidenciaId,
+        ejesTematicos: data.ejesTematicos
+      }
+
       // Filter out empty image URLs if isImage is false
       const processedOpciones = rest.opciones.map(op => ({
         ...op,
@@ -260,7 +272,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                     </div>
                   </div>
                 </div>
-                
+
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6">
                     {editMode && <input type="hidden" {...form.register('id')} />}
@@ -305,7 +317,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                 <div className="text-center">
                                   {field.value ? (
                                     <div>
-                                      <img src={field.value} alt="Vista previa de la imagen" className="mx-auto h-48 w-auto rounded-md" />
+                                      <Image src={field.value} alt="Vista previa de la imagen" className="mx-auto h-48 w-auto rounded-md" width={192} height={192} />
                                       {!isViewMode && (
                                         <Button type="button" variant="destructive" size="sm" className="mt-4" onClick={() => field.onChange('')}>
                                           Quitar imagen
@@ -315,8 +327,8 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                   ) : (
                                     <CldUploadWidget
                                       uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-                                      onSuccess={(result: any) => {
-                                        if (!isViewMode) field.onChange(result.info.secure_url)
+                                      onSuccess={(results: CloudinaryUploadWidgetResults) => {
+                                        if (!isViewMode && results.event === 'success' && typeof results.info !== 'string' && results.info) field.onChange(results.info.secure_url)
                                       }}
                                     >
                                       {({ open }) => (
@@ -414,7 +426,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                                 <div className="w-full">
                                                   {imageField.value ? (
                                                     <div className="mt-2 text-center">
-                                                      <img src={imageField.value} alt={`Opción ${String.fromCharCode(65 + index)}`} className="mx-auto h-40 w-auto rounded-md object-contain" />
+                                                      <Image src={imageField.value} alt={`Opción ${String.fromCharCode(65 + index)}`} className="mx-auto h-40 w-auto rounded-md object-contain" width={160} height={160} />
                                                       {!isViewMode && (
                                                         <Button type="button" variant="destructive" size="sm" className="mt-2" onClick={() => imageField.onChange(undefined)}>
                                                           Quitar imagen
@@ -425,8 +437,8 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                                     <div className="mt-2 flex justify-center rounded-lg border border-dashed border-border px-6 py-10">
                                                       <CldUploadWidget
                                                         uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-                                                        onSuccess={(result: any) => {
-                                                          if (!isViewMode) imageField.onChange(result.info.secure_url)
+                                                        onSuccess={(results: CloudinaryUploadWidgetResults) => {
+                                                          if (!isViewMode && results.event === 'success' && typeof results.info !== 'string' && results.info) imageField.onChange(results.info.secure_url)
                                                         }}
                                                       >
                                                         {({ open }) => (

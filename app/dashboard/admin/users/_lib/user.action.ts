@@ -59,17 +59,10 @@ export async function upsertUser(formData: FormData): Promise<FormState> {
 
     revalidatePath('/dashboard/admin/users');
     return { success: true, message: id ? 'Usuario actualizado exitosamente.' : 'Usuario creado exitosamente.' };
-  } catch (e: any) {
-    if (e.code === 'P2002' && e.meta?.target?.includes('email')) {
-      return {
-        success: false,
-        message: 'El correo electrónico ya está en uso.',
-        errors: { email: ['El correo electrónico ya está en uso.'] },
-      }; 
-    }
+  } catch (e) {
     return {
       success: false,
-      message: 'Ocurrió un error inesperado.',
+      message: `Ocurrió un error inesperado. ${e}`,
     };
   }
 }
@@ -85,6 +78,6 @@ export async function deleteUser(id: string): Promise<FormState> {
     revalidatePath('/dashboard/admin/users');
     return { success: true, message: 'Usuario eliminado exitosamente.' };
   } catch (e) {
-    return { success: false, message: 'Error de base de datos: No se pudo eliminar el usuario.' };
+    return { success: false, message: `Error de base de datos: No se pudo eliminar el usuario. ${e}` };
   }
 }

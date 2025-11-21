@@ -96,7 +96,7 @@ export default function EvidenciaProgress({ evidenciaProgress, areaAverages, com
       x: {
         beginAtZero: true,
         ticks: {
-          callback: function (value: any) {
+          callback: function (value: number | string) {
             return value + '%'
           },
         },

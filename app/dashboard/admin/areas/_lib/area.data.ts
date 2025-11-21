@@ -1,6 +1,6 @@
 
 import prisma from '@/src/lib/prisma';
-import { AreaCompetenciasType, AreaWithRelationsType, Areatype, MaterialRepasoType } from './area.schema';
+import { AreaCompetenciasType, AreaWithRelationsType, Areatype } from './area.schema';
 
 // Obtiene todas las áreas, sin relaciones.
 export const getAreas = async (): Promise<Areatype[]> => {

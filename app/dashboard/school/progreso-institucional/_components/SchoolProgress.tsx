@@ -6,7 +6,7 @@ import SchoolEvidenciaProgress from "./SchoolEvidenciaProgress";
 import SchoolNivelDesempenoProgress from "./SchoolNivelesDesempeno";
 import SchoolCompetenciaProgress from "./SchoolCompetenciaProgress";
 
-const SchoolTabs = async () => {
+const SchoolTabs = async () => { 
   const schoolAreaProgressData = await getSchoolAreaProgress();
   const { competenciaProgress, areaAverages } = await getSchoolCompetenciaProgress();
   const { evidenciaProgress } = await getSchoolEvidenciaProgress();

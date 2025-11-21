@@ -1,8 +1,24 @@
 import prisma from "@/src/lib/prisma";
-import { MaterialRepasoType } from "@/app/dashboard/admin/areas/_lib/area.schema";
+import { EjeTematicoConProgreso, MaterialRepasoType } from "@/app/dashboard/admin/areas/_lib/area.schema";
+import { TipoActividadInteractiva } from "@/src/generated/prisma";
+
+type UniqueItemsType = {
+  id: string;
+  nombre: string;
+  createdAt: Date;
+  updatedAt: Date;
+  imagen: string | null;
+  seccionId: string;
+  video?: string | null;
+  descripcion?: string;
+  ejemplo?: string | null;
+  tipo?: TipoActividadInteractiva;
+  match?: string;
+  retroalimentacion?: string;
+}
 
 // Obtiene las Áreas de repaso con el progreso alcanzado en cada Eje Temático
-export async function getMaterialRepasoByUserId(userId: string): Promise<MaterialRepasoType[]> { 
+export async function getMaterialRepasoByUserId(userId: string): Promise<MaterialRepasoType[]> {
 
   try {
     const areas = await prisma.area.findMany({
@@ -28,7 +44,7 @@ export async function getMaterialRepasoByUserId(userId: string): Promise<Materia
     });
 
     // Helper function to get unique items
-    const getUniqueItems = (arr: any[]) => [...new Map(arr.map(item => [item.id, item])).values()];
+    const getUniqueItems = (arr: UniqueItemsType[]) => [...new Map(arr.map(item => [item.id, item])).values()];
 
     // Calculate progress for each EjeTematico
     for (const area of areas) {
@@ -41,7 +57,7 @@ export async function getMaterialRepasoByUserId(userId: string): Promise<Materia
           const totalItems = uniqueSubTemas.length + uniqueActividades.length;
 
           if (totalItems === 0) {
-            (eje as any).progress = 0;
+            (eje as EjeTematicoConProgreso).progress = 0;
             continue;
           }
 
@@ -62,7 +78,7 @@ export async function getMaterialRepasoByUserId(userId: string): Promise<Materia
           });
 
           const totalCompleted = completedSubTemas + completedActividades;
-          (eje as any).progress = Math.round((totalCompleted / totalItems) * 100);
+          (eje as EjeTematicoConProgreso).progress = Math.round((totalCompleted / totalItems) * 100);
         }
       }
     }
@@ -146,7 +162,7 @@ export async function getMaterialPersonalizadoByUserId(userId: string): Promise<
 
 
     // Helper function to get unique items
-    const getUniqueItems = (arr: any[]) => [...new Map(arr.map(item => [item.id, item])).values()];
+    const getUniqueItems = (arr: UniqueItemsType[]) => [...new Map(arr.map(item => [item.id, item])).values()];
 
     // 4. Calcular el progreso para los ejes temáticos filtrados
     for (const area of areasWithContent) {
@@ -159,7 +175,7 @@ export async function getMaterialPersonalizadoByUserId(userId: string): Promise<
           const totalItems = uniqueSubTemas.length + uniqueActividades.length;
 
           if (totalItems === 0) {
-            (eje as any).progress = 0;
+            (eje as EjeTematicoConProgreso).progress = 0;
             continue;
           }
 
@@ -180,7 +196,7 @@ export async function getMaterialPersonalizadoByUserId(userId: string): Promise<
           });
 
           const totalCompleted = completedSubTemas + completedActividades;
-          (eje as any).progress = Math.round((totalCompleted / totalItems) * 100);
+          (eje as EjeTematicoConProgreso).progress = Math.round((totalCompleted / totalItems) * 100);
         }
       }
     }

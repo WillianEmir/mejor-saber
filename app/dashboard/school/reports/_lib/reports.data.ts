@@ -77,9 +77,19 @@ export type StudentReport = {
   }[];
 };
 
+type whereClauseType = {
+  schoolId?: string;
+  role?: 'USER';
+  schoolSedeId?: string;
+  degree?: string | { not: null };
+  id?: string;
+}
+
 export async function getSchoolStudentReportsData(schoolId: string, sedeId?: string, degree?: string, studentId?: string): Promise<StudentReport[]> {
+  
+  
   // 1. Get filtered students
-  const whereClause: any = { schoolId: schoolId, role: 'USER' };
+  const whereClause: whereClauseType = { schoolId, role: 'USER' };
   if (sedeId && sedeId !== 'all') whereClause.schoolSedeId = sedeId;
   if (degree && degree !== 'all') whereClause.degree = degree;
   if (studentId && studentId !== 'all') whereClause.id = studentId;
@@ -221,9 +231,10 @@ export async function getSchoolEvidenceReportsChartData(schoolId: string, sedeId
 }
 
 
-export async function getSchoolEvidenceReportsData(schoolId: string, sedeId?: string, degree?: string, studentId?: string): Promise<EvidenceReportData[]> {
+export async function getSchoolEvidenceReportsData(schoolId: string, sedeId?: string, degree?: string, studentId?: string): Promise<EvidenceReportData[]> {  
+  
   // 1. Get filtered students
-  const whereClause: any = { schoolId: schoolId, role: 'USER' };
+  const whereClause: whereClauseType = { schoolId: schoolId, role: 'USER' };
   if (sedeId && sedeId !== 'all') whereClause.schoolSedeId = sedeId;
   if (degree && degree !== 'all') whereClause.degree = degree;
   if (studentId && studentId !== 'all') whereClause.id = studentId;
@@ -274,7 +285,9 @@ export async function getSchoolEvidenceReportsData(schoolId: string, sedeId?: st
   if (allSimulacroPreguntas.length === 0) return [];
 
   // 3. Process data in memory
-  const simulacrosByUser: { [userId: string]: any[] } = {};
+  type SimulacroPreguntaWithIncludes = typeof allSimulacroPreguntas[number];
+  const simulacrosByUser: { [userId: string]: SimulacroPreguntaWithIncludes[] } = {};
+
   allSimulacroPreguntas.forEach(p => {
     const userId = p.simulacro.userId;
     if (!simulacrosByUser[userId]) {
@@ -374,7 +387,7 @@ export async function getSchoolCompetencyReportsChartData(schoolId: string, sede
 }
 
 export async function getSchoolCompetencyReportsData(schoolId: string, sedeId?: string, degree?: string, studentId?: string): Promise<CompetencyReportData[]> {
-  const whereClause: any = {
+  const whereClause: whereClauseType = {
     schoolId: schoolId,
     role: 'USER'
   };
@@ -433,8 +446,8 @@ export async function getSchoolCompetencyReportsData(schoolId: string, sedeId?: 
         simulacrosByUser[s.userId].push(s);
       }
 
-      let firstSimulacroScores: number[] = [];
-      let lastSimulacroScores: number[] = [];
+      const firstSimulacroScores: number[] = [];
+      const lastSimulacroScores: number[] = [];
 
       for (const userId in simulacrosByUser) {
         const userSimulacros = simulacrosByUser[userId];
@@ -502,7 +515,7 @@ export async function getSchoolReportsData(schoolId: string, sedeId?: string, st
   const areas = await prisma.area.findMany();
 
   // 2. Get all students for the school/sede/student
-  const whereClause: any = {
+  const whereClause: whereClauseType = {
     schoolId: schoolId,
     role: 'USER'
   };
@@ -562,8 +575,8 @@ export async function getSchoolReportsData(schoolId: string, sedeId?: string, st
         simulacrosByUser[s.userId].push(s);
       }
 
-      let firstSimulacroScores: number[] = [];
-      let lastSimulacroScores: number[] = [];
+      const firstSimulacroScores: number[] = [];
+      const lastSimulacroScores: number[] = [];
 
       for (const userId in simulacrosByUser) {
         const userSimulacros = simulacrosByUser[userId];
@@ -608,12 +621,11 @@ export async function getSchoolSedes(schoolId: string): Promise<SchoolSede[]> {
 }
 
 export async function getSchoolDegrees(schoolId: string, sedeId?: string): Promise<string[]> {
-  const whereClause: any = {
+    
+  const whereClause: whereClauseType = {
     schoolId,
     role: 'USER',
-    degree: { 
-      not: null
-    }
+    degree: { not: null }
   };
 
   if (sedeId && sedeId !== 'all') {
@@ -629,7 +641,8 @@ export async function getSchoolDegrees(schoolId: string, sedeId?: string): Promi
 }
 
 export async function getSedeStudents(sedeId: string, degree?: string): Promise<Pick<User, 'id' | 'name' | 'lastName'>[]> {
-  const whereClause: any = { schoolSedeId: sedeId, role: 'USER' };
+  const whereClause: whereClauseType = { schoolSedeId: sedeId, role: 'USER' };
+
   if (degree && degree !== 'all') {
     whereClause.degree = degree;
   }
@@ -642,7 +655,7 @@ export async function getSedeStudents(sedeId: string, degree?: string): Promise<
 }
 
 export async function getSchoolStudents(schoolId: string, degree?: string): Promise<Pick<User, 'id' | 'name' | 'lastName'>[]> {
-  const whereClause: any = { schoolId: schoolId, role: 'USER' };
+  const whereClause: whereClauseType = { schoolId: schoolId, role: 'USER' };
   if (degree && degree !== 'all') {
     whereClause.degree = degree;
   }

@@ -20,15 +20,16 @@ interface EjeTematicoObjetivosProps {
 
 export default function EjeTematicoObjetivos({ ejeTematicoId, objetivosAprendizaje}: EjeTematicoObjetivosProps) {
 
-  if(!ejeTematicoId) return (
-    <div className="text-center text-gray-500 dark:text-gray-400 py-8">No hay objetivos de aprendizaje.</div>
-  )
-
+  
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedObjetivo, setSelectedObjetivo] = useState<ObjetivoAprendizajeType | null>(null)
   const [objetivoToDeleteId, setObjetivoToDeleteId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
-
+  
+  if(!ejeTematicoId) return (
+    <div className="text-center text-gray-500 dark:text-gray-400 py-8">No hay objetivos de aprendizaje.</div>
+  )
+  
   const handleAdd = () => {
     setSelectedObjetivo(null)
     setIsModalOpen(true)

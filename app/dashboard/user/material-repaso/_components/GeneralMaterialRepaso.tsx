@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation';
 
-import { getMaterialRepasoByUserId } from '../_lib/progreso.data';
+import { getMaterialRepasoByUserId } from '../_lib/progreso.data'; 
 
 import MaterialRepaso from './MaterialRepaso';
 

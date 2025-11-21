@@ -2,7 +2,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "@/src/lib/prisma";
 import { getServerSession } from "next-auth";
 
-export const getSchoolAreaProgress = async () => { 
+export const getSchoolAreaProgress = async () => {
 
   const session = await getServerSession(authOptions);
   if (!session?.user?.schoolId) {
@@ -46,8 +46,10 @@ export const getSchoolAreaProgress = async () => {
         };
       }
 
-      const userSimulacros: { [key: string]: any[] } = {};
-      
+      const userSimulacros: {
+        [key: string]: { score: number | null; userId: string; createdAt: Date }[]
+      } = {};
+
       simulacros.forEach((s) => {
         if (!userSimulacros[s.userId]) {
           userSimulacros[s.userId] = [];
@@ -55,8 +57,8 @@ export const getSchoolAreaProgress = async () => {
         userSimulacros[s.userId].push(s);
       });
 
-      let firstScores = [];
-      let lastScores = [];
+      const firstScores = [];
+      const lastScores = [];
 
       for (const userId in userSimulacros) {
         const userSims = userSimulacros[userId];
@@ -149,7 +151,7 @@ export const getSchoolCompetenciaProgress = async () => {
         };
       }
 
-      const userSimulacros: { [key: string]: any[] } = {};
+      const userSimulacros: { [key: string]: { score: number | null; userId: string; createdAt: Date }[] } = {};
       simulacros.forEach((s) => {
         if (!userSimulacros[s.userId]) {
           userSimulacros[s.userId] = [];
@@ -157,8 +159,8 @@ export const getSchoolCompetenciaProgress = async () => {
         userSimulacros[s.userId].push(s);
       });
 
-      let firstScores = [];
-      let lastScores = [];
+      const firstScores = [];
+      const lastScores = [];
 
       for (const userId in userSimulacros) {
         const userSims = userSimulacros[userId];
@@ -207,9 +209,9 @@ export const getSchoolCompetenciaProgress = async () => {
   );
 
   return { competenciaProgress, areaAverages };
-}; 
+};
 
-export const getSchoolEvidenciaProgress = async () => { 
+export const getSchoolEvidenciaProgress = async () => {
   const session = await getServerSession(authOptions);
   if (!session?.user?.schoolId) {
     return { evidenciaProgress: [] };
@@ -307,7 +309,7 @@ export const getSchoolNivelesDesempeno = async () => {
         },
       });
 
-      const userSimulacros: { [key: string]: any[] } = {};
+      const userSimulacros: { [key: string]: { score: number | null; userId: string }[] } = {};
       simulacros.forEach((s) => {
         if (!userSimulacros[s.userId]) {
           userSimulacros[s.userId] = [];

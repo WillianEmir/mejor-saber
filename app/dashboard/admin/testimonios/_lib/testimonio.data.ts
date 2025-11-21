@@ -3,10 +3,19 @@ import { TestimonioType, UserForSelect } from "./testimonio.schema";
 
 const ITEMS_PER_PAGE = 10;
 
+type searchConditionType = {
+  OR: [
+    { user: { name: { contains: string; mode: "insensitive"; } } },
+    { user: { lastName: { contains: string; mode: "insensitive" } } },
+    { user: { email: { contains: string; mode: "insensitive" } } }
+  ]
+} | object
+
 // Obtiene todos los testimonios con datos del usuario asociado para el dashboard
-export async function getTestimonios( query: string | undefined, currentPage: number ): Promise<TestimonioType[]> {
-  const skip = (currentPage - 1) * ITEMS_PER_PAGE; 
-  const searchCondition: any = query ? {
+export async function getTestimonios(query: string | undefined, currentPage: number): Promise<TestimonioType[]> {
+  const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  const searchCondition: searchConditionType = query ? {
     OR: [
       { user: { name: { contains: query, mode: "insensitive" as const } } },
       { user: { lastName: { contains: query, mode: "insensitive" as const } } },
@@ -38,7 +47,7 @@ export async function getTestimonios( query: string | undefined, currentPage: nu
 }
 
 export async function getTestimoniosCount(query: string | undefined): Promise<number> {
-  const searchCondition: any = query ? {
+  const searchCondition: searchConditionType = query ? {
     OR: [
       { user: { name: { contains: query, mode: "insensitive" as const } } },
       { user: { lastName: { contains: query, mode: "insensitive" as const } } },
@@ -94,7 +103,7 @@ export async function getUsersForSelect(): Promise<UserForSelect[]> {
       },
       orderBy: {
         name: "asc",
-      }, 
+      },
     });
     return users;
   } catch (error) {

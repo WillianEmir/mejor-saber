@@ -33,7 +33,10 @@ export async function createOrUpdatePregunta(formData: FormData): Promise<FormSt
 
   const { id, ejesTematicos, opciones: rawOpciones, ...preguntaData } = validatedFields.data;
 
-  const opciones = rawOpciones.map(({ isImage, imageUrl, ...rest }) => rest);
+  const opciones = rawOpciones.map(({ isImage, imageUrl, ...rest }) => {
+    console.log(isImage, imageUrl);
+    return rest
+  });  
 
   try {
     if (id) {

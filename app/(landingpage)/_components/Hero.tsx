@@ -51,7 +51,7 @@ export default function Hero() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Button onClick={() => redirectByRole(session?.user?.role, router)}>
-                {isLoggedIn ? 'Ir al Dashboard' : 'Empezar Gratis Ahora'}
+                {isLoggedIn ? 'Ir al Dashboard' : 'Empieza Gratis Ahora'}
               </Button>
               <Link href="/#beneficios" className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                 Descubrir Beneficios <span aria-hidden="true">→</span>

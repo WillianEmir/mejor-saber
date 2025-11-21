@@ -115,7 +115,7 @@ export default function TopMenu() {
             {status === 'unauthenticated' && (
               <div className="flex items-center gap-2">
                 <Link href='/auth/signup'>
-                  <Button>Empezar Gratis</Button>
+                  <Button>Empieza Gratis</Button>
                 </Link>
                 <Link href='/auth/signin'>
                   <Button variant='outline'>Iniciar Sesión</Button>
@@ -127,7 +127,7 @@ export default function TopMenu() {
               <div className="flex items-center gap-4">
                 <span className="font-semibold text-foreground/90">{`Hola, ${user.name}`}</span>
                 <Button onClick={() => redirectByRole(session?.user?.role, router)}>
-                  {isLoggedIn ? 'Ir al Dashboard' : 'Empezar Gratis Ahora'}
+                  {isLoggedIn ? 'Ir al Dashboard' : 'Empieza Gratis Ahora'}
                 </Button>
                 <Button variant='outline' onClick={handleLogout}>
                   <LogOut className="h-5 w-5" />

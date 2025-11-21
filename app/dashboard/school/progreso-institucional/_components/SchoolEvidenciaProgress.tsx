@@ -98,7 +98,7 @@ export default function SchoolEvidenciaProgress({ evidenciaProgress, areaAverage
       x: {
         beginAtZero: true,
         ticks: {
-          callback: function (value: any) {
+          callback: function (value: string | number) {
             return value + '%'
           },
         },

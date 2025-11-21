@@ -1,8 +1,8 @@
 'use client'
 
+import { ActividadWithProgresoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/progresoActividad.schema'
 import { useState, useEffect, useRef } from 'react'
 
-import { ActividadWithProgresoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/actividadInteractiva.schema'
 
 interface RelacionarActividadProps {
   actividadesRelacionar: ActividadWithProgresoType[]
@@ -41,7 +41,7 @@ export default function ActividadesRelacionar({
     setHasMounted(true)
     setListA(shuffleArray(actividadesRelacionar))
     setListB(shuffleArray(actividadesRelacionar))
-  }, [])
+  }, [actividadesRelacionar])
 
   useEffect(() => {
     const initialPairs: Record<string, string> = {}
@@ -109,13 +109,14 @@ export default function ActividadesRelacionar({
 
     calculateLines()
     const resizeObserver = new ResizeObserver(calculateLines)
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current)
+    const currentContainerRef = containerRef.current
+    if (currentContainerRef) {
+      resizeObserver.observe(currentContainerRef)
     }
 
     return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current)
+      if (currentContainerRef) {
+        resizeObserver.unobserve(currentContainerRef)
       }
     }
   }, [completedPairs, hasMounted])
@@ -125,7 +126,7 @@ export default function ActividadesRelacionar({
     const isCompleted = completedPairs[id]
     const isMismatched = mismatchedPair?.some(item => item.list === list && item.id === id)
 
-    let base = 'p-4 border rounded-md cursor-pointer transition-colors duration-200 '
+    const base = 'p-4 border rounded-md cursor-pointer transition-colors duration-200 '
     if (isCompleted) return base + 'bg-green-100 dark:bg-green-900 border-green-300 cursor-not-allowed'
     if (isSelected) return base + 'bg-blue-100 dark:bg-blue-900 border-blue-400 ring-2 ring-blue-400'
     if (isMismatched) return base + 'bg-red-100 dark:bg-red-900 border-red-400'

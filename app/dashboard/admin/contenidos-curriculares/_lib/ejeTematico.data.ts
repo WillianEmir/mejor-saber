@@ -6,7 +6,7 @@ import prisma from '@/src/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 
-async function getUserId() {
+export async function getUserId() {
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) {
     throw new Error('Usuario no autenticado')

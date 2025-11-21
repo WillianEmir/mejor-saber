@@ -1,4 +1,5 @@
 import ReactPlayer from 'react-player'
+import Image from 'next/image'
 
 import { SubTemaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.schema'; 
 
@@ -48,7 +49,15 @@ export default function ConceptosClave({ subtema, progreso, handleSubTemaToggle,
                 {subtema.imagen && (
                   <div className="space-y-2">
                     <h5 className="font-semibold">Imagen</h5>
-                    <img src={subtema.imagen} alt={`Imagen para ${subtema.nombre}`} className="rounded-md object-cover w-full" />
+                    <div className="rounded-md overflow-hidden relative w-full h-64">
+                      <Image
+                        src={subtema.imagen}
+                        alt={`Imagen para ${subtema.nombre}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                   </div>
                 )}
                 {subtema.video && (

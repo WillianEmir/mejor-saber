@@ -22,7 +22,7 @@ import type { ContenidoWithRelationsType } from '@/app/dashboard/admin/contenido
 import type { EjeTematicoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 import { FormState } from '@/src/types'
 
-interface ContenidosCurricularesListProps {
+interface ContenidosCurricularesListProps { 
   areas: Areatype[]
   contenidosCurriculares: ContenidoWithRelationsType[]
 }

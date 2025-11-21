@@ -4,7 +4,7 @@ import prisma from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { ProgresoActividadInteractivaSchema } from "./progresoActividad.schema";
 
-export async function createOrUpdateProgresoActividad( formData: FormData ): Promise<FormState> {
+export async function createOrUpdateProgresoActividad(formData: FormData): Promise<FormState> {
 
   // 1. Extraer y validar los datos del formulario del lado del servidor
   const validatedFields = ProgresoActividadInteractivaSchema.safeParse({
@@ -37,6 +37,9 @@ export async function createOrUpdateProgresoActividad( formData: FormData ): Pro
       });
     }
   } catch (e) {
+    if (e instanceof Error) {
+      return { message: e.message, success: false };
+    }
     return {
       success: false,
       message: 'Error de base de datos: No se pudo procesar la solicitud.'
@@ -45,19 +48,22 @@ export async function createOrUpdateProgresoActividad( formData: FormData ): Pro
 
   const ejeTematicoId = formData.get('ejeTematicoId') as string;
   if (!ejeTematicoId) {
-    return { message: 'Error: El ID del eje temático es requerido.', success: false};
+    return { message: 'Error: El ID del eje temático es requerido.', success: false };
   }
 
   revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
-  return { message: id ? 'Progreso de la Actividad actualizado exitosamente.' : 'Progreso de la Actividad  creado exitosamente.', success: true};
+  return { message: id ? 'Progreso de la Actividad actualizado exitosamente.' : 'Progreso de la Actividad  creado exitosamente.', success: true };
 }
 
 export async function deleteProgresoActividad(id: string, ejeTematicoId: EjeTematicoType['id']): Promise<FormState> {
   try {
     await prisma.progresoActividad.delete({ where: { id } });
     revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
-    return { message: 'Progreso de la Actividad eliminado exitosamente.', success: true}
+    return { message: 'Progreso de la Actividad eliminado exitosamente.', success: true }
   } catch (e) {
-    return { message: 'Error de base de datos: No se pudo eliminar la actividad.', success: false};
+    if (e instanceof Error) {
+      return { message: e.message, success: false };
+    }
+    return { message: 'Error de base de datos: No se pudo eliminar la actividad.', success: false };
   }
 }

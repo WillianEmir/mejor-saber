@@ -15,11 +15,11 @@ interface SchoolCompetenciaProgressProps {
 
 export default function SchoolCompetenciaProgress({ competenciaProgress, areaAverages }: SchoolCompetenciaProgressProps) {
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
-  const [selectedCompetencia, setSelectedCompetencia] = useState<any>(null);
+  const [selectedCompetencia, setSelectedCompetencia] = useState<CompetenciaProgressType | undefined>(undefined);
 
   const handleAreaChange = (areaName: string) => {
     setSelectedArea(areaName);
-    setSelectedCompetencia(null); // Reset competencia when area changes
+    setSelectedCompetencia(undefined); // Reset competencia when area changes
   };
 
   const handleCompetenciaChange = (competenciaName: string) => {

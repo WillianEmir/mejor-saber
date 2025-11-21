@@ -55,7 +55,7 @@ export async function createOrUpdateSchool(formData: FormData): Promise<FormStat
     }
   } catch (e) {
     return {
-      message: 'Error de base de datos: No se pudo procesar la solicitud.',
+      message: `Error de base de datos: No se pudo procesar la solicitud. ${e}`,
       success: false,
     };
   }

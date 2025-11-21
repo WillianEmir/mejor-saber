@@ -85,7 +85,7 @@ export default function AfirmacionModal({ isOpen, onClose, competenciaId, afirma
             <input type="hidden" {...form.register('competenciaId')} />
 
             <FormField
-              control={form.control}
+              control={form.control} 
               name="nombre"
               render={({ field }) => (
                 <FormItem>

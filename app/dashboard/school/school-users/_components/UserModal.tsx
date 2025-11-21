@@ -10,17 +10,18 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
-import { SchoolSede, User } from '@/src/generated/prisma';
+import { SchoolSede } from '@/src/generated/prisma';
 import { UserSchoolModal, UserSchoolSchema } from '../_lib/schema';
 import { createOrUpdateUser } from '../_lib/actions';
+import { UserSchoolType } from '../_lib/school.schema';
 
 interface UserModalProps {
-  user?: User;
+  user?: UserSchoolType;
   schoolId: string;
   sedes: SchoolSede[];
   isOpen: boolean;
   onClose: () => void;
-}
+} 
 
 const gradeNumbers = ['9', '10', '11'];
 const gradeLetters = Array.from({ length: 12 }, (_, i) => String.fromCharCode('a'.charCodeAt(0) + i));

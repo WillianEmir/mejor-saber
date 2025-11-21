@@ -51,6 +51,7 @@ export async function signup(formData: FormData) : Promise<FormState> {
     };
     
   } catch (error) {
+    console.log(error);
     return {
       message: 'Error de base de datos: No se pudo procesar la solicitud.',
       success: false,

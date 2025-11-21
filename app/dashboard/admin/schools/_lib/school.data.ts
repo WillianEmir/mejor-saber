@@ -1,17 +1,16 @@
 'use server';
 
-import prisma from '@/src/lib/prisma';
+import prisma from '@/src/lib/prisma'; 
 
 export async function getSchools() {
   try {
     const schools = await prisma.school.findMany({
-      select: {
-        id: true,
-        nombre: true,
-      },
       orderBy: {
         nombre: 'asc',
-      }
+      },
+      include: {
+        sedes: true,
+      },
     });
     return schools;
   } catch (error) {

@@ -1,5 +1,6 @@
 import ReactPlayer from 'react-player'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/src/components/ui/accordion";
+import Image from 'next/image';
 import { Card, CardContent } from "@/src/components/ui/card";
 
 // Types
@@ -49,11 +50,15 @@ export default function EjeTematicoIntroduccion({ ejeTematico }: EjeTematicoIntr
                   {ejeTematico.imagen && (
                     <div>
                       <h3 className="font-semibold text-lg mb-2">Imagen de Referencia</h3>
-                      <img
-                        src={ejeTematico.imagen}
-                        alt={`Imagen para ${ejeTematico.nombre}`}
-                        className="rounded-lg object-cover w-full"
-                      />
+                      <div className="relative rounded-lg overflow-hidden w-full h-64">
+                        <Image
+                          src={ejeTematico.imagen}
+                          alt={`Imagen para ${ejeTematico.nombre}`}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 50vw"
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                     </div>
                   )}
                   {ejeTematico.video && (

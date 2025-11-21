@@ -7,15 +7,15 @@ export const AreaSchema = z.object({
   nombre: z.string({ error: 'El nombre es obligatorio.' }).trim().min(3, { message: 'El nombre del área debe tener al menos 3 caracteres.' }),
 });
 
-// Type para las áreas 
+// Type para las áreas  
 export type Areatype = Omit<Area, 'createdAt' | 'updatedAt'>;
 
 // Definición de tipos para el material de repaso con progreso
-type EjeTematicoConProgreso = EjeTematico & {
+export type EjeTematicoConProgreso = EjeTematico & {
   progress?: number;
 };
 
-type ContenidoCurricularConEjes = ContenidoCurricular & {
+export type ContenidoCurricularConEjes = ContenidoCurricular & {
   ejesTematicos: EjeTematicoConProgreso[];
 };
 

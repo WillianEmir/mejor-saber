@@ -11,13 +11,13 @@ interface AreaProgressProps {
 
 export default function AreaProgress({ chartData: initialChartData }: AreaProgressProps) {
 
+  const [selectedAreaName, setSelectedAreaName] = useState('all');
+
   if (!initialChartData) return (
     <div className="flex items-center justify-center h-full">
       <p>No hay datos para mostrar.</p>
     </div>
   )
-  
-  const [selectedAreaName, setSelectedAreaName] = useState('all');
 
   const handleAreaChange = (areaName: string) => {
     setSelectedAreaName(areaName);

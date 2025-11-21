@@ -6,7 +6,7 @@ import { notFound, useRouter } from 'next/navigation'
 import { deleteArea } from '@/app/dashboard/admin/areas/_lib/area.actions'
 import { deleteCompetencia } from '@/app/dashboard/admin/areas/_lib/competencia.actions'
 import { deleteAfirmacion } from '@/app/dashboard/admin/areas/_lib/afirmacion.actions'
-import { deleteEviencia } from '@/app/dashboard/admin/areas/_lib/evidencia.actions' 
+import { deleteEviencia } from '@/app/dashboard/admin/areas/_lib/evidencia.actions'
 
 import { toast } from 'sonner'
 import { Accordion } from "@/src/components/ui/accordion"
@@ -133,6 +133,7 @@ export default function AreaView({ area }: AreaViewProps) {
         onAddCompetencia={handleAddCompetencia}
         onEditArea={handleEditArea}
         onDeleteArea={() => openDialog(area.id, 'area')}
+        isPending={isPending}
       />
 
       <main className="px-4 sm:px-6 lg:px-8 py-6">
@@ -158,7 +159,7 @@ export default function AreaView({ area }: AreaViewProps) {
       </main>
 
       <AreaModal
-        isOpen={isAreaModalOpen} 
+        isOpen={isAreaModalOpen}
         onClose={() => setIsAreaModalOpen(false)}
         area={selectedArea}
       />

@@ -1,10 +1,11 @@
 import { Button } from "@/src/components/ui/Button"
 import { XMarkIcon } from "@heroicons/react/24/outline"
-import { CldUploadWidget } from "next-cloudinary"
+import { CldUploadWidget, type CloudinaryUploadWidgetResults } from "next-cloudinary"
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { FormState } from "@/src/types"
+import Image from "next/image"
 
 interface EjeTematicoImageProps {
   imageUrl: string | null | undefined
@@ -18,7 +19,7 @@ export default function UploadImage({ imageUrl, itemId, serverAction }: EjeTemat
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   
-  const handleSaveImage = () => {
+  const handleSaveImage = () => { 
     if (!newImageUrl) return
 
     startTransition(async () => {
@@ -39,12 +40,12 @@ export default function UploadImage({ imageUrl, itemId, serverAction }: EjeTemat
       <div className="flex items-center gap-4">
         {imageUrl && (
           <div className="relative h-32 w-32">
-            <img src={imageUrl} alt="Imagen actual" className="h-full w-full object-cover rounded-md" />
-          </div>
+            <Image src={imageUrl} alt="Imagen actual" className="h-full w-full object-cover rounded-md" width={128} height={128} />
+          </div> 
         )}
         {newImageUrl && (
           <div className="relative h-32 w-32">
-            <img src={newImageUrl} alt="Nueva imagen" className="h-full w-full object-cover rounded-md" />
+            <Image src={newImageUrl} alt="Nueva imagen" className="h-full w-full object-cover rounded-md" width={128} height={128} />
             <Button
               type="button"
               variant="destructive"
@@ -57,12 +58,12 @@ export default function UploadImage({ imageUrl, itemId, serverAction }: EjeTemat
           </div>
         )}
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-4"> 
         <CldUploadWidget
           uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-          onSuccess={(result: any) => {
-            if (result.event === 'success') {
-              setNewImageUrl(result.info.secure_url)
+          onSuccess={(results: CloudinaryUploadWidgetResults) => {
+            if (results.event === 'success' && typeof results.info !== 'string' && results.info) {
+              setNewImageUrl(results.info.secure_url)
             }
           }}
         >

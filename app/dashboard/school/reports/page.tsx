@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/ta
 import { getServerSession } from "next-auth";
 import ReportsGraph from "./_components/ReportsGraph";
 import ReportListArea from "./_components/ReportListArea";
-import { getSchoolSedes, getSchoolStudents } from "./_lib/reports.data";
+import { getSchoolSedes } from "./_lib/reports.data";
 
 export default async function SchoolReportsPage() {
   const session = await getServerSession(authOptions);

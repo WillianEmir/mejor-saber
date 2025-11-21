@@ -32,7 +32,7 @@ export async function updateUser(data: UpdateProfileType) {
   } catch (e) {
     return {
       error: {
-        message: 'Hubo un problema al actualizar el perfil de usuario.',
+        message: `Hubo un problema al actualizar el perfil de usuario.: ${e}`,
         success: false,
       },
     };

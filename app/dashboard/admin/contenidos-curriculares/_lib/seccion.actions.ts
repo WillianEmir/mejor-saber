@@ -62,6 +62,9 @@ export async function deleteSeccion(id: SeccionType['id'], ejeTematicoId: EjeTem
     revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`)
     return { message: 'Sección eliminada exitosamente.', success: true}
   } catch (e) {
+    if (e instanceof Error) {
+      return { message: e.message, success: false};
+    }
     return { message: 'Error de base de datos: No se pudo eliminar la sección.', success: false};
   }
 }

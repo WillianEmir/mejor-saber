@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { TestimonioType } from '@/app/dashboard/admin/testimonios/_lib/testimonio.schema'
 import { useCurrentUser } from '@/src/hooks/use-current-user'
 import { Button } from '@/src/components/ui/Button'
@@ -12,7 +11,7 @@ interface TestimonialsProps {
 }
 
 export default function Testimonials({ testimonios }: TestimonialsProps) {
-  const { data: session, status } = useCurrentUser()
+  const { status } = useCurrentUser()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
@@ -39,7 +38,7 @@ export default function Testimonials({ testimonios }: TestimonialsProps) {
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 dark:text-white sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-3">
-          {testimonios.slice(0, 4).map((testimonial, testimonialIdx) => (
+          {testimonios.slice(0, 4).map((testimonial) => (
             <figure
               key={testimonial.id}
               className="rounded-2xl bg-white dark:bg-gray-800/50 shadow-lg ring-1 ring-gray-900/5 p-8"

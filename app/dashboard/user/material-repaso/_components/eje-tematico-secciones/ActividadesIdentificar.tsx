@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent, useDroppable, useDraggable } from '@dnd-kit/core'
+import { ActividadWithProgresoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/progresoActividad.schema';
 
 // Types
-import { ActividadWithProgresoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/actividadInteractiva.schema'
 
 interface RelacionarActividadProps {
   actividadesIdentificar: ActividadWithProgresoType[]; 

@@ -7,7 +7,6 @@ import { PencilIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
 
 import { SubTemaSchema, SubTemaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.schema'
 import { createOrUpdateSubTema } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.actions'
-import { CldUploadButton } from '@/src/components/ui/CldUploadButton'
 
 import { Button } from '@/src/components/ui/Button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog'
@@ -65,12 +64,12 @@ export default function SubTemaModal({ isOpen, onClose, seccionId, ejeTematicoId
 
     const formData = new FormData()
     if (data.id) formData.append('id', data.id)
-    formData.append('nombre', data.nombre)
-    if (data.descripcion) formData.append('descripcion', data.descripcion)
-    if (data.video) formData.append('video', data.video)
-    if (data.ejemplo) formData.append('ejemplo', data.ejemplo)
+    formData.append('nombre', data.nombre ?? '')
+    if (data.descripcion) formData.append('descripcion', data.descripcion ?? '')
+    if (data.video) formData.append('video', data.video ?? '')
+    if (data.ejemplo) formData.append('ejemplo', data.ejemplo ?? '')
     formData.append('seccionId', data.seccionId)
-    formData.append('ejeTematicoId', data.ejeTematicoId)
+    formData.append('ejeTematicoId', data.ejeTematicoId!)
 
     startTransition(async () => {
       const result = await createOrUpdateSubTema(formData)

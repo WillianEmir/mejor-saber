@@ -6,8 +6,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { BarChart } from '@/src/components/ui/charts/BarChart';
 
-interface SchoolNivelDesempenoProgressProps { 
-  nivelesDesempenoData: any[];
+type NivelCount = {
+  nivel: string;
+  count: number;
+};
+
+type Niveles = {
+  first: NivelCount[];
+  last: NivelCount[];
+};
+
+type NivelesDesempenoDataItem = {
+  areaName: string;
+  niveles: Niveles;
+};
+
+type nivelesDesempenoDataType = NivelesDesempenoDataItem[];
+
+interface SchoolNivelDesempenoProgressProps {
+  nivelesDesempenoData: nivelesDesempenoDataType;
   areaAverages: { name: string; average: number }[];
 }
 
@@ -25,16 +42,16 @@ export default function SchoolNivelDesempenoProgress({ nivelesDesempenoData, are
     if (!areaData) return null;
 
     const chartData = {
-      labels: areaData.niveles.first.map((n: any) => n.nivel),
+      labels: areaData.niveles.first.map(n => n.nivel),
       datasets: [
         {
           label: 'Primer Simulacro',
-          data: areaData.niveles.first.map((n: any) => n.count),
+          data: areaData.niveles.first.map(n => n.count),
           backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
           label: 'Último Simulacro',
-          data: areaData.niveles.last.map((n: any) => n.count),
+          data: areaData.niveles.last.map(n => n.count),
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
         },
       ],

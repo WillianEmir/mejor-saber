@@ -40,7 +40,7 @@ export default function CTA() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
               <Button onClick={() => redirectByRole(session?.user?.role, router)}>
-                {isLoggedIn ? 'Ir al Dashboard' : 'Empezar Gratis Ahora'}
+                {isLoggedIn ? 'Ir al Dashboard' : 'Empieza Gratis Ahora'}
               </Button>
               <Link href="/precios" className="text-sm font-semibold leading-6 text-white">
                 Ver Precios <span aria-hidden="true">→</span>

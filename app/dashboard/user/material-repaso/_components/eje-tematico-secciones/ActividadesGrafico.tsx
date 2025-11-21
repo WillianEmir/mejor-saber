@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { ActividadWithProgresoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/progresoActividad.schema'
 
-import { ActividadWithProgresoType } from "@/app/dashboard/admin/contenidos-curriculares/_lib/actividadInteractiva.schema"
 
 interface ActividadesGraficoProps {
   actividadesGrafico: ActividadWithProgresoType[]
@@ -59,7 +59,7 @@ export default function ActividadesGrafico({
     const isButtonForTrue = option === 'true';
     const isCorrectButton = isCorrectAnswerTrue === isButtonForTrue;
 
-    let base = 'px-4 py-2 rounded-md font-semibold transition-colors duration-200 border w-28 text-center'
+    const base = 'px-4 py-2 rounded-md font-semibold transition-colors duration-200 border w-28 text-center'
 
     if (isCompleted) {
       return `${base} ${isCorrectButton ? 'bg-green-100 dark:bg-green-900 border-green-300 text-green-800 dark:text-green-200' : 'bg-gray-100 dark:bg-gray-800 border-gray-300 text-gray-500'} cursor-not-allowed`

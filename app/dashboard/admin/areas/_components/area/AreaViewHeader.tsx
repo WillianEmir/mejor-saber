@@ -9,14 +9,10 @@ interface AreaViewHeaderProps {
   onAddCompetencia: () => void
   onEditArea: () => void
   onDeleteArea: () => void
+  isPending: boolean
 }
 
-export default function AreaViewHeader({ 
-  areaName,
-  onAddCompetencia,
-  onEditArea,
-  onDeleteArea,
-}: AreaViewHeaderProps) {
+export default function AreaViewHeader({ areaName, onAddCompetencia, onEditArea, onDeleteArea, isPending }: AreaViewHeaderProps) {
   return (
     <div className='p-4 sm:p-6 lg:p-8'>
       <div className="mb-6">
@@ -51,7 +47,7 @@ export default function AreaViewHeader({
         </h2>
         <Button onClick={onAddCompetencia}>
           <Plus className='h-5 w-5 mr-2'/>
-          Añadir Competencia
+          {isPending ? 'Creando...' : 'Agregar Competencia'}
         </Button>
       </div>
     </div>

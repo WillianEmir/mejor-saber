@@ -11,7 +11,6 @@ import { Input } from '@/src/components/ui/input'
 import { SedeSchema } from '../_lib/sede.schema'
 import { createOrUpdateSede } from '../_lib/sede.actions'
 import { toast } from 'sonner'
-import { FormState } from '@/src/types'
 
 interface SedeModalProps {
   isOpen: boolean

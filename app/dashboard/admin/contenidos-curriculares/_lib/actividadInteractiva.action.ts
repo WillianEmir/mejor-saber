@@ -1,12 +1,12 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { ActividadInteractivaSchema } from './actividadInteractiva.schema'; 
+import { ActividadInteractivaSchema } from './actividadInteractiva.schema';
 import { EjeTematicoType } from './ejeTematico.schema';
 import prisma from '@/src/lib/prisma';
 import { FormState } from '@/src/types';
 
-export async function createOrUpdateActividadInteractiva( formData: FormData ): Promise<FormState> {
+export async function createOrUpdateActividadInteractiva(formData: FormData): Promise<FormState> {
 
   // 1. Extraer y validar los datos del formulario del lado del servidor
   const validatedFields = ActividadInteractivaSchema.safeParse({
@@ -41,7 +41,9 @@ export async function createOrUpdateActividadInteractiva( formData: FormData ): 
       });
     }
   } catch (e) {
-    return {
+    if (e instanceof Error) {
+      return { message: e.message, success: false };
+    } return {
       message: 'Error de base de datos: No se pudo procesar la solicitud.',
       success: false,
     };
@@ -49,27 +51,30 @@ export async function createOrUpdateActividadInteractiva( formData: FormData ): 
 
   const ejeTematicoId = formData.get('ejeTematicoId') as string;
   if (!ejeTematicoId) {
-    return { message: 'Error: El ID del eje temático es requerido.', success: false};
+    return { message: 'Error: El ID del eje temático es requerido.', success: false };
   }
 
   revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
-  return { message: id ? 'Actividad actualizada exitosamente.' : 'Actividad creada exitosamente.', success: true};
+  return { message: id ? 'Actividad actualizada exitosamente.' : 'Actividad creada exitosamente.', success: true };
 }
 
 export async function deleteActividadInteractiva(id: string, ejeTematicoId: EjeTematicoType['id']): Promise<FormState> {
   try {
     await prisma.actividadInteractiva.delete({ where: { id } });
     revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
-    return { message: 'Actividad eliminada exitosamente.', success: true}
+    return { message: 'Actividad eliminada exitosamente.', success: true }
   } catch (e) {
-    return { message: 'Error de base de datos: No se pudo eliminar la actividad.', success: false};
+    if (e instanceof Error) {
+      return { message: e.message, success: false };
+    }
+    return { message: 'Error de base de datos: No se pudo eliminar la actividad.', success: false };
   }
 }
 
 // Actualiza la imagen de una actividdad intyeractiva por su Id
 export async function updateActividadImage(actividadId: string, imageUrl: string): Promise<FormState> {
 
-  const validatedFields = ActividadInteractivaSchema.pick({ id: true, imagen: true}).safeParse({ actividadId, imageUrl });
+  const validatedFields = ActividadInteractivaSchema.pick({ id: true, imagen: true }).safeParse({ actividadId, imageUrl });
 
   if (!validatedFields.success) {
     return {
@@ -86,6 +91,9 @@ export async function updateActividadImage(actividadId: string, imageUrl: string
     revalidatePath(`/dashboard/admin/contenidos-curriculares`);
     return { success: true, message: 'Imagen actualizada correctamente.' };
   } catch (error) {
+    if (error instanceof Error) {
+      return { message: error.message, success: false };
+    }
     return {
       success: false,
       message: 'Error de base de datos: No se pudo actualizar la imagen.',

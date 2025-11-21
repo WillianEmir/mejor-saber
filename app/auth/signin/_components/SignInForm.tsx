@@ -36,7 +36,7 @@ export default function SignInForm() {
       form.reset();
       redirectByRole(session.user.role, router);
     }
-  }, [status, session, router]);
+  }, [status, session, router, form]);
 
   const onSubmit = (data: SignInType) => {
     const parsedData = SignInSchema.safeParse(data);

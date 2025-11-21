@@ -80,6 +80,16 @@ const adminPath: NavItem[] = [
     name: "Testimonios",
     path: "/dashboard/admin/testimonios",
   },
+  {
+    icon: <UsersIcon className="size-5.5" />,
+    name: "Admin Productos",
+    path: "/dashboard/admin/products",
+  },
+  {
+    icon: <UsersIcon className="size-5.5" />,
+    name: "Ordenes",
+    path: "/dashboard/admin/orders",
+  },
 ];
 
 const schoolPath: NavItem[] = [

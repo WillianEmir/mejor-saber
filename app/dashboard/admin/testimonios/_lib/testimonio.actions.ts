@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/src/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache"; 
 import { TestimonialSchema, TestimonioSchema } from "./testimonio.schema"; 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
@@ -40,7 +40,7 @@ export async function createOrUpdateTestimonio( formData: FormData ): Promise<Fo
     }
   } catch (e) {
     return {
-      message: "Error de base de datos: No se pudo procesar la solicitud.",
+      message: `Error de base de datos: No se pudo procesar la solicitud. ${e}`,
       success: false,
     };
   }  
@@ -56,7 +56,7 @@ export async function deleteTestimonio( id: string ): Promise<FormState> {
     revalidatePath("/dashboard/admin/testimonios");
     return { message: "Testimonio eliminado exitosamente.", success: true};
   } catch (e) {
-    return { message: "Error de base de datos: No se pudo eliminar el testimonio.", success: false};
+    return { message: `Error de base de datos: No se pudo eliminar el testimonio. ${e}`, success: false};
   }
 }
 
@@ -100,7 +100,7 @@ export async function createTestimonial(data: FormData) : Promise<FormState> {
   } catch (error) {
     return {
       success: false,
-      message: 'No se pudo crear el testimonio.',
+      message: `No se pudo crear el testimonio. ${error}`,
     };
   }
 }

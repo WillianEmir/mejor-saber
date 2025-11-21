@@ -140,12 +140,12 @@ model ProgresoSeccion {
   id         String  @id @default(uuid())
   avance     Float   @default(0)
   completada Boolean
-  
-  seccion    Seccion @relation(fields: [seccionId], references: [id], onDelete: Cascade)
-  seccionId  String  @map("seccion_id")
 
-  usuario    User    @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-  usuarioId  String  @map("usuario_id")
+  seccion   Seccion @relation(fields: [seccionId], references: [id], onDelete: Cascade)
+  seccionId String  @map("seccion_id")
+
+  usuario   User   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId String @map("usuario_id")
 
   @@unique([usuarioId, seccionId])
   @@index([usuarioId])
@@ -307,20 +307,17 @@ model User {
   lastName              String?
   image                 String?
   phone                 String?
-  createdAt             DateTime               @default(now()) @map("created_at")
-  updatedAt             DateTime               @updatedAt @map("updated_at")
   role                  Role                   @default(USER)
+  isActive              Boolean                @default(false) @map("is_active")
   activationDate        DateTime?              @map("activation_date")
+  idDocument            String?
   address               String?
   city                  String?
-  degree                String?
   department            String?
-  idDocument            String?
-  isActive              Boolean                @default(false) @map("is_active")
-  schoolId              String?                @map("school_id")
-  schoolSedeId          String?                @map("school_sede_id")
+  degree                String?
   lastLogin             DateTime?              @map("last_login")
   emailVerified         DateTime?
+
   accounts              Account[]
   progresosActividad    ProgresoActividad[]
   progresosSeccion      ProgresoSeccion[]
@@ -329,9 +326,16 @@ model User {
   simulacros            Simulacro[]
   testimonios           Testimonio[]
   twoFactorConfirmation TwoFactorConfirmation?
-  subscriptions         UserSubscription[]
-  school                School?                @relation(fields: [schoolId], references: [id])
-  schoolSede            SchoolSede?            @relation(fields: [schoolSedeId], references: [id])
+  order                 Order[]
+
+  createdAt             DateTime               @default(now()) @map("created_at")
+  updatedAt             DateTime               @updatedAt @map("updated_at")
+
+  school   School? @relation(fields: [schoolId], references: [id])
+  schoolId String? @map("school_id")
+
+  schoolSede   SchoolSede? @relation(fields: [schoolSedeId], references: [id])
+  schoolSedeId String?     @map("school_sede_id")
 
   @@index([schoolId])
   @@index([schoolSedeId])
@@ -398,9 +402,10 @@ model Account {
 model Session {
   id           String   @id @default(uuid())
   sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
 
   @@map("sessions")
 }
@@ -421,12 +426,14 @@ model School {
 }
 
 model SchoolSede {
-  id       String @id @default(uuid())
-  nombre   String
-  DANE     String @unique
-  schoolId String @map("school_id")
+  id     String @id @default(uuid())
+  nombre String
+  DANE   String @unique
+
   school   School @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  users    User[]
+  schoolId String @map("school_id")
+
+  users User[]
 
   @@index([schoolId])
   @@map("school_sedes")
@@ -439,50 +446,71 @@ model Testimonio {
   publicado  Boolean  @default(false)
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
-  userId     String   @map("user_id")
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
 
   @@index([userId])
   @@map("testimonios")
 }
 
-model Plan {
-  id             String             @id @default(uuid())
-  name           PlanName           @unique
-  price          Float
-  durationInDays Int                @map("duration_in_days")
-  description    String?
-  subscriptions  UserSubscription[]
+model Product {
+  id              String                  @id @default(uuid())
+  name            String                  @unique
+  price           Float
+  durationInDays  Int                     @default(365)
+  description     String?
+  isActive        Boolean                 @default(true)
+  orders          Order[]
+  characteristics ProductCharacteristic[]
 
-  @@map("planes")
+  @@map("products")
 }
 
-model UserSubscription {
-  id        String             @id @default(uuid())
-  userId    String             @map("user_id")
-  planId    String             @map("plan_id")
-  startDate DateTime           @map("start_date")
-  endDate   DateTime           @map("end_date")
-  status    SubscriptionStatus
-  payments  Payment[]
-  plan      Plan               @relation(fields: [planId], references: [id])
-  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+model ProductCharacteristic {
+  id   String @id @default(uuid())
+  name String
 
-  @@index([userId])
-  @@index([planId])
-  @@map("user_subscriptions")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+
+  @@index([productId])
+  @@map("product_characteristics")
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  status         OrderStatus @default(PENDING)
+  totalAmount    Float
+  payment        Payment?
+  paymentMethod  String?
+  referenciaPago String?
+  schoolName     String?
+  daneCode       String?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@map("orders")
 }
 
 model Payment {
-  id                 String           @id @default(uuid())
-  userSubscriptionId String           @map("user_subscription_id")
-  amount             Float
-  status             PaymentStatus
-  paymentGatewayId   String?          @map("payment_gateway_id")
-  createdAt          DateTime         @default(now()) @map("created_at")
-  userSubscription   UserSubscription @relation(fields: [userSubscriptionId], references: [id], onDelete: Cascade)
+  id                   String        @id @default(uuid())
+  amount               Float
+  status               PaymentStatus
+  mercadoPagoPaymentId String?       @unique @map("mercado_pago_payment_id")
+  createdAt            DateTime      @default(now())
 
-  @@index([userSubscriptionId])
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String @unique
+
   @@map("payments")
 }
 
@@ -504,15 +532,10 @@ enum Role {
   DOCENTE
 }
 
-enum PlanName {
-  FREE
-  PREMIUM
-}
-
-enum SubscriptionStatus {
-  ACTIVE
-  CANCELED
-  EXPIRED
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }
 
 enum PaymentStatus {

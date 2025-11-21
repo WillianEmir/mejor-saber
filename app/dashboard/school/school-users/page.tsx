@@ -9,7 +9,7 @@ export default async function SchoolUsersPage() {
 
   return (
     <div className="p-4 md:p-8">
-      <UserManagement initialUsers={users} sedes={sedes} />
+      <UserManagement initialUsers={users} sedes={sedes} /> 
     </div>
   );
 }

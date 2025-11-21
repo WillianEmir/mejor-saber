@@ -1,8 +1,8 @@
-'use client'; 
+'use client';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CldUploadWidget } from 'next-cloudinary';
+import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary';
 import { toast } from 'sonner';
 
 import { UpdateProfileSchema, UpdateProfileType } from '../_lib/profile.schema';
@@ -54,7 +54,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         toast.error('Error al actualizar el perfil');
       }
     } catch (error) {
-      toast.error('Error al actualizar el perfil');
+      toast.error(`Error al actualizar el perfil: ${error}'`);
     }
   }
 
@@ -70,8 +70,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
           </Avatar>
           <CldUploadWidget
             uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-            onSuccess={(result: any) => {
-              setimage(result.info.secure_url);
+            onSuccess={(results: CloudinaryUploadWidgetResults) => {
+              if (results.event === 'success' && typeof results.info !== 'string' && results.info) {
+                setimage(results.info.secure_url);
+              }
             }}
           >
             {({ open }) => {

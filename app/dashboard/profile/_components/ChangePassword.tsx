@@ -48,7 +48,7 @@ export default function ChangePassword() {
         toast.error(result.error);
       }
     } catch (error) {
-      toast.error('Ocurrió un error inesperado');
+      toast.error(`Ocurrió un error inesperado: ${error}`);
     } finally {
       setLoading(false);
     }

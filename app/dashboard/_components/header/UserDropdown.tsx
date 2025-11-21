@@ -8,7 +8,7 @@ import { Fragment } from 'react';
 import Link from 'next/link';
 
 function getInitials(
-  name?: string,
+  name?: string | null | undefined,
   lastName?: string | null,
   email?: string | null | undefined,
 ) {
@@ -41,9 +41,9 @@ export default function UserDropdown() {
   }
 
   const { user } = session;
-  const initials = getInitials(user.name, user.lastName, user.email);
+  const initials = getInitials(user.name, user.email);
   const displayName = user.name || 'Usuario';
-  const fullName = `${user.name || ''} ${user.lastName || ''}`.trim() || 'Usuario';
+  const fullName = `${user.name || ''}`.trim() || 'Usuario';
 
   return (
     <Menu as="div" className="relative inline-block text-left">

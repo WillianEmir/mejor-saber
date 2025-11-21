@@ -25,6 +25,9 @@ export async function getUserById(id: string): Promise<UserType | null> {
       role: true,
       schoolId: true,
       schoolSedeId: true,
+      lastLogin: true, 
+      emailVerified: true,
+      password: false,
     },
   });
   return user;

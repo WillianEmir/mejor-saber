@@ -69,6 +69,9 @@ export async function deleteEjeTematico(id: string): Promise<FormState> {
     revalidatePath('/dashboard/admin/contenidos-curriculares')
     return { message: 'Eje Temático eliminado exitosamente.', success: true }
   } catch (e) {
+    if (e instanceof Error) {
+      return { message: e.message, success: false };
+    }
     return { message: 'Error de base de datos: No se pudo eliminar el eje temático.', success: false } 
   }
 }
@@ -93,6 +96,9 @@ export async function updateEjeTematicoImage(ejeTematicoId: string, imageUrl: st
     revalidatePath(`/dashboard/admin/contenidos-curriculares`);
     return { success: true, message: 'Imagen actualizada correctamente.' };
   } catch (error) {
+    if (error instanceof Error) {
+      return { message: error.message, success: false };
+    }
     return {
       success: false,
       message: 'Error de base de datos: No se pudo actualizar la imagen.',

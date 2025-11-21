@@ -5,13 +5,15 @@ import prisma from '@/src/lib/prisma';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 
-import { UserSchoolSchema } from './schema';
+import { UserSchoolSchema } from './schema'; 
 import { FormState } from '@/src/types';
 import bcrypt from 'bcryptjs';
 import { sendEmailNewUser } from '@/src/lib/mailNodemailer';
 import { revalidatePath } from "next/cache"; 
+import { UserSchoolType } from './school.schema';
 
-export async function getUsersBySchoolId() {
+export async function getUsersBySchoolId() : Promise<UserSchoolType[]> {
+
   const session = await getServerSession(authOptions);
 
   if (!session || session?.user?.role !== 'ADMINSCHOOL') {
@@ -26,9 +28,17 @@ export async function getUsersBySchoolId() {
         schoolId,
         role: { in: ['USER', 'DOCENTE'] },
       },
-      omit: {
-        password: true,
-      },
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        email: true,
+        idDocument: true,
+        schoolId: true,
+        role: true,
+        degree: true,
+        schoolSedeId: true,
+      }
     });
     return users;
   } catch (error) {

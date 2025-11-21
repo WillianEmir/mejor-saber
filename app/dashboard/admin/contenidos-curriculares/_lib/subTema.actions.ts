@@ -1,13 +1,13 @@
 'use server';
 
-import { revalidatePath } from 'next/cache'; 
+import { revalidatePath } from 'next/cache';
 import { SubTemaSchema } from './subTema.schema';
 import { FormState } from '@/src/types';
 import prisma from '@/src/lib/prisma';
 import { EjeTematicoType } from './ejeTematico.schema';
 
-export async function createOrUpdateSubTema( formData: FormData ): Promise<FormState> {
-  
+export async function createOrUpdateSubTema(formData: FormData): Promise<FormState> {
+
   // 1. Extraer y validar los datos del formulario del lado del servidor
   const validatedFields = SubTemaSchema.safeParse({
     id: formData.get('id') || undefined,
@@ -17,7 +17,7 @@ export async function createOrUpdateSubTema( formData: FormData ): Promise<FormS
     ejemplo: formData.get('ejemplo'),
     seccionId: formData.get('seccionId'),
   });
-    
+
   if (!validatedFields.success) {
     return {
       success: false,
@@ -55,11 +55,11 @@ export async function createOrUpdateSubTema( formData: FormData ): Promise<FormS
 
   const ejeTematicoId = formData.get('ejeTematicoId') as string;
   if (!ejeTematicoId) {
-    return { message: 'Error: El ID del eje temático es requerido.', success: false};
+    return { message: 'Error: El ID del eje temático es requerido.', success: false };
   }
 
   revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`);
-  return { message: id ? 'Afirmación actualizada exitosamente.' : 'Afirmación creada exitosamente.', success: true};
+  return { message: id ? 'Afirmación actualizada exitosamente.' : 'Afirmación creada exitosamente.', success: true };
 }
 
 // Elimina un subtema por su Id
@@ -67,19 +67,19 @@ export async function deleteSubTema(id: string, ejeTematicoId: EjeTematicoType['
   try {
     await prisma.subTema.delete({ where: { id } });
     revalidatePath(`/dashboard/admin/contenidos-curriculares/${ejeTematicoId}`)
-    return {message: 'SubTema eliminado exitosamente.', success: true}
-  } catch (e) { 
+    return { message: 'SubTema eliminado exitosamente.', success: true }
+  } catch (e) {
     if (e instanceof Error) {
-      return { message: e.message, success: false};
+      return { message: e.message, success: false };
     }
-    return { message: 'Error de base de datos: No se pudo procesar la solicitud.', success: false};
+    return { message: 'Error de base de datos: No se pudo procesar la solicitud.', success: false };
   }
 }
 
 // Actualiza la imagen de un sub tema por su Id
 export async function updateSubTemaImage(subTemaId: string, imageUrl: string): Promise<FormState> {
 
-  const validatedFields = SubTemaSchema.pick({ id: true, imagen: true}).safeParse({ subTemaId, imageUrl });
+  const validatedFields = SubTemaSchema.pick({ id: true, imagen: true }).safeParse({ subTemaId, imageUrl });
 
   if (!validatedFields.success) {
     return {
@@ -95,7 +95,10 @@ export async function updateSubTemaImage(subTemaId: string, imageUrl: string): P
     });
     revalidatePath(`/dashboard/admin/contenidos-curriculares`);
     return { success: true, message: 'Imagen actualizada correctamente.' };
-  } catch (error) {
+  } catch (e) {
+    if (e instanceof Error) {
+      return { message: e.message, success: false };
+    }
     return {
       success: false,
       message: 'Error de base de datos: No se pudo actualizar la imagen.',

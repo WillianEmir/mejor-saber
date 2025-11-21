@@ -7,7 +7,6 @@ import { toast } from 'sonner'
 import { PencilIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
 import { TipoActividadInteractiva } from '@/src/generated/prisma'
 
-import { CldUploadButton } from '@/src/components/ui/CldUploadButton'
 import { createOrUpdateActividadInteractiva } from '@/app/dashboard/admin/contenidos-curriculares/_lib/actividadInteractiva.action'
 import { ActividadInteractivaSchema, ActividadInteractivaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/actividadInteractiva.schema'
 
@@ -73,7 +72,7 @@ export default function ActividadInteractivaModal({ isOpen, onClose, seccionId, 
     if (data.match) formData.append('match', data.match)
     if (data.retroalimentacion) formData.append('retroalimentacion', data.retroalimentacion)
     formData.append('seccionId', data.seccionId)
-    formData.append('ejeTematicoId', data.ejeTematicoId)
+    formData.append('ejeTematicoId', data.ejeTematicoId!)
 
     startTransition(async () => {
       const result = await createOrUpdateActividadInteractiva(formData)

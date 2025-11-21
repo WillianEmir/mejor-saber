@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { SchoolSede, User } from '@/src/generated/prisma';
+import { SchoolSede } from '@/src/generated/prisma';
 import { Card, CardHeader, CardTitle, CardContent } from '@/src/components/ui/card';
 import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel } from '@/src/components/ui/dropdown-menu';
@@ -11,20 +11,21 @@ import { toast } from 'sonner';
 import { deleteUser } from '../_lib/actions';
 import UserModal from './UserModal';
 import { Button } from '@/src/components/ui/Button';
+import { UserSchoolType } from '../_lib/school.schema';
 
 interface UserManagementProps { 
-  initialUsers: any[]; 
+  initialUsers: UserSchoolType[]; 
   sedes: SchoolSede[];
 }
 
 export default function UserManagement({ initialUsers, sedes }: UserManagementProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
+  const [selectedUser, setSelectedUser] = useState<UserSchoolType | undefined>(undefined);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const handleOpenModal = (user?: User) => {
+  const handleOpenModal = (user?: UserSchoolType) => {
     setSelectedUser(user); 
     setIsModalOpen(true);
   };

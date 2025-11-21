@@ -11,7 +11,10 @@ export async function getSubtemas(): Promise<SubTemaType[] | null> {
       orderBy: { nombre: 'asc' },
     });
     return subtemas;
-  } catch (error) {
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new Error('No se pudieron obtener los subtemas.');
+    }
     throw new Error('No se pudieron obtener los subtemas.');
   }
 }
@@ -23,7 +26,10 @@ export async function getSubtemaById(id: SubTemaType['id']): Promise<SubTemaType
       where: { id },
     });
     return subTema;
-  } catch (error) {
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new Error('No se pudieron obtener los subtemas.');
+    }
     throw new Error('No se pudo obtener el subtema.');
   }
 }
@@ -36,7 +42,10 @@ export async function getSubtemasBySeccionId(id: SeccionType['id']): Promise<Sub
       orderBy: { nombre: 'asc' },
     });
     return subTemas;
-  } catch (error) {
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new Error('No se pudieron obtener los subtemas.');
+    }
     throw new Error('No se pudieron obtener los subtemas.');
   }
 }

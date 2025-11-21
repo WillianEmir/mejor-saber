@@ -42,16 +42,10 @@ export async function upsertUserByAdminSchool(data: UpsertUserSchoolType, school
       await sendEmailNewUser(newUser.email, newUser.name!, temporaryPassword);
     }
 
-  } catch (e: any) {
-    if (e.code === 'P2002' && e.meta?.target?.includes('email')) {
-      return {
-        success: false,
-        error: { email: ['El correo electrónico ya está en uso.'] },
-      };
-    }
+  } catch (e) {    
     return {
       success: false,
-      error: { _form: ['Ocurrió un error inesperado.'] },
+      error: `Ocurrió un error inesperado. ${e}`,
     };
   }
 

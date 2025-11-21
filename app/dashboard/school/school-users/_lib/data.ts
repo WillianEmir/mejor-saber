@@ -21,6 +21,7 @@ export const getSchoolSedes = async () => {
     });
     return sedes;
   } catch (error) {
+    console.error("Error fetching school sedes:", error);
     return [];
   }
 };

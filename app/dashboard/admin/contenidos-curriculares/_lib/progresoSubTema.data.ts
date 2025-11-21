@@ -15,7 +15,10 @@ export async function getProgresoSubtemaById(id: string, usuarioId: string): Pro
       },
     });
     return progresoSubTema;
-  } catch (error) {
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new Error('No se pudo obtener el progreso del subtema.');
+    }
     throw new Error('No se pudo obtener el progreso del subtema.');
   }
 }

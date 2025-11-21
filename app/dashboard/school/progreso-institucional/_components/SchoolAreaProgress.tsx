@@ -11,14 +11,14 @@ interface SchoolAreaProgressProps {
 }
 
 export default function SchoolAreaProgress({ chartData: initialChartData }: SchoolAreaProgressProps) {
+  
+  const [selectedAreaName, setSelectedAreaName] = useState('all');
 
   if (!initialChartData) return (
     <div className="flex items-center justify-center h-full">
       <p>No hay datos para mostrar.</p>
     </div>
   )
-  
-  const [selectedAreaName, setSelectedAreaName] = useState('all');
 
   const handleAreaChange = (areaName: string) => {
     setSelectedAreaName(areaName);

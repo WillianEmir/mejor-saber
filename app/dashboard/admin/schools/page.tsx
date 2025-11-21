@@ -11,7 +11,7 @@ export default async function page() {
 
   return (
     <>
-      <SchoolList schools={schools} />
+      <SchoolList schools={schools} /> 
     </>
   );
 }

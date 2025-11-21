@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 
 import { SimulacroResultType } from '../_lib/simulacro.schema';
-import { Button } from '@/src/components/ui/Button'; 
+import { Button } from '@/src/components/ui/Button';
+import Image from 'next/image';
 
 interface SimulacrumResultProps {
-  simulacroPreguntas: SimulacroResultType[]  
+  simulacroPreguntas: SimulacroResultType[]
 }
 
 export default function SimulacroResult({ simulacroPreguntas }: SimulacrumResultProps) {
@@ -15,20 +16,19 @@ export default function SimulacroResult({ simulacroPreguntas }: SimulacrumResult
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Resultados del Simulacro</h1>
         <Link href="/dashboard/user/simulacros">
-            <Button>Volver a Simulacros</Button>
+          <Button>Volver a Simulacros</Button>
         </Link>
       </div>
-      
+
       <div className="space-y-6">
-        {simulacroPreguntas.map((simulacroPregunta, index) => {
+        {simulacroPreguntas.map((simulacroPregunta) => {
           const { pregunta, opcionSeleccionada } = simulacroPregunta;
-          const correctaOpcion = pregunta.opciones.find(op => op.correcta);
 
           return (
             <div key={simulacroPregunta.id} className="rounded-md border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Pregunta {index + 1}</h2>
+
               <div className="prose prose-gray dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: pregunta.contexto }} />
-              {pregunta.imagen && <img src={pregunta.imagen} alt="Imagen de la pregunta" className="mt-4 rounded-md" />}
+              {pregunta.imagen && <Image src={pregunta.imagen} alt="Imagen de la pregunta" className="mt-4 rounded-md" width={800} height={600} />}
               <div className="prose prose-gray dark:prose-invert max-w-none mt-4" dangerouslySetInnerHTML={{ __html: pregunta.enunciado }} />
 
               <div className="mt-6 space-y-4">
@@ -59,7 +59,13 @@ export default function SimulacroResult({ simulacroPreguntas }: SimulacrumResult
                           {isSelected && <p className="font-bold text-sm mb-2 text-blue-600 dark:text-blue-400">Tu Respuesta</p>}
                           <div className="flex-grow">
                             {/\.(jpeg|jpg|gif|png|svg)$/i.test(opcion.respuesta) ? (
-                              <img src={opcion.respuesta} alt="Respuesta de la opción" className="max-w-full h-auto rounded-md" />
+                              <Image
+                                src={opcion.respuesta}
+                                alt="Respuesta de la opción"
+                                className="max-w-full h-auto rounded-md"
+                                width={800}
+                                height={600}
+                              />
                             ) : (
                               <div className="prose prose-sm dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: opcion.respuesta }} />
                             )}

@@ -16,7 +16,7 @@ import { Input } from '@/src/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
 import { Switch } from '@/src/components/ui/switch';
 
-interface UsersModalProps {
+interface UsersModalProps { 
   user?: UserType | null;
   isOpen: boolean;
   onClose: () => void;

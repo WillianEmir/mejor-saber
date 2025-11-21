@@ -1,6 +1,5 @@
 'use server';
 
-import nodemailer from 'nodemailer';
 import { ContactSchema } from '@/app/(landingpage)/contacto/_lib/contact.schema';
 import { transporter } from '@/src/lib/mailNodemailer';
 

@@ -11,7 +11,7 @@ import { Progress } from '@/src/components/ui/progress';
 
 import { MaterialRepasoType } from '@/app/dashboard/admin/areas/_lib/area.schema';
 
-interface MaterialRepasoClientProps { 
+interface MaterialRepasoClientProps {  
   areas: MaterialRepasoType[];
 }
 
