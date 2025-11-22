@@ -4,13 +4,12 @@ import { revalidatePath } from 'next/cache'
 import { FormState } from '@/src/types'
 import { SedeSchema } from './sede.schema'
 import prisma from '@/src/lib/prisma'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/options'
+import { auth } from '@/auth' // Updated import
 
 export async function createOrUpdateSede(
   formData: FormData,
 ): Promise<FormState> {
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   if (!session?.user?.schoolId) {
     return {
       success: false,
@@ -74,7 +73,7 @@ export async function createOrUpdateSede(
 }
 
 export async function deleteSede(id: string): Promise<FormState> {
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   if (!session?.user?.schoolId) {
     return {
       success: false,

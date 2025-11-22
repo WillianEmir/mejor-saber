@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { auth } from '@/auth'; // Updated import
 import { redirect } from 'next/navigation';
 
 import { ProfileForm } from '@/app/dashboard/profile/_components/ProfileForm';
@@ -11,7 +10,7 @@ import ChangePasswordPage from './_components/ChangePassword';
 
 export default async function ProfilePage() {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
 
   if (!session?.user) {
     return redirect('/auth/signin');

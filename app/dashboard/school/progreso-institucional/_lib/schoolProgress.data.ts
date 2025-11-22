@@ -1,10 +1,9 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/auth";
 import prisma from "@/src/lib/prisma";
-import { getServerSession } from "next-auth";
 
 export const getSchoolAreaProgress = async () => {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.schoolId) {
     return;
   }
@@ -106,7 +105,7 @@ export const getSchoolAreaProgress = async () => {
 };
 
 export const getSchoolCompetenciaProgress = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.schoolId) {
     return { competenciaProgress: [], areaAverages: [] };
   }
@@ -212,7 +211,7 @@ export const getSchoolCompetenciaProgress = async () => {
 };
 
 export const getSchoolEvidenciaProgress = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.schoolId) {
     return { evidenciaProgress: [] };
   }
@@ -273,7 +272,7 @@ export const getSchoolEvidenciaProgress = async () => {
 };
 
 export const getSchoolNivelesDesempeno = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.schoolId) {
     return { nivelesDesempenoData: [], areaAverages: [] };
   }

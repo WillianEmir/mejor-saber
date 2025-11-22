@@ -1,12 +1,11 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/auth"; // Updated import
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
-import { getServerSession } from "next-auth";
 import ReportsGraph from "./_components/ReportsGraph";
 import ReportListArea from "./_components/ReportListArea";
 import { getSchoolSedes } from "./_lib/reports.data";
 
 export default async function SchoolReportsPage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
 
   if (!session || !session.user || !session.user.schoolId) {
     return <div>No estás autorizado para ver esta página.</div>; 

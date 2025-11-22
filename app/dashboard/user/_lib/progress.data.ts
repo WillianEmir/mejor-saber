@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/options'
+import { auth } from '@/auth' // Updated import
 import prisma from '@/src/lib/prisma';
 
 import { getSimulacrosByUserId } from '../simulacros/_lib/simulacro.data'
@@ -11,7 +10,7 @@ import { BarChartDataType } from '@/src/components/ui/charts/BarChart';
 export async function getOverallProgressChartData() : Promise<BarChartDataType> {
   
   // Verifica si el usuario está autenticado
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   if (!session?.user?.id) {
     throw new Error('Usuario no autenticado');
   }
@@ -50,7 +49,7 @@ export async function getOverallProgressChartData() : Promise<BarChartDataType> 
 export async function getUserProgressData(): Promise<ProgressDataType> {
 
   // Verificar si el usuario está autenticado
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   if (!session?.user?.id) throw new Error('Usuario no autenticado')
 
   const simulacros = (await getSimulacrosByUserId(session?.user?.id)).reverse();
@@ -132,7 +131,7 @@ export async function getUserProgressData(): Promise<ProgressDataType> {
 
 export async function getCompetenciaProgressData() : Promise<CompetenciaProgressType[]> {
 
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   if (!session?.user?.id) throw new Error('Usuario no autenticado')
 
   const simulacros = await getSimulacrosByUserId(session.user.id)
@@ -183,7 +182,7 @@ export async function getCompetenciaProgressData() : Promise<CompetenciaProgress
 }
 
 export async function getEvidenciaProgressData() {
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   if (!session?.user?.id) {
     throw new Error('Usuario no autenticado');
   }

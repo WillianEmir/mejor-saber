@@ -1,15 +1,14 @@
 'use server'
 
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth"; // Updated import
 import z from "zod";
 import { ChangePasswordSchema } from "./changePassword.schema";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "@/src/lib/prisma";
 import bcryptjs from "bcryptjs";
 
 export async function changePassword( values: z.infer<typeof ChangePasswordSchema>) {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
 
   if (!session?.user) {
     return { error: "No autenticado" };

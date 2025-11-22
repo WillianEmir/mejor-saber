@@ -1,9 +1,8 @@
 'use server'; 
 
 import { revalidatePath } from 'next/cache'; 
-import { getServerSession } from 'next-auth/next';
 import prisma from '@/src/lib/prisma';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { auth } from '@/auth'; // Updated import
 
 import { SimulacroSchema } from './simulacro.schema';
 import { FormState } from '@/src/types';
@@ -16,7 +15,7 @@ export const createSimulacro = async (
 ): Promise<FormState> => {
   
   // Obtén la sesión y verifica la autenticación usando getServerSession
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   
   if (!session?.user?.id) {
     return {

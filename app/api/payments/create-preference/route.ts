@@ -3,12 +3,11 @@
 import { NextResponse } from 'next/server';
 import { Preference } from 'mercadopago';
 import prisma from '@/src/lib/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/options';
+import { auth } from '@/auth'; // Updated import
 import { clientMP } from '@/src/lib/mp';
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   const userId = session?.user?.id;
 
   if (!userId) {
