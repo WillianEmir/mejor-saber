@@ -1,11 +1,11 @@
-import NextAuth, { type AuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import * as bcrypt from "bcrypt";
-import { z } from "zod";
-import prisma from "@/src/lib/prisma";
-import { User } from "@prisma/client";
+import { z } from "zod"; 
+import prisma from "@/src/lib/prisma"; 
+import { User } from "./src/generated/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -20,13 +20,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials): Promise<User | null> {
-        const parsedCredentials = z
-          .object({
+        const parsedCredentials = z.object({
             email: z.string().email(),
             password: z.string(),
-          })
-          .safeParse(credentials);
+          }).safeParse(credentials);
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
@@ -42,10 +41,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
-            await prisma.user.update({
-              where: { id: user.id },
-              data: { lastLogin: new Date() },
-            });
             return user;
           }
         }
@@ -55,6 +50,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   session: {
     strategy: "database",
+    maxAge: 24 * 60 * 60, // 24 horas
   },
   pages: {
     signIn: "/auth/signin",
@@ -64,7 +60,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user && user) {
         session.user.id = user.id;
         session.user.schoolId = user.schoolId;
-        session.user.role = user.role
+        session.user.role = user.role;
+        session.user.name = user.name;
+        session.user.email = user.email;
+        session.user.image = user.image;
       }
       return session;
     },
