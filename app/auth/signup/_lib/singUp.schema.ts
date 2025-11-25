@@ -7,7 +7,7 @@ export const SignupSchema = z.object({
   password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
   terms: z.boolean().refine(val => val === true, {
     message: "Debes aceptar los términos y condiciones.",
-  }).optional(),
+  }).optional(), 
 });
 
 export type SignUpType = z.infer<typeof SignupSchema>;

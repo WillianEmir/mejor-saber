@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/auth"; // Updated import
 
 import { getRankingBySchool } from "./_lib/ranking.data";
 import { getAreas } from "@/app/dashboard/admin/areas/_lib/area.data";
@@ -9,7 +8,7 @@ import RankingByArea from "./_components/RankingByArea";
 
 export default async function RankingPage() {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   const schoolId = session?.user?.schoolId;
 
   if (!schoolId) {

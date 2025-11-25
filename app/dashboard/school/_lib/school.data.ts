@@ -1,13 +1,12 @@
 'use server' 
 
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { auth } from '@/auth';
 import prisma from '@/src/lib/prisma';
-import { getServerSession } from 'next-auth';
 
 // Obtiene el promedio del primer, último y total de simulacros
 export const getScoreDistributionData = async () => {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.schoolId) {
     return null;
   }
@@ -60,7 +59,7 @@ export const getScoreDistributionData = async () => {
 
 export const getSchoolStats = async () => { 
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   
   if (!session?.user?.schoolId) {
     return null;
@@ -124,7 +123,7 @@ export const getSchoolStats = async () => {
 };
 
 export const getAllSchoolSimulations = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session?.user?.schoolId) {
     return null;

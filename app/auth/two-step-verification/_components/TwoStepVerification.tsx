@@ -1,35 +1,38 @@
-'use client'
+'use client' 
 
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
 import { toast } from 'sonner'
 
-import { newPassword } from '@/app/auth/two-step-verification/_lib/twoStepVerification.actions'
+import { NewPasswordTwoStepVerificationSchema, NewPasswordTwoStepVerificationType } from '../_lib/twoStepVerification.schema'
+import { newPasswordTwoStepVerification } from '@/app/auth/two-step-verification/_lib/twoStepVerification.actions'
+
 import { Button } from '@/src/components/ui/Button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
-import { NewPasswordSchema } from '../_lib/twoStepVerification.schema'
 
 export default function TwoStepVerification() {
-  const router = useRouter()
 
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
-  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+  const form = useForm<NewPasswordTwoStepVerificationType>({
     defaultValues: {
       password: '',
       token: '',
     },
   })
 
-  const onSubmit = (data: z.infer<typeof NewPasswordSchema>) => {
+  const onSubmit = (data: NewPasswordTwoStepVerificationType) => {
 
-    const parsedData = NewPasswordSchema.safeParse(data)
+    const parsedData = NewPasswordTwoStepVerificationSchema.safeParse(data)
 
     if (!parsedData.success) {
       parsedData.error.issues.forEach(issue => {
+        if (issue.path && issue.path.length > 0) {
+            form.setError(issue.path[0] as any, { message: issue.message });
+        }
         toast.error(issue.message)
       })
       return
@@ -40,7 +43,7 @@ export default function TwoStepVerification() {
     formData.append('token', data.token);
 
     startTransition(async () => {
-      const result = await newPassword(formData)
+      const result = await newPasswordTwoStepVerification(formData)
       if (result.success) {
         toast.success(result.message)
         form.reset()

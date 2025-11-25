@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'; 
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -29,13 +29,16 @@ export default function ChangePassword() {
 
     if (!parsedData.success) {
       parsedData.error.issues.forEach(issue => {
+        if (issue.path && issue.path.length > 0) {
+            form.setError(issue.path[0] as any, { message: issue.message });
+        }
         toast.error(issue.message);
       });
       return;
     }
 
     setLoading(true);    
-
+ 
     try {
       const result = await changePassword(values);
 

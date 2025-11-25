@@ -1,13 +1,12 @@
 'use client'
 
-import { type ClassValue, clsx } from "clsx"
+import { type ClassValue, clsx } from "clsx"  
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const redirectByRole = (role: string | undefined, router: AppRouterInstance) => {
   

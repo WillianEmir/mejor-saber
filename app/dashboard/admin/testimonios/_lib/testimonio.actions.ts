@@ -3,8 +3,7 @@
 import prisma from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache"; 
 import { TestimonialSchema, TestimonioSchema } from "./testimonio.schema"; 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/auth"; // Updated import
 import { FormState } from "@/src/types";
 
 export async function createOrUpdateTestimonio( formData: FormData ): Promise<FormState> {  
@@ -63,7 +62,7 @@ export async function deleteTestimonio( id: string ): Promise<FormState> {
 // El usuario autenticado puede crear un testimonio desde la página principal
 export async function createTestimonial(data: FormData) : Promise<FormState> {
   
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
 
   if (!session?.user?.id) {
     return {

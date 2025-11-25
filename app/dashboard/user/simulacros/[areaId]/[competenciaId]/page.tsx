@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/auth"; // Updated import
 import { notFound, redirect } from "next/navigation";
 
 import { getUserByEmail } from "@/app/dashboard/admin/users/_lib/user.data";
@@ -17,7 +16,7 @@ interface Props {
 export default async function SimulacroByCompetenciaPage({ params }: Props) {
 
   // Obtiene el Id del usuario
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   if (!session?.user?.email) redirect("/auth/signin");
 
   const user = await getUserByEmail(session.user.email);

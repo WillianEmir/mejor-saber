@@ -1,8 +1,7 @@
 import { getProductById } from '@/app/dashboard/admin/products/_lib/product.data'
 import { notFound, redirect } from 'next/navigation'
 import CheckoutSummary from './_components/CheckoutSummary'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/options'
+import { auth } from '@/auth' // Updated import
 
 interface pageProps {
   params: Promise<{
@@ -15,7 +14,7 @@ export default async function page({ params }: pageProps) {
 
   const { productId } = await params
 
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   const userId = session?.user?.id
 
   if (!userId) {

@@ -1,10 +1,7 @@
-
 'use server';
 
 import prisma from '@/src/lib/prisma';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { getServerSession } from 'next-auth';
-
+import { auth } from '@/auth'; // Updated import
 import { UserSchoolSchema } from './schema'; 
 import { FormState } from '@/src/types';
 import bcrypt from 'bcryptjs';
@@ -14,7 +11,7 @@ import { UserSchoolType } from './school.schema';
 
 export async function getUsersBySchoolId() : Promise<UserSchoolType[]> {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
 
   if (!session || session?.user?.role !== 'ADMINSCHOOL') {
     return [];

@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { auth } from '@/auth'; // Updated import
 import { notFound } from 'next/navigation';
 
 import { getAreas } from '@/app/dashboard/admin/areas/_lib/area.data';
@@ -13,7 +12,7 @@ import SimulacroHistory from './_components/SimulacroHistory';
 export default async function SimulacrosPage() {
 
   // Obtiener el Id de la sesión del usuario
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   const userId = session?.user?.id;
   if (!userId) notFound()
 

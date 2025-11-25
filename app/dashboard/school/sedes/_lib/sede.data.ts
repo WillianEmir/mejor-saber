@@ -1,11 +1,10 @@
 'use server'
 
-import { authOptions } from '@/app/api/auth/[...nextauth]/options'
+import { auth } from '@/auth' // Updated import
 import prisma from '@/src/lib/prisma'
-import { getServerSession } from 'next-auth'
 
 export const getSedesBySchool = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   if (!session?.user?.schoolId) {
     return []
   }

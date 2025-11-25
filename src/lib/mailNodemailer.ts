@@ -13,13 +13,11 @@ export const transporter = nodemailer.createTransport({
 
 // Wrap in an async IIFE so we can use await.
 export const sendEmailNewUser = async (email: string, name:string, password: string) => {
-  const info = await transporter.sendMail({
+  await transporter.sendMail({
     from: '"Admin App Saber 11" <maddison53@ethereal.email>',
     to: email,
     subject: "Bienvenido a la plataforma",
     text: "Hello world?", // plain‑text body
     html: `<p>Hola ${name},</p><p>Tu cuenta ha sido creada. Tu contraseña es: <strong>${password}</strong></p><p>Por favor, cambia tu contraseña después de iniciar sesión.</p>`
   });
-
-  console.log("Message sent:", info.messageId);
 }

@@ -3,11 +3,10 @@
 import { EjeTematicoType, EjeTematicoWithRelationsType } from './ejeTematico.schema';
 import { ContenidoCurricularType } from './contenidoCurricular.schema';
 import prisma from '@/src/lib/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { auth } from '@/auth'; // Updated import
 
 export async function getUserId() {
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   if (!session?.user?.id) {
     throw new Error('Usuario no autenticado')
   }
@@ -94,6 +93,6 @@ export async function getEjesTematicosByContenidoCurricularId(id: ContenidoCurri
     return ejesTematicos;
   } catch (error) {
     console.error('Error de base de datos al obtener los Ejes Temáticos:', error);
-    throw new Error('No se pudo obtener los Ejes Temáticos.');
+    throw new Error('No se pudieron obtener los Ejes Temáticos.');
   }
 }

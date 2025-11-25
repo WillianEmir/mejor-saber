@@ -1,11 +1,9 @@
-
 import prisma from '@/src/lib/prisma';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/auth'; // Updated import
 
 export const getSchoolSedes = async () => {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
 
   if (!session || session?.user?.role !== 'ADMINSCHOOL') {
     return [];

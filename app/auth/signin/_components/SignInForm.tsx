@@ -4,8 +4,8 @@ import { useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { signIn, useSession } from 'next-auth/react';
 import { toast } from 'sonner';
+import { useSession } from 'next-auth/react'; 
 
 import { EyeIcon, EyeSlashIcon, ChevronLeftIcon } from '@heroicons/react/24/outline';
 
@@ -16,11 +16,14 @@ import { Checkbox } from '@/src/components/ui/checkbox';
 
 import { SignInSchema, SignInType } from '@/app/auth/signin/_lib/signin.schema';
 import { redirectByRole } from '@/src/lib/utils.client';
+import { login } from '@/app/auth/signin/_lib/signin.actions';
+import SocialMediaLogInButton from '@/src/components/ui/SocialMediaLogInButton';
 
 export default function SignInForm() {
+  
   const [isPending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
 
   const form = useForm<SignInType>({
@@ -33,11 +36,11 @@ export default function SignInForm() {
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.role) {
-      form.reset();
       redirectByRole(session.user.role, router);
+      form.reset();
     }
-  }, [status, session, router, form]);
-
+  }, [status, session]);
+  
   const onSubmit = (data: SignInType) => {
     const parsedData = SignInSchema.safeParse(data);
 
@@ -48,15 +51,20 @@ export default function SignInForm() {
       return;
     }
 
-    startTransition(async () => {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: data.email,
-        password: data.password,
-      });
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('remember', data.remember ? 'true' : 'false');
 
-      if (result?.error) {
-        toast.error('Email o contraseña incorrectos.');
+    startTransition(async () => {   
+
+      const result = await login(formData);
+      
+      if (!result.success) {
+        toast.error(result.message);
+      } else {
+        await update(); 
+        toast.success('¡Bienvenido de nuevo!');
       }
     });
   };
@@ -159,6 +167,19 @@ export default function SignInForm() {
                 </Button>
               </form>
             </Form>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-gray-500 dark:bg-gray-900 dark:text-gray-400">
+                  O continúa con
+                </span>
+              </div>
+            </div>
+
+            <SocialMediaLogInButton />
 
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">

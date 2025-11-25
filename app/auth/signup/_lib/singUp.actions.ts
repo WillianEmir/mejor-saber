@@ -3,10 +3,10 @@
 import prisma from "@/src/lib/prisma";
 import { SignupSchema } from "./singUp.schema";
 import bcrypt from "bcryptjs";
-import { FormState } from "@/src/types";
+import { FormState } from "@/src/types"; 
 
-// Action for public sign-up
 export async function signup(formData: FormData) : Promise<FormState> {
+  
   const result = SignupSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),

@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth'; 
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { auth } from '@/auth'; // Updated import
 import { redirect } from 'next/navigation';
 
 import { getMaterialRepasoByUserId } from '../_lib/progreso.data'; 
@@ -8,7 +7,7 @@ import MaterialRepaso from './MaterialRepaso';
 
 export default async function GeneralMaterialRepaso() {
 
-  const session = await getServerSession(authOptions);
+  const session = await auth(); // Updated call
   if (!session?.user?.id) redirect('/auth/signin');
 
   const areasWithProgress = await getMaterialRepasoByUserId(session.user.id);

@@ -1,12 +1,11 @@
 'use server'
 
-import { getUserByEmail } from "@/app/dashboard/admin/users/_lib/user.data";
 import { ResetSchema } from "./resetPassword.schema";
-import { generateTwoFactorToken } from "@/src/lib/tokens";
-import { sendTwoFactorTokenEmail } from "@/src/lib/mail";
 import { FormState } from "@/src/types";
+import { generateTwoFactorToken, getUserResetPassword, sendTwoFactorTokenEmail } from "./resetPassword.data";
 
 export async function reset(formData: FormData): Promise<FormState> {
+
   const validatedFields = ResetSchema.safeParse({
     email: formData.get('email'),
   });
@@ -21,7 +20,7 @@ export async function reset(formData: FormData): Promise<FormState> {
 
   const { email } = validatedFields.data;
 
-  const existingUser = await getUserByEmail(email);
+  const existingUser = await getUserResetPassword(email);
 
   if (!existingUser) {
     return { message: "¡Correo electrónico no encontrado!", success: false };

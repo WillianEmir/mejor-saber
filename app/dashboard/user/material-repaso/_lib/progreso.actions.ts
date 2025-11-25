@@ -1,13 +1,12 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
+import { auth } from '@/auth'; // Updated import
 import { revalidatePath } from 'next/cache'
-import { authOptions } from '@/app/api/auth/[...nextauth]/options'
 import prisma from '@/src/lib/prisma'
 import { FormState } from '@/src/types'
 
 async function getUserId() {
-  const session = await getServerSession(authOptions)
+  const session = await auth() // Updated call
   if (!session?.user?.id) {
     throw new Error('Usuario no autenticado')
   }

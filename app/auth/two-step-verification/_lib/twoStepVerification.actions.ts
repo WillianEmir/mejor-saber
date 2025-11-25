@@ -1,15 +1,17 @@
 "use server"; 
 
 import bcrypt from "bcryptjs";
-import { NewPasswordSchema } from "./twoStepVerification.schema";
-import { getTwoFactorTokenByToken } from "@/src/lib/data/two-factor-token";
-import { getUserByEmail } from "@/app/dashboard/admin/users/_lib/user.data";
 import prisma from "@/src/lib/prisma";
-import { FormState } from "@/src/types";
 
-export async function newPassword (formData: FormData) : Promise<FormState> {
+import { NewPasswordTwoStepVerificationSchema } from "./twoStepVerification.schema";
+
+import { FormState } from "@/src/types";
+import { getTwoFactorTokenByToken } from "./twoStepVerification.data";
+import { getUserResetPassword } from "../../reset-password/_lib/resetPassword.data";
+
+export async function newPasswordTwoStepVerification (formData: FormData) : Promise<FormState> {
   
-  const validatedFields = NewPasswordSchema.safeParse({
+  const validatedFields = NewPasswordTwoStepVerificationSchema.safeParse({
     password: formData.get('password'),
     token: formData.get('token'),
   });
@@ -36,7 +38,7 @@ export async function newPassword (formData: FormData) : Promise<FormState> {
     return { message: "¡El código ha expirado!", success: false};
   }
 
-  const existingUser = await getUserByEmail(existingToken.email);
+  const existingUser = await getUserResetPassword(existingToken.email);
 
   if (!existingUser) {
     return { message: "¡Correo electrónico no encontrado!", success: false};
