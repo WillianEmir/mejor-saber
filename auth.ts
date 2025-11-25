@@ -1,14 +1,15 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials"; 
 import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import * as bcrypt from "bcrypt";
-import { z } from "zod"; 
-import prisma from "@/src/lib/prisma"; 
-import { User } from "./src/generated/prisma";
+import { z } from "zod";
+import prisma from "./src/lib/prisma";
+import { Role } from "./src/generated/prisma";
+import { Adapter } from "next-auth/adapters";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -21,11 +22,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
 
-      async authorize(credentials): Promise<User | null> {
+      async authorize(credentials): Promise<any> {
         const parsedCredentials = z.object({
-            email: z.string().email(),
-            password: z.string(),
-          }).safeParse(credentials);
+          email: z.string().email(),
+          password: z.string(),
+        }).safeParse(credentials);
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
@@ -41,6 +42,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
+            await prisma.user.update({
+              where: { id: user.id },
+              data: { lastLogin: new Date() },
+            });
             return user;
           }
         }
@@ -49,23 +54,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   session: {
-    strategy: "database",
-    maxAge: 24 * 60 * 60, // 24 horas
+    strategy: "jwt", // Use JWT strategy
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   pages: {
     signIn: "/auth/signin",
   },
   callbacks: {
-    async session({ session, user }) {
-      if (session.user && user) {
-        session.user.id = user.id;
-        session.user.schoolId = user.schoolId;
-        session.user.role = user.role;
-        session.user.name = user.name;
-        session.user.email = user.email;
-        session.user.image = user.image;
+    // This callback is used to enrich the session object with data from the token.
+    async session({ session, token }) {
+      if (session.user && token) {
+        session.user.id = token.sub as string;
+        session.user.role = token.role as Role;
+        session.user.schoolId = token.schoolId as string | null;
       }
       return session;
+    },
+    // This callback is used to add custom data to the JWT.
+    async jwt({ token, user }) {
+      if (user) {
+        // On sign-in, `user` object is available.
+        // Persist the custom data to the token.
+        token.role = user.role;
+        token.schoolId = user.schoolId;
+      }
+      return token;
     },
   },
 });

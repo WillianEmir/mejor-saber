@@ -1,32 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"; 
 import { getVerificationTokenByEmail } from "./data/verification-token";
-import { getTwoFactorTokenByEmail } from "./data/two-factor-token";
 import { getPasswordResetTokenByEmail } from "./data/password-reset-token"; 
 import prisma from "./prisma";
-
-export const generateTwoFactorToken = async (email: string) => {
-  
-  const token = Math.floor(100000 + Math.random() * 900000).toString();
-  const expires = new Date(new Date().getTime() + 30 * 60 * 1000);
-
-  const existingToken = await getTwoFactorTokenByEmail(email);
-
-  if (existingToken) {
-    await prisma.twoFactorToken.delete({
-      where: { id: existingToken.id },
-    });
-  }
-
-  const twoFactorToken = await prisma.twoFactorToken.create({
-    data: {
-      email,
-      token,
-      expires,
-    },
-  });
-
-  return twoFactorToken;
-};
 
 export const generatePasswordResetToken = async (email: string) => {
   const token = uuidv4();

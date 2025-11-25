@@ -5,7 +5,7 @@ import z from "zod";
 import { ChangePasswordSchema } from "./changePassword.schema";
 import prisma from "@/src/lib/prisma";
 import bcryptjs from "bcryptjs";
-
+ 
 export async function changePassword( values: z.infer<typeof ChangePasswordSchema>) {
 
   const session = await auth(); // Updated call
@@ -25,7 +25,7 @@ export async function changePassword( values: z.infer<typeof ChangePasswordSchem
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
   });
-
+ 
   if (!user || !user.password) {
     return { error: "Usuario no encontrado" };
   }

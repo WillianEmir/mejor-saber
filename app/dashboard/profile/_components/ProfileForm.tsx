@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'; 
 import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary';
 import { toast } from 'sonner';
 
@@ -41,6 +41,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
     if (!parsedData.success) {
       parsedData.error.issues.forEach(issue => {
+        if (issue.path && issue.path.length > 0) {
+            form.setError(issue.path[0] as any, { message: issue.message });
+        }
         toast.error(issue.message);
       });
       return;
@@ -48,7 +51,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
     try {
       const response = await updateUser({ ...data, id: user.id, image });
-      if (response.success && response.user) {
+      if (response.success) {
         toast.success('Perfil actualizado correctamente');
       } else {
         toast.error('Error al actualizar el perfil');
@@ -79,7 +82,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
             {({ open }) => {
               return (
                 <Button type="button" variant="outline" onClick={() => open()}>
-                  Subir imagen
+                  Cambiar imagen
                 </Button>
               );
             }}

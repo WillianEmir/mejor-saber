@@ -1,54 +1,51 @@
 'use client';
 
-import { useForm } from 'react-hook-form'; 
+import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { changePassword } from '../_lib/changePassword.action';
-import { ChangePasswordSchema, ChangePasswordType } from '../_lib/changePassword.schema';
+import { createPassword } from '../_lib/createPassword.action';
+import { CreatePasswordSchema, CreatePasswordType } from '../_lib/createPassword.schema';
 
 import { Button } from '@/src/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
 
-export default function ChangePassword() {
+export default function CreatePasswordPage() {
 
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<ChangePasswordType>({
+  const form = useForm<CreatePasswordType>({
     defaultValues: {
-      currentPassword: '',
       newPassword: '',
-      confirmPassword: '', 
+      confirmPassword: '',
     },
   });
 
-  const onSubmit = async (values: ChangePasswordType) => {
+  const onSubmit = async (values: CreatePasswordType) => {
 
-    const parsedData = ChangePasswordSchema.safeParse(values);
+    const parsedData = CreatePasswordSchema.safeParse(values);
 
     if (!parsedData.success) {
       parsedData.error.issues.forEach(issue => {
-        if (issue.path && issue.path.length > 0) {
-            form.setError(issue.path[0] as any, { message: issue.message });
+        if (issue.path && issue.path.length > 0 && (issue.path[0] === 'newPassword' || issue.path[0] === 'confirmPassword')) {
+          form.setError(issue.path[0], { message: issue.message });
         }
         toast.error(issue.message);
       });
       return;
     }
 
-    setLoading(true);    
- 
+    setLoading(true);
+
     try {
-      const result = await changePassword(values);
+      const result = await createPassword(values);
 
       if (result.success) {
-        
-        toast.success(result.success);
+        toast.success(result.message);
         form.reset();
-        
-      } else if (result.error) {
-        toast.error(result.error);
+      } else if (!result.success) {
+        toast.error(result.message);
       }
     } catch (error) {
       toast.error(`Ocurrió un error inesperado: ${error}`);
@@ -61,26 +58,13 @@ export default function ChangePassword() {
   return (
     <div className="space-y-6">
       <div className='dark:text-neutral-light'>
-        <h3 className="text-lg font-medium">Cambiar Contraseña</h3>
+        <h3 className="text-lg font-medium">Crear Contraseña</h3>
         <p className="text-sm text-muted-foreground">
-          Actualiza tu contraseña aquí.
+          Crea una contraseña para tu cuenta.
         </p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-md">
-          <FormField
-            control={form.control}
-            name="currentPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contraseña Actual</FormLabel>
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="newPassword"
@@ -108,7 +92,7 @@ export default function ChangePassword() {
             )}
           />
           <Button type="submit" disabled={loading}>
-            {loading ? 'Guardando...' : 'Guardar Cambios'}
+            {loading ? 'Guardando...' : 'Guardar Contraseña'}
           </Button>
         </form>
       </Form>

@@ -3,22 +3,23 @@
 import { revalidatePath } from 'next/cache';
 import prisma from "@/src/lib/prisma";
 import { UpdateProfileSchema, UpdateProfileType } from "./profile.schema";
+import { FormState } from '@/src/types';
 
-// Action for updating own profile (self-service) 
-export async function updateUser(data: UpdateProfileType) {
+export async function updateUser(data: UpdateProfileType): Promise<FormState> {
   const result = UpdateProfileSchema.safeParse(data);
 
   if (!result.success) {
     return {
       success: false,
-      error: result.error.flatten().fieldErrors,
-    };
+      message: 'Error de validación. Por favor, corrija los campos.',
+      errors: result.error.flatten().fieldErrors,
+    }
   }
 
   const { id, ...userData } = result.data;
 
   try {
-    const updatedUser = await prisma.user.update({
+    await prisma.user.update({
       where: { id },
       data: userData,
     });
@@ -27,14 +28,11 @@ export async function updateUser(data: UpdateProfileType) {
     return {
       message: 'Perfil de usuario actualizado exitosamente.',
       success: true,
-      user: updatedUser,
     };
   } catch (e) {
     return {
-      error: {
-        message: `Hubo un problema al actualizar el perfil de usuario.: ${e}`,
-        success: false,
-      },
+      message: `Hubo un problema al actualizar el perfil de usuario.: ${e}`,
+      success: false,
     };
   }
 }

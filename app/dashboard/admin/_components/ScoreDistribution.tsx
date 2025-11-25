@@ -7,7 +7,7 @@ import { BarChart, BarChartDataType } from "@/src/components/ui/charts/BarChart"
 
 interface ScoreDistributionProps {
   scoreDistribution: Awaited<ReturnType<typeof getScoreDistributionByArea>>;
-}
+} 
 
 export const ScoreDistribution = ({ scoreDistribution }: ScoreDistributionProps) => {
   const chartData = (areaName: string, distribution: number[]): BarChartDataType => ({

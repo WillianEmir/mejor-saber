@@ -1,7 +1,6 @@
 import * as z from 'zod';
 
-export const ChangePasswordSchema = z.object({
-  currentPassword: z.string().min(1, 'La contraseña actual es requerida'),
+export const CreatePasswordSchema = z.object({ 
   newPassword: z.string().min(6, 'La nueva contraseña debe tener al menos 6 caracteres'),
   confirmPassword: z.string(),
 }).refine((data) => data.newPassword === data.confirmPassword, {
@@ -9,4 +8,4 @@ export const ChangePasswordSchema = z.object({
   path: ['confirmPassword'],
 }); 
 
-export type ChangePasswordType = z.infer<typeof ChangePasswordSchema>;
+export type CreatePasswordType = z.infer<typeof CreatePasswordSchema>;

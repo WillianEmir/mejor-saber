@@ -1,10 +1,10 @@
 'use client';
-
+ 
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "sonner"; 
 import { EyeIcon, EyeSlashIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 import { signup } from "../_lib/singUp.actions";
@@ -14,9 +14,10 @@ import { Button } from '@/src/components/ui/Button';
 import { Input } from '@/src/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form';
 import { Checkbox } from '@/src/components/ui/checkbox';
-import { Social } from "./Social";
+import SocialMediaLogInButton from "@/src/components/ui/SocialMediaLogInButton";
 
 export default function SignUpForm() {
+  
   const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -152,8 +153,8 @@ export default function SignUpForm() {
                       <div className="space-y-1 leading-none">
                         <FormLabel>
                           Acepto los{" "}
-                          <Link href="/terminos" className="text-gray-800 dark:text-white/90">Términos y Condiciones</Link>, y la{" "}
-                          <Link href="/terminos" className="text-gray-800 dark:text-white">Política de Privacidad</Link>
+                          <Link href="/terminos-condiciones" className="text-primary hover:underline dark:text-white/90">Términos y Condiciones</Link>, y la{" "}
+                          <Link href="/terminos-condiciones" className="text-primary hover:underline dark:text-white/90">Política de Privacidad</Link>
                         </FormLabel>
                       </div>
                     </FormItem>
@@ -181,7 +182,7 @@ export default function SignUpForm() {
               </div>
             </div>
 
-            <Social />
+            <SocialMediaLogInButton />
 
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">

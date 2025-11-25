@@ -1,32 +1,31 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useTransition } from 'react' 
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { useForm } from 'react-hook-form' 
 import { toast } from 'sonner'
 import ChevronLeftIcon from '@heroicons/react/24/outline/ChevronLeftIcon'
 import { useRouter } from 'next/navigation'
 
-import { ResetSchema } from '@/app/auth/reset-password/_lib/resetPassword.schema'
+import { ResetSchema, ResetType } from '@/app/auth/reset-password/_lib/resetPassword.schema'
 import { reset } from '@/app/auth/reset-password/_lib/resetPassword.actions'
 
-import { Button } from '../../../../src/components/ui/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../../src/components/ui/form'
-import { Input } from '../../../../src/components/ui/input'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
+import { Input } from '@/src/components/ui/input'
+import { Button } from '@/src/components/ui/Button'
 
 export default function ResetPasswordForm() {
-  const router = useRouter()
 
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
-  const form = useForm<z.infer<typeof ResetSchema>>({
+  const form = useForm<ResetType>({
     defaultValues: {
       email: '',
     },
   })
 
-  const onSubmit = (data: z.infer<typeof ResetSchema>) => {
+  const onSubmit = (data: ResetType) => {
     const parsedData = ResetSchema.safeParse(data)
 
     if (!parsedData.success) {
