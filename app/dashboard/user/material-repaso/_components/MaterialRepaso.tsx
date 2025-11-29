@@ -8,8 +8,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Input } from '@/src/components/ui/input';
 import { Card, CardContent } from '@/src/components/ui/card';
 import { Progress } from '@/src/components/ui/progress';
+import { MaterialRepasoType } from '../_lib/progreso.schema';
 
-import { MaterialRepasoType } from '@/app/dashboard/admin/areas/_lib/area.schema';
 
 interface MaterialRepasoClientProps {  
   areas: MaterialRepasoType[];

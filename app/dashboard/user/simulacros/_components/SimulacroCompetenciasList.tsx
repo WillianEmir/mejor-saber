@@ -1,6 +1,6 @@
 import Link from 'next/link';
+import { AreaCompetenciasType } from '../_lib/simulacro.schema';
  
-import { AreaCompetenciasType } from '@/app/dashboard/admin/areas/_lib/area.schema'; 
 
 interface SimulacroCompetenciasListProps {    
   area: AreaCompetenciasType;

@@ -1,5 +1,3 @@
-import { notFound } from 'next/navigation'; 
-
 import { getAreas } from '@/app/dashboard/admin/areas/_lib/area.data';
 import { getContenidosWithRelations } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.data';
 
@@ -11,8 +9,6 @@ export default async function page() {
     getAreas(),
     getContenidosWithRelations(),
   ]);
-
-  if(areas.length === 0 || contenidosCurriculares.length === 0) notFound()
 
   return (
     <>

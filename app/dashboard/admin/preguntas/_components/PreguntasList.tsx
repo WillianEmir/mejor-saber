@@ -229,6 +229,6 @@ export default function PreguntasList({ preguntas, areas, contenidosCurriculares
         isViewMode={isViewMode}
         contenidosCurriculares={contenidosCurriculares}
       />
-    </div>
+    </div> 
   )
 }

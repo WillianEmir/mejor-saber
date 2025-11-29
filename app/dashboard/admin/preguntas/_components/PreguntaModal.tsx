@@ -591,7 +591,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                               checked={field.value?.includes(eje.id)}
                                               onCheckedChange={(checked) => {
                                                 return checked
-                                                  ? field.onChange([...field.value, eje.id])
+                                                  ? field.onChange([...(field.value || []), eje.id])
                                                   : field.onChange(field.value?.filter((value) => value !== eje.id))
                                               }}
                                               disabled={isViewMode}

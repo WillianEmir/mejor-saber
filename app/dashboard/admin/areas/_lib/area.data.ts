@@ -2,7 +2,7 @@
 
 import prisma from '@/src/lib/prisma';
 import { AreaWithRelationsType, Areatype } from './area.schema';
-
+ 
 // Obtiene todas las áreas, sin relaciones. 
 export async function getAreas(): Promise<Areatype[]> {
   try {
