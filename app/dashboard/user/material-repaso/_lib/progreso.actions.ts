@@ -12,7 +12,7 @@ async function getUserId() {
   }
   return session.user.id
 }
-
+ 
 export async function toggleSeccionProgreso(seccionId: string, path: string, isCompleted: boolean): Promise<FormState> {
   try { 
     const userId = await getUserId()

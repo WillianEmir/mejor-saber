@@ -1,25 +1,26 @@
-'use client'
+'use client' 
 
 import { useEffect, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline'
 
+import { createOrUpdateArea } from '@/app/dashboard/admin/areas/_lib/area.actions'
+import { AreaSchema, type Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
+
 import { Button } from '@/src/components/ui/Button'
 import { Input } from '@/src/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 
-import { createOrUpdateArea } from '@/app/dashboard/admin/areas/_lib/area.actions'
-import { AreaSchema, Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
-
 interface AreaModalProps { 
   isOpen: boolean
   onClose: () => void
-  area: Areatype | null
+  area?: Areatype
 }
 
 export default function AreaModal({ isOpen, onClose, area }: AreaModalProps) {
+
   const [isPending, startTransition] = useTransition()
 
   const editMode = !!area?.id
@@ -41,6 +42,7 @@ export default function AreaModal({ isOpen, onClose, area }: AreaModalProps) {
   }, [isOpen, area, form])
 
   const onSubmit = (data: Areatype) => {
+
     const parsedData = AreaSchema.safeParse(data)
 
     if (!parsedData.success) {
@@ -51,12 +53,12 @@ export default function AreaModal({ isOpen, onClose, area }: AreaModalProps) {
     }
 
     const formData = new FormData();
-    formData.append('id', data.id || '');
+    if (editMode) formData.append('id', data.id!);
     formData.append('nombre', data.nombre);
 
     startTransition(async () => {
       const result = await createOrUpdateArea(formData)
-      if (result.message) {
+      if (result.success) {
         toast.success(result.message)
         onClose()
       } else {

@@ -5,6 +5,7 @@ import { PreguntaSchema } from './pregunta.schema';
 import { FormState } from '@/src/types';
 import prisma from '@/src/lib/prisma';
 
+// Server action para crear o editar una pregunta
 export async function createOrUpdatePregunta(formData: FormData): Promise<FormState> {
 
   // 1. Extraer y estructurar los datos del formulario para una validación unificada.
@@ -36,11 +37,10 @@ export async function createOrUpdatePregunta(formData: FormData): Promise<FormSt
   const opciones = rawOpciones.map(({ isImage, imageUrl, ...rest }) => {
     console.log(isImage, imageUrl);
     return rest
-  });  
+  });
 
   try {
     if (id) {
-      // 4a. Lógica de actualización
       await prisma.pregunta.update({
         where: { id },
         data: {
@@ -56,7 +56,6 @@ export async function createOrUpdatePregunta(formData: FormData): Promise<FormSt
       });
       revalidatePath(`/dashboard/admin/preguntas/${id}`);
     } else {
-      // 4b. Lógica de creación
       await prisma.pregunta.create({
         data: {
           ...preguntaData,
@@ -71,7 +70,6 @@ export async function createOrUpdatePregunta(formData: FormData): Promise<FormSt
     }
     revalidatePath('/dashboard/admin/preguntas');
   } catch (e) {
-    // 5. Manejo de errores de la base de datos
     console.error(e);
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
       return {
@@ -85,19 +83,14 @@ export async function createOrUpdatePregunta(formData: FormData): Promise<FormSt
   return { message: id ? 'Pregunta actualizada exitosamente.' : 'Pregunta creada exitosamente.', success: true };
 }
 
+// Server action para eliminar una pregunta 
 export async function deletePregunta(id: string): Promise<FormState> {
   try {
     await prisma.pregunta.delete({ where: { id } });
     revalidatePath('/dashboard/admin/preguntas');
-    return {
-      success: true,
-      message: 'Pregunta eliminada exitosamente.'
-    };
+    return { success: true, message: 'Pregunta eliminada exitosamente.' };
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      message: 'Error de base de datos: No se pudo eliminar la pregunta.'
-    }
+    return { success: false, message: 'Error de base de datos: No se pudo eliminar la pregunta.' }
   }
 }

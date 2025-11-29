@@ -1,15 +1,11 @@
 'use client'
 
 import { Plus } from 'lucide-react' 
-import { Button } from '@/src/components/ui/Button'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/src/components/ui/card'
 
-interface ContenidosCurricularesHeaderProps {
+import { Button } from '@/src/components/ui/Button'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/card'
+
+interface ContenidosCurricularesHeaderProps { 
   onAddContenido: () => void
 }
 

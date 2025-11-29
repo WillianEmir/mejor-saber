@@ -21,7 +21,7 @@ export default async function TestimoniosPage({ searchParams }: PageProps) {
     getTestimonios(query, currentPage),
     getTestimoniosCount(query),
     getUsersForSelect(),
-  ]);
+  ]); 
 
   const totalPages = Math.ceil(totalTestimonios / ITEMS_PER_PAGE);
 

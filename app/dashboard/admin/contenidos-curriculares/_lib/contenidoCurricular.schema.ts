@@ -1,5 +1,5 @@
 import { z } from 'zod'; 
-import { Area, ContenidoCurricular, EjeTematico } from '@/src/generated/prisma'; 
+import { Area, ContenidoCurricular, EjeTematico } from '@/src/generated/prisma';  
 
 export const ContenidoCurricularSchema = z.object({
   id: z.uuid({error: 'El ID debe ser un UUID válido.'}).optional(),

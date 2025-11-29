@@ -1,22 +1,24 @@
+'use client'
+
 import { Edit, Trash2 } from 'lucide-react'
 
 import { Button } from '@/src/components/ui/Button' 
 import { Card, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/card'
 
 interface EjeTematicoHeaderProps {
-  ejeTematico: string | undefined
+  ejeTematicoName: string
   onEdit: () => void
-  onDelete: () => void
+  onDelete: () => void 
 }
 
-export default function EjeTematicoHeader({ ejeTematico, onEdit, onDelete }: EjeTematicoHeaderProps) {
+export default function EjeTematicoHeader({ ejeTematicoName, onEdit, onDelete }: EjeTematicoHeaderProps) {
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="space-y-1.5">
           <CardTitle className="text-2xl font-bold">
-            {ejeTematico}
+            {ejeTematicoName}
           </CardTitle>
           <CardDescription>
             Administra los detalles y recursos de este eje temático.

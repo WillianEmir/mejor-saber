@@ -1,12 +1,12 @@
 'use server'
 
+import prisma from '@/src/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
-import { FormState } from '@/src/types'
-import prisma from '@/src/lib/prisma'
-
 import { AfirmacionSchema } from './afirmacion.schema'
+import { FormState } from '@/src/types'
 
+// Server Action para crear o editar una afirmación
 export async function createOrUpdateAfirmacion(formData: FormData): Promise<FormState> {
   const validatedFields = AfirmacionSchema.safeParse({
     id: formData.get('id') || undefined,
@@ -39,15 +39,14 @@ export async function createOrUpdateAfirmacion(formData: FormData): Promise<Form
       })
     }
   } catch (e) {
+    console.log(e);
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
       return {
         success: false,
-        message: 'Error en la base de datos.',
-        errors: {
-          nombre: ['Ya existe una afirmación con este nombre para esta competencia.'],
-        },
+        message: 'Error en la base de datos.'
       }
     }
+    
     return {
       message: 'Error de base de datos: No se pudo procesar la solicitud.',
       success: false,
@@ -66,6 +65,7 @@ export async function createOrUpdateAfirmacion(formData: FormData): Promise<Form
   return { message: id ? 'Afirmación actualizada exitosamente.' : 'Afirmación creada exitosamente.', success: true }
 }
 
+// Elimina una afirmación por su id
 export async function deleteAfirmacion(id: string, areaId: string): Promise<FormState> {
   try {
     await prisma.afirmacion.delete({ where: { id } })

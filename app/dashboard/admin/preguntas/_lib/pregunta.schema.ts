@@ -3,7 +3,7 @@ import { EjeTematico, OpcionPregunta, Pregunta } from '@/src/generated/prisma';
 import { EjeTematicoSchema } from '../../contenidos-curriculares/_lib/ejeTematico.schema';
 
 export const OpcionRespuestaSchema = z.object({
-  id: z.uuid({ error: 'El ID debe ser un UUID válido.' }).optional(),
+  id: z.uuid({ error: 'El ID debe ser un UUID válido.' }).optional(), 
   isImage: z.boolean().optional().default(false),
   respuesta: z.string(),
   imageUrl: z.string().optional().nullable(),

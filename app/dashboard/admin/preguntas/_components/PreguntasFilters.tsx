@@ -1,40 +1,33 @@
-'use client' 
+'use client'
 
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+
 import { AreaWithRelationsType } from '@/app/dashboard/admin/areas/_lib/area.schema'
-import { CompetenciaWithRelations } from '@/app/dashboard/admin/areas/_lib/competencia.schema'
-import { AfirmacionWithEvidencias } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
+import { CompetenciaWithRelationsType } from '@/app/dashboard/admin/areas/_lib/competencia.schema'
+import { AfirmacionWithEvidenciasType } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
 import { EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/src/components/ui/select'
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
 
 interface PreguntasFiltersProps {
   areas: AreaWithRelationsType[]
 }
 
 export default function PreguntasFilters({ areas }: PreguntasFiltersProps) {
+
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  const [competencias, setCompetencias] = useState<CompetenciaWithRelationsType[]>([])
+  const [afirmaciones, setAfirmaciones] = useState<AfirmacionWithEvidenciasType[]>([])
+  const [evidencias, setEvidencias] = useState<EvidenciaType[]>([])
 
   const areaId = searchParams.get('areaId')
   const competenciaId = searchParams.get('competenciaId')
   const afirmacionId = searchParams.get('afirmacionId')
   const evidenciaId = searchParams.get('evidenciaId')
-
-  const [competencias, setCompetencias] = useState<
-    CompetenciaWithRelations[]
-  >([])
-  const [afirmaciones, setAfirmaciones] = useState<AfirmacionWithEvidencias[]>(
-    []
-  )
-  const [evidencias, setEvidencias] = useState<EvidenciaType[]>([])
 
   useEffect(() => {
     if (areaId) {

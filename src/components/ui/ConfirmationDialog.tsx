@@ -12,13 +12,7 @@ interface ConfirmationDialogProps {
   isPending?: boolean
 }
 
-export function ConfirmationDialog({
-  isOpen,
-  onClose,
-  onConfirm,
-  title,
-  description,
-}: ConfirmationDialogProps) {
+export function ConfirmationDialog({ isOpen, onClose, onConfirm, title, description }: ConfirmationDialogProps) {
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>

@@ -1,9 +1,11 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'  
-import { FormState } from '@/src/types'
 import prisma from '@/src/lib/prisma'
+import { revalidatePath } from 'next/cache'   
+
 import { ContenidoCurricularSchema } from './contenidoCurricular.schema'
+
+import { FormState } from '@/src/types'
 
 // Crea o edita un contenido curricular
 export async function createOrUpdateContenidoCurricular(formData: FormData): Promise<FormState> {
@@ -40,12 +42,10 @@ export async function createOrUpdateContenidoCurricular(formData: FormData): Pro
     }
   } catch (e) {
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
+      console.log(e)
       return {
         success: false,
-        message: 'Error en la base de datos.',
-        errors: {
-          nombre: ['Ya existe un Contenido Curricular con este nombre en esta área.'],
-        },
+        message: 'Ya existe un Contenido Curricular con este nombre en esta área.',
       }
     }
     return {
@@ -65,6 +65,7 @@ export async function deleteContenidoCurricular(id: string): Promise<FormState> 
     revalidatePath('/dashboard/admin/contenidos-curriculares')
     return { message: 'Contenido Curricular eliminado exitosamente.', success: true }
   } catch (e) {
+    console.log(e);    
     if (e instanceof Error) {
       return { message: e.message, success: false }
     }

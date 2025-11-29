@@ -10,7 +10,6 @@ import { FormState } from '@/src/types';
 // Action for creating/updating users from the admin panel
 export async function upsertUser(formData: FormData): Promise<FormState> {
 
-  const schoolId = formData.get('schoolId');
 
   const result = UpsertUserSchema.safeParse({
     id: formData.get('id') || undefined,
@@ -19,9 +18,9 @@ export async function upsertUser(formData: FormData): Promise<FormState> {
     email: formData.get('email'),
     role: formData.get('role'),
     isActive: formData.get('isActive') === 'true',
-    schoolId: schoolId || undefined,
+    schoolId: formData.get('schoolId') || undefined,
   });
-
+  
   if (!result.success) {
     return {
       success: false,
@@ -62,9 +61,9 @@ export async function upsertUser(formData: FormData): Promise<FormState> {
   } catch (e) {
     return {
       success: false,
-      message: `Ocurrió un error inesperado. ${e}`,
+      message: `Ocurrió un error inesperado. ${e}`, 
     };
-  }
+  } 
 }
 
 // Action for deleting a user from the admin panel

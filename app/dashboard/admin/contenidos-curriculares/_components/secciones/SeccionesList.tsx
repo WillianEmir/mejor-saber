@@ -1,11 +1,8 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition } from 'react' 
 import { toast } from 'sonner'
 import { TipoSeccion } from '@/src/generated/prisma'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/src/components/ui/card'
-import { Button } from '@/src/components/ui/Button'
-import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
 import { PlusCircle, Edit, Trash2, BookOpen, Puzzle, Info } from 'lucide-react'
 
 import { deleteSubTema, updateSubTemaImage } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.actions'
@@ -16,6 +13,9 @@ import { SeccionType } from '../../_lib/seccion.schema'
 import { SubTemaType } from '../../_lib/subTema.schema'
 import { ActividadInteractivaType } from '../../_lib/actividadInteractiva.schema'
 
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/src/components/ui/card'
+import { Button } from '@/src/components/ui/Button'
+import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
 import SubTemaModal from '../subtemas/SubTemaModal'
 import ActividadInteractivaModal from '../actividades/ActividadInteractivaModal'
 import SeccionModal from './SeccionModal'

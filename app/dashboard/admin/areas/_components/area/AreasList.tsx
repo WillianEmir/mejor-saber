@@ -4,17 +4,18 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { FolderIcon } from '@heroicons/react/24/outline'
 
+import type { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'
 import AreaModal from './AreaModal'
 import AreaListHeader from './AreaListHeader'
 
-import type { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
-
 interface AreasListProps { 
-  areas: Areatype[];
+  areas: Areatype[]; 
 }
 
 export default function AreasList({ areas }: AreasListProps) {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddArea = () => {
@@ -54,9 +55,9 @@ export default function AreasList({ areas }: AreasListProps) {
                 </Card>
               </Link>
             ))}
-          </div>
+          </div> 
         ) : (
-          <Card className="text-center py-12">
+          <Card className="text-center py-12 border-gray-300 border-dashed border-2">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-gray-500 dark:text-gray-400">No hay áreas creadas todavía.</CardTitle>
             </CardHeader>
@@ -67,7 +68,7 @@ export default function AreasList({ areas }: AreasListProps) {
         )}
       </main>
 
-      <AreaModal isOpen={isModalOpen} onClose={handleCloseModal} area={null} />
+      <AreaModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   )
 }

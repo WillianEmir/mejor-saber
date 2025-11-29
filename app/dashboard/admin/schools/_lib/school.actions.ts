@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { SchoolSchema } from './school.schema';
 import { FormState } from '@/src/types';
-import prisma from '@/src/lib/prisma';
+import prisma from '@/src/lib/prisma'; 
 
 export async function createOrUpdateSchool(formData: FormData): Promise<FormState> { 
 

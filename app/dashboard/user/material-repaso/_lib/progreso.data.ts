@@ -1,6 +1,6 @@
 import prisma from "@/src/lib/prisma";
-import { EjeTematicoConProgreso, MaterialRepasoType } from "@/app/dashboard/admin/areas/_lib/area.schema";
 import { TipoActividadInteractiva } from "@/src/generated/prisma";
+import { EjeTematicoConProgreso, MaterialRepasoType } from "./progreso.schema";
 
 type UniqueItemsType = {
   id: string;
@@ -77,7 +77,7 @@ export async function getMaterialRepasoByUserId(userId: string): Promise<Materia
             },
           });
 
-          const totalCompleted = completedSubTemas + completedActividades;
+          const totalCompleted = completedSubTemas + completedActividades; 
           (eje as EjeTematicoConProgreso).progress = Math.round((totalCompleted / totalItems) * 100);
         }
       }

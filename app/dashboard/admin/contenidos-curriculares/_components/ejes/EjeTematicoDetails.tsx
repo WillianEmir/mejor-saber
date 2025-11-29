@@ -1,13 +1,14 @@
 'use client'
 
+import { Globe, BookText, HelpCircle, Film, BarChart } from 'lucide-react'
+
 import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
-import { updateEjeTematicoImage } from "../../_lib/ejeTematico.actions"
+import { updateEjeTematicoImage } from "../../_lib/ejeTematico.actions" 
 
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/src/components/ui/card'
 import { Separator } from '@/src/components/ui/separator'
 import { Badge } from '@/src/components/ui/badge'
 import UploadImage from '../UploadImage'
-import { Globe, BookText, HelpCircle, Film, BarChart } from 'lucide-react'
 
 interface EjeTematicoDetailsProps {
   ejeTematico: EjeTematicoWithRelationsType

@@ -17,7 +17,7 @@ import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
 
-interface NivelDesempenoModalProps {
+interface NivelDesempenoModalProps { 
   isOpen: boolean;
   onClose: () => void;
   nivel: NivelDesempenoType | null;

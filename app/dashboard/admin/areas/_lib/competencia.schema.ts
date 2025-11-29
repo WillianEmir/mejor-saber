@@ -12,18 +12,10 @@ export const CompetenciaSchema = z.object({
 export type CompetenciaType = Omit<Competencia, 'createdAt' | 'updatedAt'>
 
 // Type para las competencias con sus relaciones
-export type CompetenciaWithRelations = CompetenciaType & {
+export type CompetenciaWithRelationsType = CompetenciaType & {
   afirmaciones: (
     Omit<Afirmacion, 'createdAt' | 'updatedAt'> & {
       evidencias: Omit<Evidencia, 'createdAt' | 'updatedAt'>[]
     }
   )[]
-}
-
-// Tipo para el estado del formulario que será usado por useFormState
-export type CompetenciaFormState = {
-  errors?: {
-    nombre?: string[];
-  };
-  message?: string | null;
 }

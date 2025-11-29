@@ -1,11 +1,12 @@
 'use client'
 
-import ItemActionMenu from '../../../../../../src/components/ui/ItemActionMenu'
-import { EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema'
+import { type EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema'
+
+import ItemActionMenu from '@/src/components/ui/ItemActionMenu'
  
 interface EvidenciaItemProps {
   evidencia: EvidenciaType
-  onEdit: (evidencia: EvidenciaType) => void 
+  onEdit: (evidencia: EvidenciaType) => void  
   onDelete: (id: string) => void 
 }
 

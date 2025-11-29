@@ -1,18 +1,25 @@
 'use server'
 
 import prisma from "@/src/lib/prisma";
-import { UserType } from "./user.schema";
+import { UpsertUserType, UserType } from "./user.schema";
 
 // Obtiene todos los usuarios, para el panel Admin 
-export const getUsers = async () => {
+export async function getDashboardAdminUsers () : Promise<UpsertUserType[]> {
   try {
     const users = await prisma.user.findMany({
       orderBy: {
         createdAt: 'desc',
       },
-      omit: {
-        password: true,
-      },
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        email: true,
+        role: true,
+        isActive: true,
+        schoolId: true,
+        lastLogin: true
+      }
     })
     return users;
   } catch (error) {
@@ -20,6 +27,8 @@ export const getUsers = async () => {
     throw new Error('Error de base de datos: No se pudo obtener los usuarios.');
   }
 }
+
+
 
 // Obtiene un usuario por su email
 export async function getUserByEmail(email: string): Promise<UserType | null> {

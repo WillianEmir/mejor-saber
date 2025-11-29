@@ -1,7 +1,9 @@
+import { notFound } from 'next/navigation';
+
 import { getContenidosWithRelations } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.data'
 import { getAreasWithRelations, getPreguntasCount, getPreguntasWithRelations } from '@/app/dashboard/admin/preguntas/_lib/pregunta.data'
 
-import PreguntasList from '@/app/dashboard/admin/preguntas/_components/PreguntasList' 
+import PreguntasList from '@/app/dashboard/admin/preguntas/_components/PreguntasList'  
 
 interface pageProps {
   searchParams: Promise<{
@@ -34,11 +36,13 @@ export default async function PreguntasPage({ searchParams }: pageProps) {
   ]);
 
   const totalPages = Math.ceil(preguntasCount / ITEMS_PER_PAGE);
-
+  
   const [areas, contenidosCurriculares] = await Promise.all([
     getAreasWithRelations(),
     getContenidosWithRelations(),
   ]);
+  
+  if(preguntas.length === 0 || areas.length === 0 || contenidosCurriculares.length === 0) notFound();
 
   return (
     <>

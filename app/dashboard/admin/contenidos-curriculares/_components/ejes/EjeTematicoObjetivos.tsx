@@ -1,17 +1,16 @@
 'use client'
 
-import { useState, useTransition } from 'react' 
+import { useState, useTransition } from 'react'  
 import { toast } from 'sonner'
 import { PlusCircle, CheckCircle, Edit, Trash2 } from 'lucide-react'
 
 import { deleteObjetivoAprendizaje } from '@/app/dashboard/admin/contenidos-curriculares/_lib/objetivoAprendizaje.action'
+import { ObjetivoAprendizajeType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/objetivoAprendizaje.schema'
 
 import { Button } from '@/src/components/ui/Button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/src/components/ui/card'
 import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
 import ObjetivoAprendizajeModal from '../objetivos/ObjetivoAprendizajeModal'
-
-import { ObjetivoAprendizajeType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/objetivoAprendizaje.schema'
 
 interface EjeTematicoObjetivosProps {
   ejeTematicoId: string | undefined
@@ -19,16 +18,11 @@ interface EjeTematicoObjetivosProps {
 }
 
 export default function EjeTematicoObjetivos({ ejeTematicoId, objetivosAprendizaje}: EjeTematicoObjetivosProps) {
-
   
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedObjetivo, setSelectedObjetivo] = useState<ObjetivoAprendizajeType | null>(null)
   const [objetivoToDeleteId, setObjetivoToDeleteId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
-  
-  if(!ejeTematicoId) return (
-    <div className="text-center text-gray-500 dark:text-gray-400 py-8">No hay objetivos de aprendizaje.</div>
-  )
   
   const handleAdd = () => {
     setSelectedObjetivo(null)
@@ -52,7 +46,7 @@ export default function EjeTematicoObjetivos({ ejeTematicoId, objetivosAprendiza
     if (!objetivoToDeleteId) return
 
     startTransition(async () => {
-      const result = await deleteObjetivoAprendizaje(objetivoToDeleteId, ejeTematicoId)
+      const result = await deleteObjetivoAprendizaje(objetivoToDeleteId, ejeTematicoId!)
       if (result.success) {
         toast.success(result.message)
       } else {
@@ -92,7 +86,7 @@ export default function EjeTematicoObjetivos({ ejeTematicoId, objetivosAprendiza
                   className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"
                 >
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
                     <p className="text-sm text-gray-800 dark:text-gray-200">
                       {objetivo.descripcion}
                     </p>

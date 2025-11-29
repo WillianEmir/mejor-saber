@@ -12,7 +12,7 @@ export const transporter = nodemailer.createTransport({
 });
 
 // Wrap in an async IIFE so we can use await.
-export const sendEmailNewUser = async (email: string, name:string, password: string) => {
+export const sendEmailNewUser = async (email: string, name:string, password: string) => { 
   await transporter.sendMail({
     from: '"Admin App Saber 11" <maddison53@ethereal.email>',
     to: email,

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';  
 import { toast } from 'sonner';
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { Pencil, Trash2, Plus, MoreVertical } from 'lucide-react';
 
 import { deleteSchool } from '@/app/dashboard/admin/schools/_lib/school.actions';
 import { deleteSchoolSede } from '../../_lib/sede.actions';
@@ -15,8 +15,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog';
 import SchoolModal from './SchoolModal';
 import SedeModal from '../sede/SedeModal';
- 
-import { MoreVertical } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/src/components/ui/dropdown-menu';
 
 interface AdminSchoolsProps {
@@ -24,6 +22,7 @@ interface AdminSchoolsProps {
 }
 
 export default function SchoolList({ schools }: AdminSchoolsProps) {
+
   const [isSchoolModalOpen, setIsSchoolModalOpen] = useState(false);
   const [isSedeModalOpen, setIsSedeModalOpen] = useState(false);
   const [selectedSchool, setSelectedSchool] = useState<SchoolType | undefined>(undefined);
@@ -63,6 +62,7 @@ export default function SchoolList({ schools }: AdminSchoolsProps) {
   };
 
   const confirmDelete = () => {
+
     if (!deletingId || !deleteType) return;
 
     const action = deleteType === 'school' ? deleteSchool : deleteSchoolSede;
@@ -95,9 +95,9 @@ export default function SchoolList({ schools }: AdminSchoolsProps) {
             <AccordionItem value={school.id} key={school.id}>
               <div className="flex items-center w-full px-4">
                 <div className='w-full'>
-                  <AccordionTrigger className="flex-grow text-left text-lg font-semibold">
+                  <AccordionTrigger className="grow text-left text-lg font-semibold">
                     {school.nombre}
-                    {school.maxUsers && <span className="ml-2 text-sm text-gray-500">({school.maxUsers} usuarios)</span>}
+                    {school.maxUsers && <span className="ml-2 text-sm text-gray-500">(Max. {school.maxUsers} usuarios)</span>}
                   </AccordionTrigger>
                 </div>
                 <DropdownMenu>

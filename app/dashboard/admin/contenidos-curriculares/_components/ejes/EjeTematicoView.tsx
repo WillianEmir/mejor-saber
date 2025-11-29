@@ -1,10 +1,13 @@
 'use client' 
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition } from 'react' 
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { ArrowLeft } from 'lucide-react'
+
+import { deleteEjeTematico } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.actions'
+import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 
 import EjeTematicoModal from './EjesTematicosModal'
 import EjeTematicoHeader from './EjeTematicoHeader'
@@ -13,9 +16,6 @@ import EjeTematicoObjetivos from './EjeTematicoObjetivos'
 import SeccionesList from '../secciones/SeccionesList'
 import { Button } from '@/src/components/ui/Button'
 import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
-
-import { deleteEjeTematico } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.actions'
-import { EjeTematicoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 
 interface EjeTematicoViewProps {
   ejeTematico: EjeTematicoWithRelationsType
@@ -59,7 +59,7 @@ export default function EjeTematicoView({ ejeTematico }: EjeTematicoViewProps) {
       </div>
 
       <EjeTematicoHeader
-        ejeTematico={ejeTematico?.nombre}
+        ejeTematicoName={ejeTematico?.nombre || ''}
         onEdit={handleOpenEjeModal}
         onDelete={openDeleteDialog}
       />

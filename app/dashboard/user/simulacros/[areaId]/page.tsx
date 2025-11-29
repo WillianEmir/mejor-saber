@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import { getAreaCompetencias } from '@/app/dashboard/admin/areas/_lib/area.data';
-
 import SimulacroCompetenciasList from '@/app/dashboard/user/simulacros/_components/SimulacroCompetenciasList';
 
-interface pageProps { 
+import { getAreaCompetencias } from '../_lib/simulacro.data';
+
+interface pageProps {  
   params: Promise<{ 
     areaId: string 
   }>
@@ -16,7 +16,7 @@ export default async function Page({ params }: pageProps) {
   const {areaId} = await params;
   const area = await getAreaCompetencias(areaId);
 
-  if(!area) notFound() 
+  if(!area) notFound()  
 
   return (
     <>

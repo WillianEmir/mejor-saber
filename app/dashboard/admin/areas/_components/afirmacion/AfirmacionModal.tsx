@@ -1,17 +1,17 @@
 'use client'
 
-import { useEffect, useTransition } from 'react' 
+import { useEffect, useTransition } from 'react'  
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline'
+
+import { createOrUpdateAfirmacion } from '@/app/dashboard/admin/areas/_lib/afirmacion.actions'
+import { AfirmacionSchema, type AfirmacionType } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
 
 import { Button } from '@/src/components/ui/Button'
 import { Input } from '@/src/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
-
-import { createOrUpdateAfirmacion } from '@/app/dashboard/admin/areas/_lib/afirmacion.actions'
-import { AfirmacionSchema, AfirmacionType } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
 
 interface AfirmacionModalProps {
   isOpen: boolean
@@ -21,6 +21,7 @@ interface AfirmacionModalProps {
 }
 
 export default function AfirmacionModal({ isOpen, onClose, competenciaId, afirmacion }: AfirmacionModalProps) {
+
   const [isPending, startTransition] = useTransition()
 
   const editMode = !!afirmacion?.id
@@ -44,6 +45,7 @@ export default function AfirmacionModal({ isOpen, onClose, competenciaId, afirma
   }, [isOpen, afirmacion, form, competenciaId])
 
   const onSubmit = (data: AfirmacionType) => {
+
     const parsedData = AfirmacionSchema.safeParse(data)
 
     if (!parsedData.success) {
@@ -54,7 +56,7 @@ export default function AfirmacionModal({ isOpen, onClose, competenciaId, afirma
     } 
 
     const formData = new FormData();
-    formData.append('id', data.id || '');
+    if (editMode) formData.append('id', data.id!);
     formData.append('nombre', data.nombre); 
     formData.append('competenciaId', data.competenciaId);
 

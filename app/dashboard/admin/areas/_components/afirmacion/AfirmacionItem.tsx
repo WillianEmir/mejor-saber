@@ -1,31 +1,27 @@
-'use client'
+'use client' 
 
 import { useState } from 'react'
-import { ChevronDown, Plus } from 'lucide-react'
+import { ChevronDown, Plus } from 'lucide-react' 
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
+
+import { AfirmacionType, AfirmacionWithEvidenciasType } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
+import { EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema'
 
 import { AccordionContent, AccordionItem } from "@/src/components/ui/accordion"
 import { Button } from '@/src/components/ui/Button'
-import { AfirmacionType, AfirmacionWithEvidencias } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
-import { EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema'
-
-import ItemActionMenu from '../../../../../../src/components/ui/ItemActionMenu'
 import EvidenciaItem from '../evidencia/EvidenciaItem'
 import EvidenciaModal from '../evidencia/EvidenciaModal'
+import ItemActionMenu from '@/src/components/ui/ItemActionMenu'
 
 interface AfirmacionItemProps {
-  afirmacion: AfirmacionWithEvidencias
+  afirmacion: AfirmacionWithEvidenciasType
   onEditAfirmacion: (afirmacion: AfirmacionType) => void
   onDeleteAfirmacion: (id: string) => void
   onDeleteEvidencia: (id: string) => void
 }
 
-export default function AfirmacionItem({  
-  afirmacion, 
-  onEditAfirmacion, 
-  onDeleteAfirmacion,
-  onDeleteEvidencia
-}: AfirmacionItemProps) {
+export default function AfirmacionItem({ afirmacion, onEditAfirmacion, onDeleteAfirmacion, onDeleteEvidencia }: AfirmacionItemProps) {
+  
   const [isEvidenciaModalOpen, setIsEvidenciaModalOpen] = useState(false)
   const [selectedEvidencia, setSelectedEvidencia] = useState<EvidenciaType | null>(null)
 

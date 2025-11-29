@@ -1,8 +1,9 @@
 'use server';
 
 import prisma from '@/src/lib/prisma'; 
+import { SchoolWithSedesType } from './school.schema';
 
-export async function getSchools() {
+export async function getSchools() : Promise<SchoolWithSedesType[]> { 
   try {
     const schools = await prisma.school.findMany({
       orderBy: {

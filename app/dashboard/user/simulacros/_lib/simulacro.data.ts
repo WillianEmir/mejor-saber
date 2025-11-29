@@ -2,7 +2,8 @@
 
 import prisma from '@/src/lib/prisma';  
 import { User } from '@/src/generated/prisma';
-import { SimulacroResultType, SimulacroWithRelationsType } from './simulacro.schema';
+import { AreaCompetenciasType, SimulacroResultType, SimulacroWithRelationsType } from './simulacro.schema';
+import { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema';
 
 // Obtiene los simulacros de un usuario por su Id
 export async function getSimulacrosByUserId(userId: User['id']): Promise<SimulacroWithRelationsType[]> {
@@ -57,3 +58,29 @@ export const getSimulacroResult = async (simulacroId: string): Promise<Simulacro
   }
 };
 
+// Obtiene un área por su Id, con sus competencias.
+export const getAreaCompetencias = async (id: string): Promise<AreaCompetenciasType | null> => {
+  try {
+    const area = await prisma.area.findUnique({
+      where: { id },
+      include: { competencias: true },
+    });
+    return area;
+  } catch (error) {
+    console.error('Error al obtener el área de la base de datos:', error);
+    throw new Error('Error de base de datos: No se pudo obtener el área.');
+  }
+};
+
+// Obtiene un área por su Id.
+export const getAreaById = async (id: string): Promise<Areatype | null> => {
+  try {
+    const area = await prisma.area.findUnique({
+      where: { id },
+    });
+    return area;
+  } catch (error) {
+    console.error(`Error fetching area with id ${id}:`, error);
+    throw new Error('No se pudo obtener el área.');
+  }
+};

@@ -2,13 +2,13 @@
 
 import { PlusIcon } from '@heroicons/react/24/outline'
 
-import { Button } from '@/src/components/ui/Button'
+import { Button } from '@/src/components/ui/Button' 
 
-interface HeaderAreaListProps {
+interface AreaListHeaderProps {
   onAddArea: () => void;
 }
 
-export default function AreaListHeader({ onAddArea }: HeaderAreaListProps) {
+export default function AreaListHeader({ onAddArea }: AreaListHeaderProps) {
   return (
     <header className="sm:flex sm:items-center sm:justify-between pb-8 border-b border-gray-200 dark:border-gray-700">
       <div className="sm:flex-auto">

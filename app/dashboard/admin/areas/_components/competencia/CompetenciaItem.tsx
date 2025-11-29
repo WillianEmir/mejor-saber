@@ -4,32 +4,27 @@ import { useState } from 'react'
 import { ChevronDown, Plus } from 'lucide-react'
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 
+import { type CompetenciaType, type CompetenciaWithRelationsType } from '@/app/dashboard/admin/areas/_lib/competencia.schema'
+import { type AfirmacionType } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
+
 import { AccordionContent, AccordionItem } from "@/src/components/ui/accordion"
 import { Button } from '@/src/components/ui/Button'
-import { CompetenciaType, CompetenciaWithRelations } from '@/app/dashboard/admin/areas/_lib/competencia.schema'
-import { AfirmacionType } from '@/app/dashboard/admin/areas/_lib/afirmacion.schema'
-
-import ItemActionMenu from '../../../../../../src/components/ui/ItemActionMenu'
 import AfirmacionItem from '../afirmacion/AfirmacionItem'
 import AfirmacionModal from '../afirmacion/AfirmacionModal' 
+import ItemActionMenu from '@/src/components/ui/ItemActionMenu'
 
 interface CompetenciaItemProps {
-  competencia: CompetenciaWithRelations
+  competencia: CompetenciaWithRelationsType
   onEditCompetencia: (competencia: CompetenciaType) => void
   onDeleteCompetencia: (id: string) => void
   onDeleteAfirmacion: (id: string) => void
   onDeleteEvidencia: (id: string) => void 
 }
 
-export default function CompetenciaItem({ 
-  competencia, 
-  onEditCompetencia, 
-  onDeleteCompetencia, 
-  onDeleteAfirmacion,
-  onDeleteEvidencia
-}: CompetenciaItemProps) {
+export default function CompetenciaItem({ competencia, onEditCompetencia, onDeleteCompetencia, onDeleteAfirmacion, onDeleteEvidencia }: CompetenciaItemProps) {
+
   const [isAfirmacionModalOpen, setIsAfirmacionModalOpen] = useState(false)
-  const [selectedAfirmacion, setSelectedAfirmacion] = useState<AfirmacionType | null>(null)
+  const [selectedAfirmacion, setSelectedAfirmacion] = useState<AfirmacionType | null>(null) // TODO: Verificar este null
 
   const handleEditAfirmacion = (afirmacion: AfirmacionType) => {
     setSelectedAfirmacion(afirmacion)

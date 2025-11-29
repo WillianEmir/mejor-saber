@@ -6,7 +6,7 @@ enum Nivel {
   NIVEL1 = 'NIVEL1',
   NIVEL2 = 'NIVEL2',
   NIVEL3 = 'NIVEL3', 
-  NIVEL4 = 'NIVEL4',
+  NIVEL4 = 'NIVEL4', 
 }
 
 export const NivelDesempenoSchema = z.object({

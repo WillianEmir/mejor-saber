@@ -5,13 +5,13 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline'
 
+import { createOrUpdateEvidencia } from '@/app/dashboard/admin/areas/_lib/evidencia.actions'
+import { EvidenciaSchema, EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema'
+
 import { Button } from '@/src/components/ui/Button'
 import { Input } from '@/src/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
-
-import { createOrUpdateEvidencia } from '@/app/dashboard/admin/areas/_lib/evidencia.actions'
-import { EvidenciaSchema, EvidenciaType } from '@/app/dashboard/admin/areas/_lib/evidencia.schema'
 
 interface EvidenciaModalProps {
   isOpen: boolean
@@ -21,6 +21,7 @@ interface EvidenciaModalProps {
 }
 
 export default function EvidenciaModal({ isOpen, onClose, afirmacionId, evidencia }: EvidenciaModalProps) {
+
   const [isPending, startTransition] = useTransition()
 
   const editMode = !!evidencia?.id
@@ -44,6 +45,7 @@ export default function EvidenciaModal({ isOpen, onClose, afirmacionId, evidenci
   }, [isOpen, evidencia, form, afirmacionId])
 
   const onSubmit = (data: EvidenciaType) => {
+
     const parsedData = EvidenciaSchema.safeParse(data)
 
     if (!parsedData.success) {
@@ -54,7 +56,7 @@ export default function EvidenciaModal({ isOpen, onClose, afirmacionId, evidenci
     }
 
     const formData = new FormData();
-    formData.append('id', data.id || '');
+    if (editMode) formData.append('id', data.id!);
     formData.append('nombre', data.nombre);
     formData.append('afirmacionId', data.afirmacionId);
 

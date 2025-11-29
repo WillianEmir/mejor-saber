@@ -2,16 +2,16 @@ import { auth } from "@/auth"; // Updated import
 import { notFound, redirect } from "next/navigation";
 
 import { getUserByEmail } from "@/app/dashboard/admin/users/_lib/user.data";
-import { getPreguntasByCompetencia } from "@/app/dashboard/admin/preguntas/_lib/pregunta.data";
 import { getCompetenciaById } from "@/app/dashboard/admin/areas/_lib/competencia.data";
 
 import SimulacroQuestions from "@/app/dashboard/user/simulacros/_components/SimulacroQuestions";
+import { getPreguntasByCompetencia } from "../../_lib/pregunta.data";
 
 interface Props {
   params: Promise<{
     competenciaId: string;
   }>
-} 
+}  
 
 export default async function SimulacroByCompetenciaPage({ params }: Props) {
 

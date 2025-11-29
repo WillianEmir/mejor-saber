@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useCallback } from 'react'
+import { useState, useTransition, useCallback } from 'react' 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { MoreHorizontal, PlusCircle } from 'lucide-react'
@@ -16,7 +16,6 @@ import { Button } from '@/src/components/ui/Button'
 import { Badge } from '@/src/components/ui/badge'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/src/components/ui/dropdown-menu'
 import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
-
 import Pagination from './PreguntasPagination'
 import PreguntasFilters from './PreguntasFilters' 
 import PreguntaModal from './PreguntaModal'
@@ -125,6 +124,7 @@ export default function PreguntasList({ preguntas, areas, contenidosCurriculares
           <div className="mb-4">
             <PreguntasFilters areas={areas} />
           </div>
+          
           {preguntas.length > 0 ? (
             <>
               <div className="rounded-md border">

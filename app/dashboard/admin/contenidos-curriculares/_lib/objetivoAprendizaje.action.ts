@@ -2,7 +2,7 @@
 
 import prisma from '@/src/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { ObjetivoAprendizajeSchema } from './objetivoAprendizaje.schema';
+import { ObjetivoAprendizajeSchema } from './objetivoAprendizaje.schema'; 
 import { EjeTematicoType } from './ejeTematico.schema';
 import { FormState } from '@/src/types';
 
@@ -39,11 +39,11 @@ export async function createOrUpdateObjetivoAprendizaje(formData: FormData): Pro
       );
     }
   } catch (e) {
+    console.log(e);
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
       return {
         success: false,
-        errors: { descripcion: ['Ya existe un objetivo de aprendizaje con este nombre.'] },
-        message: 'Error en la base de datos.',
+        message: 'Ya existe un objetivo de aprendizaje con este nombre.',
       };
     }
     return {

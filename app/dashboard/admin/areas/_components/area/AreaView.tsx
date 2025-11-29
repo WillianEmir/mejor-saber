@@ -1,48 +1,46 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import { notFound, useRouter } from 'next/navigation'
+import { useState, useTransition } from 'react' 
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import { deleteArea } from '@/app/dashboard/admin/areas/_lib/area.actions'
 import { deleteCompetencia } from '@/app/dashboard/admin/areas/_lib/competencia.actions'
 import { deleteAfirmacion } from '@/app/dashboard/admin/areas/_lib/afirmacion.actions'
 import { deleteEviencia } from '@/app/dashboard/admin/areas/_lib/evidencia.actions'
-
-import { toast } from 'sonner'
-import { Accordion } from "@/src/components/ui/accordion"
-import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
-import CompetenciaItem from '../competencia/CompetenciaItem'
-import AreaModal from './AreaModal'
-import CompetenciaModal from '../competencia/CompetenciaModal'
-import AreaViewHeader from './AreaViewHeader'
-
 import { type CompetenciaType } from '@/app/dashboard/admin/areas/_lib/competencia.schema'
 import { type AreaWithRelationsType, type Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
-import { FormState } from '@/src/types'
+import { type FormState } from '@/src/types'
+
+import { Accordion } from "@/src/components/ui/accordion"
+import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog'
+import AreaViewHeader from './AreaViewHeader'
+import AreaModal from './AreaModal'
+import CompetenciaModal from '../competencia/CompetenciaModal'
+import CompetenciaItem from '../competencia/CompetenciaItem'
 
 interface AreaViewProps {
-  area: AreaWithRelationsType
+  area: AreaWithRelationsType 
 }
 
 type DialogState = {
-  isOpen: boolean
+  isOpen: boolean 
   id: string | null
   type: 'area' | 'competencia' | 'afirmacion' | 'evidencia' | null
 }
 
 export default function AreaView({ area }: AreaViewProps) {
+
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const [isAreaModalOpen, setIsAreaModalOpen] = useState(false)
-  const [selectedArea, setSelectedArea] = useState<Areatype | null>(null)
+  const [selectedArea, setSelectedArea] = useState<Areatype>()
 
   const [isCompetenciaModalOpen, setIsCompetenciaModalOpen] = useState(false)
-  const [selectedCompetencia, setSelectedCompetencia] = useState<CompetenciaType | null>(null)
+  const [selectedCompetencia, setSelectedCompetencia] = useState<CompetenciaType | null>(null) //TODO: Verifiar este null
 
   const [dialogState, setDialogState] = useState<DialogState>({ isOpen: false, id: null, type: null })
-
-  if (!area) notFound()
 
   const openDialog = (id: string, type: DialogState['type']) => {
     setDialogState({ isOpen: true, id, type })

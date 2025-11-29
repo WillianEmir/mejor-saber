@@ -1,20 +1,19 @@
 'use client'
 
-import { useEffect, useTransition } from 'react'
+import { useEffect, useTransition } from 'react' 
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline'
 
 import { createOrUpdateContenidoCurricular } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.actions'
+import { ContenidoCurricularSchema, ContenidoWithRelationsType, ContenidoCurricularType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.schema'
+import { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
 
 import { Button } from '@/src/components/ui/Button'
 import { Input } from '@/src/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
-
-import { ContenidoCurricularSchema, ContenidoWithRelationsType, ContenidoCurricularType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.schema'
-import { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
 
 interface ContenidoCurricularModalProps {
   isOpen: boolean

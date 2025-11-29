@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline'
 
 import { createOrUpdateEjeTematico } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.actions'
+import { EjeTematicoSchema, EjeTematicoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 
 import { Button } from '@/src/components/ui/Button'
 import { Input } from '@/src/components/ui/input'
@@ -13,7 +14,6 @@ import { Textarea } from '@/src/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
 
-import { EjeTematicoSchema, EjeTematicoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
 
 interface EjeTematicoModalProps {
   isOpen: boolean

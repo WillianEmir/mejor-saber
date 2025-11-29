@@ -1,7 +1,8 @@
-'use server'
+'use server' 
+
+import prisma from '@/src/lib/prisma';
 
 import { ContenidoCurricularType, ContenidoWithRelationsType } from './contenidoCurricular.schema';
-import prisma from '@/src/lib/prisma';
 
 // Obtiene todos los contenidos currculares con sus relaciones
 export async function getContenidosWithRelations(): Promise<ContenidoWithRelationsType[]> {
@@ -18,6 +19,9 @@ export async function getContenidosWithRelations(): Promise<ContenidoWithRelatio
     throw new Error('No se pudieron obtener los Contenidos Curriculares.');
   }
 }
+
+
+
 
 // Obtiene un contenido curricular por su ID
 export async function getContenidoCurricular(id: string): Promise<ContenidoCurricularType | null> {

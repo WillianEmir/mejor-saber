@@ -5,13 +5,13 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline'
 
+import { createOrUpdateCompetencia } from '@/app/dashboard/admin/areas/_lib/competencia.actions'
+import { CompetenciaSchema, CompetenciaType } from '@/app/dashboard/admin/areas/_lib/competencia.schema'
+
 import { Button } from '@/src/components/ui/Button'
 import { Input } from '@/src/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
-
-import { createOrUpdateCompetencia } from '@/app/dashboard/admin/areas/_lib/competencia.actions'
-import { CompetenciaSchema, CompetenciaType } from '@/app/dashboard/admin/areas/_lib/competencia.schema'
 
 interface CompetenciaModalProps {
   isOpen: boolean
@@ -21,6 +21,7 @@ interface CompetenciaModalProps {
 }
 
 export default function CompetenciaModal({ isOpen, onClose, areaId, competencia }: CompetenciaModalProps) {
+
   const [isPending, startTransition] = useTransition()
 
   const editMode = !!competencia?.id
@@ -44,6 +45,7 @@ export default function CompetenciaModal({ isOpen, onClose, areaId, competencia 
   }, [isOpen, competencia, form, areaId])
 
   const onSubmit = (data: CompetenciaType) => {
+
     const parsedData = CompetenciaSchema.safeParse(data)
 
     if (!parsedData.success) {
@@ -54,13 +56,13 @@ export default function CompetenciaModal({ isOpen, onClose, areaId, competencia 
     }
 
     const formData = new FormData();
-    formData.append('id', data.id || '');
+    if (editMode) formData.append('id', data.id!);
     formData.append('nombre', data.nombre);
     formData.append('areaId', data.areaId);
 
     startTransition(async () => {
       const result = await createOrUpdateCompetencia(formData)
-      if (result.message) {
+      if (result.success) {
         toast.success(result.message)
         onClose()
       } else {

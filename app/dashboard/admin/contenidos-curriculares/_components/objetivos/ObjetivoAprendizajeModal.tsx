@@ -16,13 +16,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 interface ObjetivoAprendizajeModalProps { 
   isOpen: boolean
   onClose: () => void
-  ejeTematicoId: string
+  ejeTematicoId: string | undefined
   objetivo: ObjetivoAprendizajeType | null
 }
 
 export default function ObjetivoAprendizajeModal({ isOpen, onClose, ejeTematicoId, objetivo }: ObjetivoAprendizajeModalProps) {
 
   const [isPending, startTransition] = useTransition()
+  
   const editMode = !!objetivo?.id
 
   const form = useForm<ObjetivoAprendizajeType>({

@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useTransition } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'; 
 import { toast } from 'sonner';
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline';
+import { Role } from '@/src/generated/prisma';
 
 import { upsertUser } from '@/app/dashboard/admin/users/_lib/user.action';
-import { UpsertUserSchema, UpsertUserType, UserType } from '@/app/dashboard/admin/users/_lib/user.schema';
-import { Role } from '@/src/generated/prisma';
+import { UpsertUserSchema, UpsertUserType } from '@/app/dashboard/admin/users/_lib/user.schema';
 
 import { Button } from '@/src/components/ui/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog';
@@ -16,15 +16,17 @@ import { Input } from '@/src/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
 import { Switch } from '@/src/components/ui/switch';
 
-interface UsersModalProps { 
-  user?: UserType | null;
+interface UsersModalProps {  
+  user?: UpsertUserType | null;
   isOpen: boolean;
   onClose: () => void;
   schools: { id: string; nombre: string }[];
 }
 
 export default function UsersModal({ user, isOpen, onClose, schools }: UsersModalProps) {
+
   const [isPending, startTransition] = useTransition();
+
   const editMode = !!user?.id;
 
   const form = useForm<UpsertUserType>({ 
@@ -66,7 +68,7 @@ export default function UsersModal({ user, isOpen, onClose, schools }: UsersModa
     const formData = new FormData();
     if (parsedData.data.id) formData.append('id', parsedData.data.id);
     formData.append('name', parsedData.data.name);
-    formData.append('lastName', parsedData.data.lastName);
+    if(parsedData.data.lastName) formData.append('lastName', parsedData.data.lastName);
     formData.append('email', parsedData.data.email);
     formData.append('role', parsedData.data.role);
     formData.append('isActive', String(parsedData.data.isActive));
@@ -126,7 +128,7 @@ export default function UsersModal({ user, isOpen, onClose, schools }: UsersModa
                 <FormItem>
                   <FormLabel>Apellido</FormLabel>
                   <FormControl>
-                    <Input placeholder="Apellido del usuario" {...field} />
+                    <Input placeholder="Apellido del usuario" {...field} value={field.value || ''}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,4 +1,5 @@
-import { OpcionPregunta, Pregunta, Simulacro, SimulacroPregunta } from "@/src/generated/prisma";
+import { Areatype } from "@/app/dashboard/admin/areas/_lib/area.schema";
+import { Competencia, OpcionPregunta, Pregunta, Simulacro, SimulacroPregunta } from "@/src/generated/prisma";
 import z from "zod";
 
 // Schema para validar la pregunta y la opción seleccionada
@@ -43,4 +44,9 @@ export type SimulacroResultType = SimulacroPregunta & {
     Pregunta & { opciones: OpcionPregunta[]  }
   ),
   opcionSeleccionada: ( OpcionPregunta ) | null
+}
+
+// Type para las áreas con sus competencias 
+export type AreaCompetenciasType = Areatype & {
+  competencias: (Omit<Competencia, 'createdAt' | 'updatedAt'>)[]
 }

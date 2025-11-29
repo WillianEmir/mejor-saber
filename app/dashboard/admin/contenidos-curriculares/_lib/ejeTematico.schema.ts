@@ -23,7 +23,7 @@ export const EjeTematicoSchema = z.object({
 export type EjeTematicoType = Omit<EjeTematico, 'createdAt' | 'updatedAt'>;
 
 // Type para el Eje Temático con sus relaciones
-export type EjeTematicoWithRelationsType = EjeTematicoType & {
+export type EjeTematicoWithRelationsType = EjeTematicoType & { 
   contenidoCurricular: ContenidoCurricularType & {
     area: Areatype
   },

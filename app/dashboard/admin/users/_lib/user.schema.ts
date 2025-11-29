@@ -1,18 +1,19 @@
 import { Role, User } from '@/src/generated/prisma';
 import { z } from 'zod'; 
 
-// Type for displaying user data safely (without password)
+// Type for displaying user data safely (without password) 
 export type UserType = Omit<User, 'password'>;
 
-// Schema for creating/updating users from the admin panel
+// Schema for creating/updating users from the admin panel 
 export const UpsertUserSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, 'El nombre es requerido'),
-  lastName: z.string().min(1, 'El apellido es requerido'),
+  lastName: z.string().min(1, 'El apellido es requerido').nullable(),
   email: z.email({ message: 'Email no válido' }),
-  role: z.enum(Role),
+  role: z.enum(Role, {error: 'Rol no válido'}),
   isActive: z.boolean(),
   schoolId: z.string().optional().nullable(),
+  lastLogin: z.date().optional().nullable(),
 });
 
 // Type for creating/updating users from the admin panel

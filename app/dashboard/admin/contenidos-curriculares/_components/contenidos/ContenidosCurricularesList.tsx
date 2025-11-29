@@ -8,6 +8,10 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion"
 
 import { deleteEjeTematico } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.actions'
 import { deleteContenidoCurricular } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.actions'
+import type { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
+import type { ContenidoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.schema'
+import type { EjeTematicoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
+import { FormState } from '@/src/types'
 
 import { Accordion, AccordionContent, AccordionItem } from '@/src/components/ui/accordion'
 import ItemActionMenu from '@/src/components/ui/ItemActionMenu'
@@ -17,17 +21,12 @@ import ContenidosCurricularesModal from './ContenidosCurricularesModal'
 import EjeTematicoModal from '../ejes/EjesTematicosModal'
 import ContenidosCurricularesHeader from './ContenidosCurricularesHeader'
 
-import type { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema'
-import type { ContenidoWithRelationsType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/contenidoCurricular.schema'
-import type { EjeTematicoType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/ejeTematico.schema'
-import { FormState } from '@/src/types'
-
 interface ContenidosCurricularesListProps { 
   areas: Areatype[]
   contenidosCurriculares: ContenidoWithRelationsType[]
 }
 
-type DialogState = {
+type DialogState = { 
   isOpen: boolean
   id: string | null
   type: 'contenido' | 'eje' | null

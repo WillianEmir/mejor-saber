@@ -1,16 +1,18 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
-import { FormState } from '@/src/types'
 import prisma from '@/src/lib/prisma'
+import { revalidatePath } from 'next/cache' 
+
 import { EjeTematicoSchema } from './ejeTematico.schema'
+
+import { FormState } from '@/src/types'
 
 // Crea o edita un eje temático
 export async function createOrUpdateEjeTematico(formData: FormData): Promise<FormState> {
 
   const validatedFields = EjeTematicoSchema.safeParse({
     id: formData.get('id') || undefined,
-    nombre: formData.get('nombre'),
+    nombre: formData.get('nombre'), 
     descripcion: formData.get('descripcion'),
     descripcionCorta: formData.get('descripcionCorta'),
     descripcionLarga: formData.get('descripcionLarga'),
@@ -43,13 +45,11 @@ export async function createOrUpdateEjeTematico(formData: FormData): Promise<For
       })
     }
   } catch (e) {
+    console.log(e);
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
       return {
         success: false,
-        message: 'Error: El nombre ya está en uso.',
-        errors: {
-          nombre: ['Ya existe un Eje Temático con este nombre en este contenido curricular.'],
-        },
+        message: 'Ya existe un Eje Temático con este nombre en este contenido curricular.',
       }
     }
     return {

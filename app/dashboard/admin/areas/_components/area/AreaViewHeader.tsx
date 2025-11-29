@@ -1,7 +1,8 @@
-'use client'
+'use client' 
 
 import Link from 'next/link'
 import { ArrowLeft, Pencil, Plus, Trash2 } from 'lucide-react'
+
 import { Button } from '@/src/components/ui/Button'
 
 interface AreaViewHeaderProps {
@@ -21,6 +22,7 @@ export default function AreaViewHeader({ areaName, onAddCompetencia, onEditArea,
           <span>Volver a las Áreas</span>
         </Link>
       </div>
+
       <header className="sm:flex sm:items-start sm:justify-between pb-8 border-b border-gray-200 dark:border-gray-700">
         <div className="sm:flex-auto">
           <h1 className="text-2xl md:text-3xl font-bold leading-tight text-gray-900 dark:text-white">
@@ -30,6 +32,7 @@ export default function AreaViewHeader({ areaName, onAddCompetencia, onEditArea,
             Gestiona las competencias, afirmaciones y evidencias de esta área.
           </p>
         </div>
+        
         <div className="mt-4 sm:mt-0 flex items-center gap-2">
           <Button onClick={onEditArea} variant='outline'>
             <Pencil className='h-4 w-4 mr-2'/>
@@ -41,6 +44,7 @@ export default function AreaViewHeader({ areaName, onAddCompetencia, onEditArea,
           </Button>
         </div>
       </header>
+
       <div className="mt-8 flex justify-between items-center">
         <h2 className="text-xl font-semibold leading-6 text-gray-900 dark:text-white">
           Competencias

@@ -6,9 +6,9 @@ import { ActividadInteractivaType } from "./actividadInteractiva.schema";
 // schema para validar cada sección
 export const SeccionSchema = z.object({
   id: z.uuid({ message: 'El ID debe ser un UUID válido.' }).optional(),
-  nombre: z.string().min(1, 'El nombre no puede estar vacío.'),
+  nombre: z.string().min(1, 'El nombre de la sección no puede estar vacío.'),
   descripcion: z.string().optional().nullable(),
-  tipo: z.enum(TipoSeccion),
+  tipo: z.enum(TipoSeccion, { error: 'El tipo de sección no es válido.' }),
   ejeTematicoId: z.uuid({ message: 'El ID del eje temático debe ser un UUID válido.' })
 })
 

@@ -18,7 +18,7 @@ export default async function page({params} : pageProps) {
   
   if(!ejeTematico) notFound()
 
-  return (
+  return ( 
     <>
       <EjeTematicoView
         ejeTematico={ejeTematico}

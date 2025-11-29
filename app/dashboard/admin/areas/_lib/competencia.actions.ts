@@ -1,14 +1,14 @@
-
 'use server'
 
+import prisma from '@/src/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
 import { FormState } from '@/src/types'
-import prisma from '@/src/lib/prisma'
+import { CompetenciaSchema } from './competencia.schema' 
 
-import { CompetenciaSchema } from './competencia.schema'
-
+// Server Action para crear o editar una competencia
 export async function createOrUpdateCompetencia(formData: FormData): Promise<FormState> {
+
   const validatedFields = CompetenciaSchema.safeParse({
     id: formData.get('id') || undefined,
     areaId: formData.get('areaId'),
@@ -43,10 +43,7 @@ export async function createOrUpdateCompetencia(formData: FormData): Promise<For
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
       return {
         success: false,
-        message: 'Error en la base de datos.',
-        errors: {
-          nombre: ['Ya existe una competencia con este nombre en esta área.'],
-        },
+        message: 'Error en la base de datos.'
       }
     }
     return {
@@ -56,9 +53,10 @@ export async function createOrUpdateCompetencia(formData: FormData): Promise<For
   }
 
   revalidatePath(`/dashboard/admin/areas/${areaId}`)
-  return { message: id ? 'Competencia actualizada exitosamente.' : 'Competencia creada exitosamente.' }
+  return { message: id ? 'Competencia actualizada exitosamente.' : 'Competencia creada exitosamente.', success: true}
 }
 
+// Elimina una competencia por su id
 export async function deleteCompetencia(id: string, areaId: string): Promise<FormState> {
   try {
     await prisma.competencia.delete({ where: { id } })

@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { MoreVertical, Pencil, Trash2 } from 'lucide-react';
 
 import { deleteUser } from '@/app/dashboard/admin/users/_lib/user.action';
-import { UserType } from '@/app/dashboard/admin/users/_lib/user.schema';
+import { UpsertUserType } from '@/app/dashboard/admin/users/_lib/user.schema';
 
 import { Button } from '@/src/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
@@ -16,23 +16,24 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import UsersModal from './UsersModal';
 
 interface AdminUsersProps {  
-  users: UserType[];
-  schools: { id: string; nombre: string }[];
+  users: UpsertUserType[];
+  schools: { id: string; nombre: string }[]; 
 }
 
 export default function UsersList({ users, schools }: AdminUsersProps) {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<UserType | undefined>(undefined);
+  const [selectedUser, setSelectedUser] = useState<UpsertUserType | undefined>(undefined);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const handleOpenModal = (user?: UserType) => {
+  const handleOpenModal = (user?: UpsertUserType) => {
     setSelectedUser(user);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = () => { 
     setIsModalOpen(false);
     setSelectedUser(undefined);
   };
@@ -109,7 +110,7 @@ export default function UsersList({ users, schools }: AdminUsersProps) {
                           <Pencil className="mr-2 h-4 w-4" />
                           <span>Editar</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDelete(user.id)}>
+                        <DropdownMenuItem onClick={() => handleDelete(user.id!)}>
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Eliminar</span>
                         </DropdownMenuItem>

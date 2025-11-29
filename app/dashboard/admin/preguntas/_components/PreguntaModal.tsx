@@ -7,6 +7,7 @@ import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { UploadCloud } from 'lucide-react'
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
 import { z } from 'zod'
+import Image from 'next/image'
 
 import { createOrUpdatePregunta } from '@/app/dashboard/admin/preguntas/_lib/pregunta.actions'
 import { PreguntaWithRelationsType, PreguntaSchema } from '@/app/dashboard/admin/preguntas/_lib/pregunta.schema'
@@ -22,7 +23,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/ca
 import { Checkbox } from '@/src/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
-import Image from 'next/image'
 
 type PreguntaFormType = Omit<z.infer<typeof PreguntaSchema>, 'ejesTematicos'> & {
   areaId: string;
@@ -72,10 +72,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
     },
   })
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "opciones",
-  });
+  const { fields, append, remove } = useFieldArray({ control: form.control, name: "opciones" });
 
   const [numOpciones, setNumOpciones] = useState(pregunta?.opciones?.length || 4)
 
@@ -220,9 +217,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
   const selectedAfirmacion = afirmaciones.find(a => a.id === watchedAfirmacionId);
   const evidencias = selectedAfirmacion?.evidencias || [];
 
-  const filteredContenidos = watchedAreaId
-    ? contenidosCurriculares.filter(c => c.areaId === watchedAreaId)
-    : [];
+  const filteredContenidos = watchedAreaId ? contenidosCurriculares.filter(c => c.areaId === watchedAreaId) : [];
   const selectedContenido = filteredContenidos.find(c => c.id === watchedContenidoId);
   const ejesTematicos = selectedContenido?.ejesTematicos || [];
 
@@ -317,7 +312,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                 <div className="text-center">
                                   {field.value ? (
                                     <div>
-                                      <Image src={field.value} alt="Vista previa de la imagen" className="mx-auto h-48 w-auto rounded-md" width={192} height={192} />
+                                      <Image src={field.value} alt="Vista previa de la imagen" className="mx-auto h-auto w-auto rounded-md" width={192} height={192} />
                                       {!isViewMode && (
                                         <Button type="button" variant="destructive" size="sm" className="mt-4" onClick={() => field.onChange('')}>
                                           Quitar imagen
@@ -417,6 +412,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
 
                                       {form.watch(`opciones.${index}.isImage`) ? (
                                         <FormField
+                                          key={`image-${item.id}`}
                                           control={form.control}
                                           name={`opciones.${index}.imageUrl`}
                                           render={({ field: imageField }) => (
@@ -426,7 +422,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                                 <div className="w-full">
                                                   {imageField.value ? (
                                                     <div className="mt-2 text-center">
-                                                      <Image src={imageField.value} alt={`Opción ${String.fromCharCode(65 + index)}`} className="mx-auto h-40 w-auto rounded-md object-contain" width={160} height={160} />
+                                                      <Image src={imageField.value} alt={`Opción ${String.fromCharCode(65 + index)}`} className="mx-auto h-auto w-auto rounded-md object-contain" width={160} height={160} priority />
                                                       {!isViewMode && (
                                                         <Button type="button" variant="destructive" size="sm" className="mt-2" onClick={() => imageField.onChange(undefined)}>
                                                           Quitar imagen
@@ -458,6 +454,7 @@ export default function PreguntaModal({ isOpen, onClose, areas, pregunta, isView
                                         />
                                       ) : (
                                         <FormField
+                                          key={`text-${item.id}`}
                                           control={form.control}
                                           name={`opciones.${index}.respuesta`}
                                           render={({ field: itemField }) => (
