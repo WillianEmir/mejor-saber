@@ -4,8 +4,8 @@ import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Pencil, Trash2 } from 'lucide-react';
 
-import { deleteNivelDesempeno } from '../_lib/NivelesDesempeño.actions';
-import { NivelDesempenoType } from '../_lib/NivelesDesempeño.schema';
+import { deleteNivelDesempeno } from '../_lib/NivelesDesempeno.actions';
+import { NivelDesempenoType } from '../_lib/NivelesDesempeno.schema';
 import { Areatype } from '../../areas/_lib/area.schema';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';

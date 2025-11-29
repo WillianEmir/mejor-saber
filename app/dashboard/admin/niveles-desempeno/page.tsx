@@ -1,4 +1,4 @@
-import { getNivelesDesempeno,  } from './_lib/NivelesDesempeño.data'
+import { getNivelesDesempeno,  } from './_lib/NivelesDesempeno.data'
 import { getAreas } from '../areas/_lib/area.data';
 
 import NivelesDesempeno from './_components/NivelesDesempeno'

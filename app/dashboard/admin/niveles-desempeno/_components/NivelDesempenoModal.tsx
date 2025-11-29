@@ -6,8 +6,8 @@ import { toast } from 'sonner';
 import { Nivel } from '@/src/generated/prisma';
 import { PlusCircleIcon, PencilIcon } from '@heroicons/react/24/outline';
 
-import { createOrUpdateNivelDesempeno } from '../_lib/NivelesDesempeño.actions';
-import { NivelDesempenoSchema, NivelDesempenoType } from '../_lib/NivelesDesempeño.schema';
+import { createOrUpdateNivelDesempeno } from '../_lib/NivelesDesempeno.actions';
+import { NivelDesempenoSchema, NivelDesempenoType } from '../_lib/NivelesDesempeno.schema';
 import { Areatype } from '../../areas/_lib/area.schema';
 
 import { Button } from '@/src/components/ui/Button';
