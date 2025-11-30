@@ -42,7 +42,7 @@ export async function createOrUpdateArea(formData: FormData): Promise<FormState>
 
   revalidatePath('/dashboard/admin/areas');
   return { message: id ? 'Área actualizada exitosamente.' : 'Área creada exitosamente.', success: true};
-} 
+}  
 
 // Elimina un área por su Id
 export async function deleteArea(id: string): Promise<FormState> {
@@ -50,7 +50,7 @@ export async function deleteArea(id: string): Promise<FormState> {
     const existingRelation = await prisma.competencia.findFirst({
       where: {
         areaId: id,
-        simulacros: {
+        simulacros: { 
           some: {},
         },
       },
