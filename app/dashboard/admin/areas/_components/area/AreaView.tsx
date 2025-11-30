@@ -19,7 +19,7 @@ import AreaModal from './AreaModal'
 import CompetenciaModal from '../competencia/CompetenciaModal'
 import CompetenciaItem from '../competencia/CompetenciaItem'
 
-interface AreaViewProps {
+interface AreaViewProps { 
   area: AreaWithRelationsType 
 }
 

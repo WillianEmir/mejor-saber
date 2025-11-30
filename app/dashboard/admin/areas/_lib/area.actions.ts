@@ -22,7 +22,7 @@ export async function createOrUpdateArea(formData: FormData): Promise<FormState>
     };
   }
 
-  const { id, nombre } = validatedFields.data;
+  const { id, nombre } = validatedFields.data; 
 
   try {
     if (id) {
@@ -47,12 +47,39 @@ export async function createOrUpdateArea(formData: FormData): Promise<FormState>
 // Elimina un área por su Id
 export async function deleteArea(id: string): Promise<FormState> {
   try {
+    const existingRelation = await prisma.competencia.findFirst({
+      where: {
+        areaId: id,
+        simulacros: {
+          some: {},
+        },
+      },
+    });
+
+    if (existingRelation) {
+      return {
+        success: false,
+        message:
+          'No se puede eliminar el área por que está asociada a un simulacro.',
+      };
+    }
     await prisma.area.delete({ where: { id } });
-    return { message: 'Área eliminada exitosamente.', success: true }
+    revalidatePath('/dashboard/admin/areas');
+    return { message: 'Área eliminada exitosamente.', success: true };
   } catch (e) {
     if (e instanceof Error) {
+      if ((e as any).code === 'P2003') {
+        return {
+          success: false,
+          message:
+            'No se puede eliminar el área porque tiene competencias, contenidos curriculares o niveles de desempeño asociados.',
+        };
+      }
       return { success: false, message: e.message };
     }
-    return { message: 'Error de base de datos: No se pudo procesar la solicitud.', success: false };
+    return {
+      message: 'Error de base de datos: No se pudo procesar la solicitud.',
+      success: false,
+    };
   }
 }

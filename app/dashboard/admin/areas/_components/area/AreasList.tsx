@@ -45,7 +45,7 @@ export default function AreasList({ areas }: AreasListProps) {
                       <FolderIcon className="h-6 w-6 text-gray-600 dark:text-gray-300" />
                     </div>
                     <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">
-                      {area.nombre}
+                      {area.nombre} 
                     </CardTitle>
                   </CardHeader>
                   {/* Add CardContent if there's more content for each area */}
