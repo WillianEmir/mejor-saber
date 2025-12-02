@@ -27,7 +27,7 @@ export default function NivelesDesempeno({ niveles, areas }: NivelesDesempenoPro
   const [areaFilter, setAreaFilter] = useState('all');
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition(); 
 
   const handleEdit = (nivel: NivelDesempenoType) => {
     setSelectedNivel(nivel);

@@ -4,7 +4,7 @@ import { type ClassValue, clsx } from "clsx"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { twMerge } from "tailwind-merge"
 
-export function cn(...inputs: ClassValue[]) {
+export function cn(...inputs: ClassValue[]) { 
   return twMerge(clsx(inputs))
 }
 
@@ -17,6 +17,6 @@ export const redirectByRole = (role: string | undefined, router: AppRouterInstan
   } else if (role === 'USER') {
     router.push('/dashboard/user');
   } else {
-    router.push('/auth/signin');
+    router.push('/auth/signup');
   }
 };

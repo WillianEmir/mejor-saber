@@ -17,5 +17,5 @@ export default async function page() {
         contenidosCurriculares={contenidosCurriculares} 
       />
     </> 
-  )
+  ) 
 }

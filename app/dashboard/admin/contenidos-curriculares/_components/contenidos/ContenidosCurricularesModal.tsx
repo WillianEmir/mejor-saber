@@ -19,7 +19,7 @@ interface ContenidoCurricularModalProps {
   isOpen: boolean
   onClose: () => void
   contenidoCurricular: ContenidoWithRelationsType | null
-  areas: Areatype[]
+  areas: Areatype[] 
 }
 
 export default function ContenidosCurricularesModal({ isOpen, onClose, contenidoCurricular, areas }: ContenidoCurricularModalProps) {

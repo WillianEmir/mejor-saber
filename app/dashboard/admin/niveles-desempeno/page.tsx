@@ -13,4 +13,4 @@ export default async function page() {
   return (
     <NivelesDesempeno niveles={niveles} areas={areas} />
   )
-} 
+}  

@@ -3,15 +3,16 @@
 Esta prueba evalúa las competencias para enfrentarse a situaciones que requieran el uso de herramientas matemáticas de alguna de estas tres categorías: Álgebra y cálculo, Geometría y Estadística. 
 
 - Competencias
+
     - **Interpretación y representación**
         
         Esta competencia se relaciona con la habilidad para comprender y transformar la información presentada en formatos distintos, como tablas, gráficas, conjuntos de datos, diagramas, esquemas, etcétera; así como la capacidad de utilizar estas representaciones para extraer información relevante que permita, entre otras cosas, establecer relaciones matemáticas e identificar tendencias y patrones. Con el desarrollo de esta competencia, se espera que un estudiante utilice coherentemente los registros simbólico, natural, gráfico y, en general, todos aquellos que se dan en situaciones que involucran las matemáticas. Esta competencia se relaciona con el proceso de comunicación, representación y razonamiento, definidos en los EBC.
         
-        - **Afirmación:** Comprende y transforma la información cuantitativa y esquemática presentada
-        en distintos formatos.
+        - **Afirmación:** Comprende y transforma la información cuantitativa y esquemática presentada en distintos formatos.
             - Evidencias
                 - Da cuenta de las características básicas de la información presentada en diferentes formatos, como series, gráficas, tablas y esquemas.
                 - Transforma la representación de una o más piezas de información.
+
     - **Formulación y ejecución**
         
         Esta competencia se relaciona con la capacidad de plantear y diseñar estrategias que permitan solucionar problemas provenientes de diversos contextos, sean estos netamente matemáticos o cotidianos y susceptibles de tratamiento matemático. Se relaciona también con la habilidad o destreza para seleccionar y verificar la pertinencia de soluciones propuestas a determinados problemas y estrategias de solución desde diferentes puntos de vista.
@@ -21,6 +22,7 @@ Esta prueba evalúa las competencias para enfrentarse a situaciones que requiera
                 - Diseña planes para la solución de problemas que involucran información cuantitativa o esquemática.
                 - Ejecuta un plan de solución para un problema que involucra información cuantitativa o esquemática.
                 - Resuelve un problema que involucra información cuantitativa o esquemática.
+
     - **Argumentación**
         
         Esta competencia se relaciona con la capacidad para validar o refutar conclusiones, estrategias, soluciones, interpretaciones y representaciones en diversas situaciones, siempre, justificando el porqué o el cómo de los hallazgos, a través de ejemplos y contraejemplos o señalando y reflexionando sobre inconsistencias presentes. Con el desarrollo de esta competencia, se espera que un estudiante justifique la aceptación o el rechazo de afirmaciones, interpretaciones y estrategias de solución, con base en propiedades y resultados o verbalizando procedimientos matemáticos. Cabe indicar que esta competencia también se relaciona con los procesos de razonamiento y modelación definidos en los EBC.
@@ -30,46 +32,13 @@ Esta prueba evalúa las competencias para enfrentarse a situaciones que requiera
                 - Plantea afirmaciones que sustentan o refutan una interpretación dada a la información disponible en el marco de la solución de un problema.
                 - Argumenta a favor o en contra de un procedimiento para resolver un problema a la luz de criterios presentados o establecidos.
                 - Establece la validez o pertinencia de una solución propuesta a un problema dado.
+
 - Herramientas Matemáticas
     1. **Genéricas**:
     Corresponden a los elementos fundamentales de las matemáticas, necesarios para que todo ciudadano pueda interactuar de manera crítica en la sociedad actual.
     2. **No genéricas:**
     Corresponden a los contenidos que son considerados específicos o propios del quehacer matemático y son aprendidos en la etapa escolar.
-- Contenidos Curriculares
-    - Estadística
-        - Contenidos genéricos
-            - Diferentes tipos de representación de datos (tablas y gráficas
-            - Intersección, unión y contenencia de conjuntos
-            - Promedio y rango estadístico
-            - Conteos simples que utilizan principios de suma y multiplicación
-            - Noción de población, muestra e inferencia muestral
-        - Contenidos no genéricos
-            - Estimación del error
-            - Varianza, percentiles, mediana y correlación
-            - Combinaciones y permutaciones
-    - Geometría
-        - Contenidos genéricos
-            - Triángulos, círculos, paralelogramos, esferas, paralelepípedos rectos, cilindros y sus medidas
-            - Relaciones de paralelismo y ortogonalidad entre rectas
-            - Desigualdad triangular
-            - Sistemas de coordenadas cartesianas
-        - Contenidos no genéricos
-            - Sólidos y figuras geométricas, como pirámides y polígonos de más de cuatro lados
-            - Relaciones de congruencia y semejanza
-            - Teoremas clásicos, como el de Pitágoras y el de Tales
-            - Coordenadas polares y tridimensionales
-            - Transformaciones en el plano (translaciones, rotaciones, homotecias, reflexiones)
-    - Álgebra y cálculo
-        - Contenidos genéricos
-            - Los números racionales expresados como fracciones, razones, números decimales o porcentajes
-            - Propiedades básicas de las operaciones aritméticas de suma, resta, multiplicación, división
-            y potenciación (incluida notación científica)
-            - Relaciones lineales y afines y razones de cambio (tasas de interés, tasas cambiarias, velocidad,
-            aceleración, etcétera)
-        - Contenidos no genéricos
-            - Expresiones algebraicas; propiedades, relaciones y operaciones entre ellas
-            - Representación gráfica y algebraica de funciones racionales, trigonométricas, polinomiales, exponenciales y logarítmicas; además de propiedades básicas, periodicidad, dominios y rangos, condiciones de crecimiento e intersecciones con otras funciones
-            - Sucesiones y sus límites
+           
 - Niveles de desempeño
     - **Nivel 1: Punaje entre 0 - 35**
         - Lee información puntual (un dato, por ejemplo) relacionada con situaciones cotidianas y presentada en tablas o gráficas con escala explícita, cuadrícula o, por lo menos, líneas horizontales.

@@ -29,8 +29,8 @@ interface ContenidosCurricularesListProps {
 type DialogState = { 
   isOpen: boolean
   id: string | null
-  type: 'contenido' | 'eje' | null
-}
+  type: 'contenido' | 'eje' | null 
+} 
 
 export default function ContenidosCurricularesList({ areas, contenidosCurriculares }: ContenidosCurricularesListProps) {
 

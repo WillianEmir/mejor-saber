@@ -14,7 +14,7 @@ export default async function AdminDashboardPage() {
   const hierarchy = await getQuestionCountHierarchy();
   const contenidos = await getContenidoCurricularStats();
   const testimonios = await getTestimoniosStats();
-  const scoreDistribution = await getScoreDistributionByArea();
+  const scoreDistribution = await getScoreDistributionByArea(); 
 
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8">
