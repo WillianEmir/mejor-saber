@@ -6,7 +6,7 @@ interface StatCardProps {
   icon: LucideIcon;
   title: string;
   value: string;
-  subtext: string;
+  subtext: string; 
 }
 
 export const StatCard = ({ icon: Icon, title, value, subtext }: StatCardProps) => (
