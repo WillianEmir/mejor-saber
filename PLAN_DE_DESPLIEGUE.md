@@ -88,4 +88,4 @@ Una vez que todo esté configurado, tu flujo de trabajo será muy sencillo:
 2.  Crea nuevas migraciones de base de datos con `npx prisma migrate dev` si es necesario.
 3.  Sube tus cambios al repositorio con `git push`.
 4.  Vercel detectará automáticamente el `push`, iniciará un nuevo despliegue, aplicará las migraciones a la base de datos de Neon y pondrá en línea la nueva versión de tu aplicación.
-¡Listo! Tu aplicación estará desplegada y funcionando.
+¡Listo! Tu aplicación estará desplegada y funcionando. 
