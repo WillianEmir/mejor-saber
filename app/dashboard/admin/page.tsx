@@ -9,8 +9,6 @@ import { StatCard } from "./_components/StatCard";
 import { QuestionHierarchy } from "./_components/QuestionHierarchy";
 import { QuickActions } from "./_components/QuickActions";
 
-export const dynamic = 'force-dynamic';
-
 export default async function AdminDashboardPage() {
   const stats = await getAdminDashboardStats();
   const hierarchy = await getQuestionCountHierarchy();
