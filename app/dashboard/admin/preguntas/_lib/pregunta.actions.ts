@@ -69,6 +69,7 @@ export async function createOrUpdatePregunta(formData: FormData): Promise<FormSt
       });
     }
     revalidatePath('/dashboard/admin/preguntas');
+    revalidatePath(`/dashboard/admin`);
   } catch (e) {
     console.error(e);
     if (e instanceof Error && e.message.includes('Unique constraint failed')) {
@@ -88,6 +89,7 @@ export async function deletePregunta(id: string): Promise<FormState> {
   try {
     await prisma.pregunta.delete({ where: { id } });
     revalidatePath('/dashboard/admin/preguntas');
+    revalidatePath('/dashboard/admin');
     return { success: true, message: 'Pregunta eliminada exitosamente.' };
   } catch (error) {
     console.error(error);

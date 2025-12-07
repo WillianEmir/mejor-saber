@@ -61,6 +61,7 @@ export async function createOrUpdateSchool(formData: FormData): Promise<FormStat
   }
 
   revalidatePath('/dashboard/admin/schools');
+  revalidatePath('/dashboard/admin');
   return {
     message: id ? 'School actualizada exitosamente.' : 'School creada exitosamente.',
     success: true,

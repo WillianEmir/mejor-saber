@@ -142,6 +142,7 @@ la educación media cuenten con las capacidades lectoras para tomar posturas cr�
                 - Reconoce contenidos valorativos presentes en un texto.
                 - Reconoce las estrategias discursivas en un texto.
                 - Contextualiza adecuadamente un texto o la información contenida en este.
+
 - **Tipos de textos utilizados**
     1. **Textos continuos:**
         - Literarios (Novela, cuento, poesía, canción, dramaturgia).
@@ -150,6 +151,7 @@ la educación media cuenten con las capacidades lectoras para tomar posturas cr�
     2. **Textos discontinuos:**
         - Literarios (Caricatura, cómic).
         - Literarios (Etiqueta, infografía, tabla, diagrama, aviso publicitario, manual, reglamento).
+
 - Niveles de desempeño
     - **Nivel 1: Punaje entre 0 - 35**
         - Identifica elementos literales en textos continuos y discontinuos sin establecer relaciones de significado.
@@ -168,7 +170,7 @@ la educación media cuenten con las capacidades lectoras para tomar posturas cr�
         - Jerarquiza la información presente en un texto.
         - Infiere información implícita en textos continuos y discontinuos.
         - Establece relaciones intertextuales: definición, causaefecto, oposición y antecedente-consecuente, entre textos presentes.
-        - Relaciona marcadores textuales en la interpretación de textos.
+        - Relaciona marcadores textuales en la interpretación de textos. 
         - Reconoce la intención comunicativa del texto.
         - Reconoce la función de figuras literarias.
         - Identifica el uso del lenguaje en contexto.
@@ -187,22 +189,22 @@ la educación media cuenten con las capacidades lectoras para tomar posturas cr�
 
 - Contenidos Curriculares
     - Textos Continuos Literarios
-        - Novela
-        - Cuento
-        - Poesía
-        - Canción
-        - Dramaturgia
+        - Novela 4
+        - Cuento 4
+        - Poesía 4
+        - Canción 4
+        - Dramaturgia 4
     - Textos Continuos Informativo
-        - Ensayo
-        - Columna de opinión
-        - Crónica
+        - Ensayo 8
+        - Columna de opinión 8
+        - Crónica 8
     - Textos Discontinuos Literarios
-        - Caricatura
-        - cómic
+        - Caricatura 3
+        - cómic 3
     - Textos Discontinuos Informativo
-        - Etiqueta
+        - Etiqueta 2
         - Infografía
-        - Tabla
+        - Tabla 
         - Diagrama
         - Aviso publicitario
         - Manual

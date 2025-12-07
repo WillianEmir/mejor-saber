@@ -55,6 +55,7 @@ export async function createOrUpdateContenidoCurricular(formData: FormData): Pro
   }
 
   revalidatePath(`/dashboard/admin/contenidos-curriculares`)
+  revalidatePath('/dashboard/admin');
   return { message: id ? 'Contenido Curricular actualizado exitosamente.' : 'Contenido Curricular creado exitosamente.', success: true }
 }
 
@@ -63,6 +64,7 @@ export async function deleteContenidoCurricular(id: string): Promise<FormState> 
   try {
     await prisma.contenidoCurricular.delete({ where: { id } })
     revalidatePath('/dashboard/admin/contenidos-curriculares')
+    revalidatePath('/dashboard/admin');
     return { message: 'Contenido Curricular eliminado exitosamente.', success: true }
   } catch (e) {
     console.log(e);    

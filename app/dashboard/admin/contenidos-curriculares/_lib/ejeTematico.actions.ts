@@ -59,6 +59,7 @@ export async function createOrUpdateEjeTematico(formData: FormData): Promise<For
   } 
 
   revalidatePath('/dashboard/admin/contenidos-curriculares')
+  revalidatePath('/dashboard/admin');
   return { message: id ? 'Eje Temático actualizado exitosamente.' : 'Eje Temático creado exitosamente.', success: true }
 }
 
@@ -67,6 +68,7 @@ export async function deleteEjeTematico(id: string): Promise<FormState> {
   try {
     await prisma.ejeTematico.delete({ where: { id } })
     revalidatePath('/dashboard/admin/contenidos-curriculares')
+    revalidatePath('/dashboard/admin');
     return { message: 'Eje Temático eliminado exitosamente.', success: true }
   } catch (e) {
     if (e instanceof Error) {

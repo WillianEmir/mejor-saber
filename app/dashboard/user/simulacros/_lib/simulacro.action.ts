@@ -60,6 +60,8 @@ export const createSimulacro = async (
     });
 
     revalidatePath('/dashboard/simulacros');
+    revalidatePath('/dashboard/user');
+    revalidatePath('/dashboard/admin');
 
     return { 
       success: true,
