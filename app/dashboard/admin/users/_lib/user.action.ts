@@ -57,6 +57,7 @@ export async function upsertUser(formData: FormData): Promise<FormState> {
     }
 
     revalidatePath('/dashboard/admin/users');
+    revalidatePath('/dashboard/admin');
     return { success: true, message: id ? 'Usuario actualizado exitosamente.' : 'Usuario creado exitosamente.' };
   } catch (e) {
     return {
@@ -75,6 +76,7 @@ export async function deleteUser(id: string): Promise<FormState> {
   try {
     await prisma.user.delete({ where: { id } });
     revalidatePath('/dashboard/admin/users');
+    revalidatePath('/dashboard/admin');
     return { success: true, message: 'Usuario eliminado exitosamente.' };
   } catch (e) {
     return { success: false, message: `Error de base de datos: No se pudo eliminar el usuario. ${e}` };
