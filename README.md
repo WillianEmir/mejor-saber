@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# App-Saber-11: Plataforma de Preparación para el Examen Saber 11
 
-## Getting Started
+## Descripción General
 
-First, run the development server:
+**App-Saber-11** es una plataforma de e-learning robusta y escalable, diseñada para ayudar a los estudiantes colombianos en su preparación para el examen de estado Saber 11. La aplicación ofrece un entorno completo con contenido curricular, simulacros de exámenes, seguimiento de progreso y un sistema de pagos integrado.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack Tecnológico
+
+La aplicación está construida con un stack de tecnologías moderno y eficiente:
+
+- **Framework Frontend/Backend:** [Next.js](https://nextjs.org/) (con App Router)
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+- **Base de Datos:** [PostgreSQL](https://www.postgresql.org/)
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Autenticación:** [NextAuth.js](https://next-auth.js.org/)
+- **Procesamiento de Pagos:** [Mercado Pago](https://www.mercadopago.com.co/)
+- **UI y Estilos:** [Tailwind CSS](https://tailwindcss.com/)
+
+## Características Principales
+
+- **Gestión de Contenido Educativo:** Estructura jerárquica para Áreas, Ejes Temáticos y Contenidos Curriculares.
+- **Simulacros y Evaluaciones:** Creación y realización de simulacros de examen basados en preguntas y opciones.
+- **Autenticación y Autorización:** Sistema de registro e inicio de sesión con proveedores de credenciales (email/contraseña) y Google. Los roles de usuario (`ADMIN`, `USER`, `ADMINSCHOOL`) protegen las rutas y funcionalidades.
+- **E-commerce Integrado:** Venta de productos (cursos/paquetes de simulacros) con un flujo de pago seguro a través de Mercado Pago.
+- **Soporte para Colegios (Multi-tenancy):** Modelo de datos preparado para gestionar diferentes colegios, cada uno con sus propios administradores y usuarios.
+
+## Estructura del Proyecto
+
+El proyecto está organizado siguiendo las convenciones de Next.js, facilitando la mantenibilidad y escalabilidad.
+
+```
+.
+├── app/                  # Lógica de la aplicación (App Router)
+│   ├── (landingpage)/    # Rutas de la página de inicio
+│   ├── api/              # Endpoints del backend (pagos, webhooks)
+│   ├── auth/             # Páginas de autenticación (login, registro)
+│   └── dashboard/        # Panel de control para usuarios y administradores
+├── prisma/               # Esquema de la base de datos y migraciones
+│   └── schema.prisma     # Definición de todos los modelos de datos
+├── src/                  # Componentes, hooks, y librerías auxiliares
+├── auth.ts               # Configuración central de NextAuth.js
+├── next.config.ts        # Configuración de Next.js
+└── package.json          # Dependencias y scripts del proyecto
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Guía de Instalación (Getting Started)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno de desarrollo local.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**1. Clonar el Repositorio**
+```bash
+git clone https://github.com/tu-usuario/app-saber-11.git
+cd app-saber-11
+```
 
-## Learn More
+**2. Instalar Dependencias**
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+**3. Configurar Variables de Entorno**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Crea un archivo `.env.local` en la raíz del proyecto, copiando el formato de `.env.example` (si existe). Deberás incluir las siguientes variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+# Base de Datos (PostgreSQL)
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 
-## Deploy on Vercel
+# NextAuth.js
+# Genera un secreto con: openssl rand -base64 32
+NEXTAUTH_SECRET="tu-secreto-aqui"
+NEXTAUTH_URL="http://localhost:3000"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Proveedor de Google
+GOOGLE_CLIENT_ID="tu-client-id-de-google"
+GOOGLE_CLIENT_SECRET="tu-client-secret-de-google"
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Mercado Pago
+MERCADOPAGO_ACCESS_TOKEN="tu-access-token-de-mercado-pago"
+```
+
+**4. Aplicar Migraciones de la Base de Datos**
+
+Asegúrate de que tu servidor de PostgreSQL esté corriendo y luego ejecuta el siguiente comando para crear las tablas en la base de datos.
+
+```bash
+npx prisma migrate dev
+```
+
+**5. Ejecutar el Servidor de Desarrollo**
+```bash
+npm run dev
+```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación en funcionamiento.
+
+## Endpoints del API
+
+La lógica de backend se gestiona a través de rutas API de Next.js. Las más importantes son:
+
+- `POST /api/auth/[...nextauth]`: Maneja todas las operaciones de autenticación (inicio de sesión, registro, cierre de sesión) a través de NextAuth.js.
+- `POST /api/payments/create-preference`: Crea una orden de compra en la base de datos con estado `PENDING` y genera una preferencia de pago en Mercado Pago.
+- `POST /api/webhooks/mercadopago`: Recibe notificaciones de pago de Mercado Pago, verifica la transacción y actualiza el estado de la orden a `COMPLETED` de forma atómica.
+
+## Licencia
+
+Este proyecto se distribuye bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.

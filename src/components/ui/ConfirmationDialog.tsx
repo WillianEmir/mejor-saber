@@ -9,8 +9,8 @@ interface ConfirmationDialogProps {
   onConfirm: () => void
   title: string
   description: string
-  isPending?: boolean
-}
+  isPending?: boolean 
+} 
 
 export function ConfirmationDialog({ isOpen, onClose, onConfirm, title, description }: ConfirmationDialogProps) {
   return (

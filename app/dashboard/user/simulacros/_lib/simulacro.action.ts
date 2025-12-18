@@ -1,8 +1,8 @@
-'use server'; 
+'use server';
 
-import { revalidatePath } from 'next/cache'; 
+import { revalidatePath } from 'next/cache';
 import prisma from '@/src/lib/prisma';
-import { auth } from '@/auth'; // Updated import
+import { auth } from '@/auth';
 
 import { SimulacroSchema } from './simulacro.schema';
 import { FormState } from '@/src/types';
@@ -10,28 +10,30 @@ import { FormState } from '@/src/types';
 export const createSimulacro = async (
   score: number,
   duracionMinutos: number,
-  competenciaId: string,
-  preguntas: { preguntaId: string; opcionSeleccionadaId: string; correcta: boolean }[]
-): Promise<FormState> => {
-  
-  // Obtén la sesión y verifica la autenticación usando getServerSession
-  const session = await auth(); // Updated call
-  
+  competenciaId: string | undefined,
+  areaId: string | undefined,
+  preguntas: {
+    preguntaId: string; opcionSeleccionadaId: string | null; correcta: boolean
+  }[]
+): Promise<FormState & {simulacroId?: string}> => {
+
+  const session = await auth();
+
   if (!session?.user?.id) {
     return {
       success: false,
       message: 'Error de autenticación: El usuario no ha iniciado sesión.',
     };
   }
-  
+
   const userId = session.user.id
 
-  // Valida los datos (incluyendo el userId de la sesión)
   const validatedFields = SimulacroSchema.safeParse({
     score,
     duracionMinutos,
     userId,
     competenciaId,
+    areaId,
     preguntas,
   });
 
@@ -46,7 +48,26 @@ export const createSimulacro = async (
   const { preguntas: selectedPreguntaIds, ...simulacroData } = validatedFields.data;
 
   try {
-    await prisma.simulacro.create({
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { isActive: true, freeSimulacrosCount: true },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        message: 'Error: Usuario no encontrado.',
+      };
+    }
+
+    if (!user.isActive && user.freeSimulacrosCount >= 2) {
+      return {
+        success: false,
+        message: 'Has agotado tu simulacro gratuito. Por favor, adquiere un plan para continuar.',
+      };
+    }
+
+    const newSimulacro = await prisma.simulacro.create({
       data: {
         ...simulacroData,
         preguntas: {
@@ -59,16 +80,27 @@ export const createSimulacro = async (
       },
     });
 
+    if (!user.isActive) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { freeSimulacrosCount: { increment: 1 } },
+      })
+    }
+
     revalidatePath('/dashboard/simulacros');
     revalidatePath('/dashboard/user');
     revalidatePath('/dashboard/admin');
 
-    return { 
+    return {
       success: true,
-      message: 'Simulacro creado exitosamente.' 
+      message: 'Simulacro creado exitosamente.',
+      simulacroId: newSimulacro.id,
     };
-  } catch (e) {
-    // Registra el error en el servidor para depuración
+
+  } catch (e: any) {
+    if (e.digest?.startsWith('NEXT_REDIRECT')) {
+      throw e;
+    }
     console.error('Error al crear el simulacro:', e);
     return {
       success: false,

@@ -1,4 +1,4 @@
-import { auth } from "@/auth"; // Updated import
+import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 
 import SimulacrumQuestions from "@/app/dashboard/user/simulacros/_components/SimulacroQuestions";
@@ -8,30 +8,29 @@ import { getPreguntasByArea } from "../../_lib/pregunta.data";
 
 interface Props {
   params: Promise<{ 
-    areaId: string;
+    areaId: string; 
   }>
-}
+} 
 
 export default async function SimulacroByAreaPage({ params }: Props) {
 
-  const session = await auth(); // Updated call
+  const session = await auth();
   
   if (!session?.user?.email) redirect("/auth/signin");
   
   const user = await getUserByEmail(session.user.email);
   
   if (!user) redirect("/auth/signin");
+  if(!user.isActive) redirect("/precios");
   
   const { areaId } = await params;
-
-  const limit = user.isActive ? 25 : 0;
-
+  
   const area = await getAreaById(areaId);
 
-  if (!area) notFound();
-
-  const preguntas = await getPreguntasByArea(areaId, limit);
-
+  if (area === null) notFound();
+  
+  const preguntas = await getPreguntasByArea(areaId);
+  
   if (!preguntas || preguntas.length === 0) notFound();
 
   return (

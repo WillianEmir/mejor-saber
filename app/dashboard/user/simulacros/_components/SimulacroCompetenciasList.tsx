@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { AreaCompetenciasType } from '../_lib/simulacro.schema';
  
 
-interface SimulacroCompetenciasListProps {    
+interface SimulacroCompetenciasListProps {     
   area: AreaCompetenciasType;
 } 
 

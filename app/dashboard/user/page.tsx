@@ -1,7 +1,7 @@
 import MiProgreso from './_components/MiProgreso';
 import { getCompetenciaProgressData, getEvidenciaProgressData, getNivelesDesempenoData, getOverallProgressChartData, getUserProgressData } from './_lib/progress.data';
 
-export default async function MiProgresoPage() {
+export default async function MiProgresoPage() { 
 
   const generalProgressData = await getOverallProgressChartData();
   const { areaAverages, simulacros, areaProgressData } = await getUserProgressData();

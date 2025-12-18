@@ -1,4 +1,4 @@
-import { Afirmacion, Competencia, Evidencia } from '@/src/generated/prisma';
+import { Afirmacion, Area, Competencia, Evidencia } from '@/src/generated/prisma';
 import { z } from 'zod'; 
 
 // Esquema de validación para la creación/edición de una Competencia
@@ -10,6 +10,7 @@ export const CompetenciaSchema = z.object({
 
 // Type para las competencias
 export type CompetenciaType = Omit<Competencia, 'createdAt' | 'updatedAt'>
+export type CompetenciaWithAreaType = CompetenciaType & { area: Area }
 
 // Type para las competencias con sus relaciones
 export type CompetenciaWithRelationsType = CompetenciaType & {

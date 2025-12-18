@@ -1,5 +1,5 @@
-import { auth } from '@/auth'; // Updated import
-import { notFound } from 'next/navigation';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 import { getAreas } from '@/app/dashboard/admin/areas/_lib/area.data';
 import { getSimulacrosByUserId } from './_lib/simulacro.data';
@@ -11,14 +11,12 @@ import SimulacroHistory from './_components/SimulacroHistory';
 
 export default async function SimulacrosPage() {
 
-  // Obtiener el Id de la sesión del usuario
-  const session = await auth(); // Updated call
+  const session = await auth();
   const userId = session?.user?.id;
-  if (!userId) notFound()
+  if (!userId) redirect('/auth/signin')
 
-  // Obtener las áreas y los simulacros del usuario
   const [areas, simulacros] = await Promise.all([ getAreas(), getSimulacrosByUserId(userId) ]);
-
+ 
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8">
       <Tabs defaultValue="nuevo" className="w-full">

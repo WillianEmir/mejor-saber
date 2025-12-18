@@ -5,7 +5,7 @@ interface TimerProps {
   competenciaName?: string;
   areaName?: string;
   onFinish: () => void;
-  isPending: boolean; 
+  isPending: boolean;  
 }
 
 export const Timer = ({ time, competenciaName, onFinish, isPending, areaName }: TimerProps) => {
@@ -32,7 +32,7 @@ export const Timer = ({ time, competenciaName, onFinish, isPending, areaName }: 
               {competenciaName || areaName}
             </h1>
           </div>
-          <button 
+          <button  
             onClick={onFinish}
             disabled={isPending}
             className="rounded-md bg-green-600 px-4 py-2 text-sm font-semibold cursor-pointer text-white shadow-sm hover:bg-green-700 disabled:opacity-50">

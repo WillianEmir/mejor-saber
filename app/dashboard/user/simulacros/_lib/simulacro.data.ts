@@ -14,6 +14,7 @@ export async function getSimulacrosByUserId(userId: User['id']): Promise<Simulac
         createdAt: 'desc',
       },
       include: {
+        area: true,
         competencia: {
           select: {
             id: true,
@@ -45,7 +46,7 @@ export const getSimulacroResult = async (simulacroId: string): Promise<Simulacro
       include: {
         pregunta: {
           include: {
-            opciones: true,
+            opciones: true, 
           },
         },
         opcionSeleccionada: true,
@@ -59,9 +60,9 @@ export const getSimulacroResult = async (simulacroId: string): Promise<Simulacro
 };
 
 // Obtiene un área por su Id, con sus competencias.
-export const getAreaCompetencias = async (id: string): Promise<AreaCompetenciasType | null> => {
+export async function getAreaCompetencias(id: string): Promise<AreaCompetenciasType | null> {
   try {
-    const area = await prisma.area.findUnique({
+    const area = await prisma.area.findUnique({ 
       where: { id },
       include: { competencias: true },
     });
@@ -73,14 +74,53 @@ export const getAreaCompetencias = async (id: string): Promise<AreaCompetenciasT
 };
 
 // Obtiene un área por su Id.
+
 export const getAreaById = async (id: string): Promise<Areatype | null> => {
+
   try {
+
     const area = await prisma.area.findUnique({
+
       where: { id },
+
     });
+
     return area;
+
   } catch (error) {
+
     console.error(`Error fetching area with id ${id}:`, error);
+
     throw new Error('No se pudo obtener el área.');
+
   }
-};
+
+}; 
+
+// Obtiene un simulacro por su Id con sus relaciones
+export async function getSimulacroByIdWithRelations(simulacroId: string): Promise<SimulacroWithRelationsType | null> {
+  try {
+    const simulacro = await prisma.simulacro.findUnique({
+      where: { id: simulacroId },
+      include: {
+        area: true,
+        competencia: {
+          select: {
+            id: true,
+            nombre: true,
+            area: {
+              select: {
+                id: true,
+                nombre: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return simulacro;
+  } catch (error) {
+    console.error('Error al obtener el simulacro por ID con relaciones:', error);
+    throw new Error('Error de base de datos: No se pudo obtener el simulacro con relaciones.');
+  }
+}

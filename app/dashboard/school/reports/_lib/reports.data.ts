@@ -158,7 +158,7 @@ export async function getSchoolStudentReportsData(schoolId: string, sedeId?: str
     }
 
     const areaResults = areas.map(area => {
-      const areaSimulacros = studentSimulacros.filter(s => s.competencia.areaId === area.id);
+      const areaSimulacros = studentSimulacros.filter(s => s.competencia!.areaId === area.id);
       let first: number | null = null;
       let last: number | null = null;
 
@@ -564,7 +564,7 @@ export async function getSchoolReportsData(schoolId: string, sedeId?: string, st
   const reportData: ReportData[] = [];
 
   for (const area of areas) {
-    const areaSimulacros = simulacros.filter(s => s.competencia.area.id === area.id);
+    const areaSimulacros = simulacros.filter(s => s.competencia!.area.id === area.id);
 
     if (areaSimulacros.length > 0) {
       const simulacrosByUser: { [userId: string]: Simulacro[] } = {};

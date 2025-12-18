@@ -4,8 +4,8 @@ import z from "zod";
 
 // Schema para validar la pregunta y la opción seleccionada
 export const SimulacroPreguntaSchema = z.object({
-  preguntaId: z.uuid({ error: 'El ID de la pregunta debe ser un UUID válido.' }),
-  opcionSeleccionadaId: z.uuid({ error: 'El ID de la opción seleccionada debe ser un UUID válido.' }),
+  preguntaId: z.string().uuid({ error: 'El ID de la pregunta debe ser un UUID válido.' }),
+  opcionSeleccionadaId: z.string().uuid({ error: 'El ID de la opción seleccionada debe ser un UUID válido.' }).nullable(),
   correcta: z.boolean()
 })
 
@@ -13,10 +13,11 @@ export const SimulacroPreguntaSchema = z.object({
 export const SimulacroSchema = z.object({
   score: z.number().min(0).max(100),
   duracionMinutos: z.number().min(0),
-  userId: z.uuid({ error: 'El ID del usuario debe ser un UUID válido.' }),
-  competenciaId: z.uuid({ error: 'El ID de la competencia debe ser un UUID válido.' }),
+  userId: z.string().uuid({ error: 'El ID del usuario debe ser un UUID válido.' }),
+  competenciaId: z.string().uuid({ error: 'El ID de la competencia debe ser un UUID válido.' }).optional(),
+  areaId: z.string().uuid({ error: 'El ID del área debe ser un UUID válido.' }).optional(),
   preguntas: z.array(SimulacroPreguntaSchema)
-})
+}) 
 
 // Type para el simulacro
 export type SimulacroType = Simulacro;
@@ -28,6 +29,7 @@ export type SimulacroPreguntaType = SimulacroPregunta;
 
 // Type para el simulacro con relaciones
 export type SimulacroWithRelationsType = SimulacroType & {
+  area: Areatype | null;
   competencia: {
     id: string;
     nombre: string;
@@ -35,7 +37,7 @@ export type SimulacroWithRelationsType = SimulacroType & {
       id: string;
       nombre: string;
     };
-  };
+  } | null;
 };
 
 // Type para el resultado de una pregunta del simulacro

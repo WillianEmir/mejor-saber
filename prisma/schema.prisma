@@ -1,6 +1,6 @@
-generator client {
+generator client {  
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma" 
+  output   = "../src/generated/prisma"  
 }
 
 datasource db {
@@ -19,6 +19,7 @@ model Area {
   competencias           Competencia[]
   contenidosCurriculares ContenidoCurricular[]
   nivelesDesempeno       NivelDesempeno[]
+  simulacros             Simulacro[]
 
   @@map("areas")
 }
@@ -267,18 +268,25 @@ model OpcionPregunta {
 
 model Simulacro {
   id              String              @id @default(uuid())
-  userId          String              @map("user_id")
   score           Float?
   createdAt       DateTime            @default(now()) @map("created_at")
   updatedAt       DateTime            @updatedAt @map("updated_at")
-  competenciaId   String              @map("competencia_id")
   duracionMinutos Int?
-  preguntas       SimulacroPregunta[]
-  competencia     Competencia         @relation(fields: [competenciaId], references: [id])
+  
+  competencia     Competencia?         @relation(fields: [competenciaId], references: [id])
+  competenciaId   String?              @map("competencia_id")
+
+  area            Area?               @relation(fields: [areaId], references: [id])
+  areaId          String?             @map("area_id")
+  
   user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String              @map("user_id")
+  
+  preguntas       SimulacroPregunta[]
 
   @@index([userId])
   @@index([competenciaId])
+  @@index([areaId])
   @@map("simulacros")
 }
 
@@ -327,6 +335,7 @@ model User {
   testimonios           Testimonio[]
   twoFactorConfirmation TwoFactorConfirmation?
   order                 Order[]
+  freeSimulacrosCount   Int                    @default(0) @map("free_simulacros_count")
 
   createdAt             DateTime               @default(now()) @map("created_at")
   updatedAt             DateTime               @updatedAt @map("updated_at")

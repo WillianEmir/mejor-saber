@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { CompetenciaType } from './competencia.schema';
+import type { CompetenciaType, CompetenciaWithAreaType } from './competencia.schema';
 import prisma from '@/src/lib/prisma';
 
 // Obtiene todas las competencias
@@ -17,10 +17,11 @@ export async function getCompetencias(): Promise<CompetenciaType[]> {
 }
 
 // Obtiene una competencia por su ID
-export async function getCompetenciaById(id: string): Promise<CompetenciaType | null> {
+export async function getCompetenciaById(id: string): Promise<CompetenciaWithAreaType | null> {
   try {
     const competencia = await prisma.competencia.findUnique({
       where: { id },
+      include: { area: true },
     });
     return competencia;
   } catch (error) {

@@ -61,7 +61,7 @@ export async function getRankingByArea (schoolId: string, areaId: string) : Prom
 
     const ranking = students.map(student => {
       const areaSimulacros = student.simulacros.filter(
-        simulacro => simulacro.competencia.areaId === areaId
+        simulacro => simulacro.competencia!.areaId === areaId
       );
       const totalScore = areaSimulacros.reduce((acc, simulacro) => acc + (simulacro.score || 0), 0);
       const averageScore = areaSimulacros.length > 0 ? totalScore / areaSimulacros.length : 0;

@@ -12,11 +12,10 @@ interface pageProps {
 
 export default async function Page({ params }: pageProps) {
 
-  // Obtiene el Id del área desde la url
   const {areaId} = await params;
-  const area = await getAreaCompetencias(areaId);
+  const area = await getAreaCompetencias(areaId); 
 
-  if(!area) notFound()  
+  if(!area) notFound()   
 
   return (
     <>

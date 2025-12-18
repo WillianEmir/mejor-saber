@@ -69,7 +69,7 @@ export async function getUserProgressData(): Promise<ProgressDataType> {
   const areaData: { [key: string]: { scores: number[] } } = {};
 
   simulacros.forEach(simulacro => {
-    const areaName = simulacro.competencia.area.nombre;
+    const areaName = simulacro.competencia!.area.nombre;
     if (!areaData[areaName]) {
       areaData[areaName] = { scores: [] };
     }
@@ -152,8 +152,8 @@ export async function getCompetenciaProgressData() : Promise<CompetenciaProgress
   } = {}
 
   simulacros.forEach(simulacro => {
-    const competenciaName = simulacro.competencia.nombre
-    const areaName = simulacro.competencia.area.nombre;
+    const competenciaName = simulacro.competencia!.nombre
+    const areaName = simulacro.competencia!.area.nombre;
     const score = simulacro.score || 0
 
     if (!progressByCompetencia[competenciaName]) {

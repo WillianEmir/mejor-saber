@@ -1,6 +1,6 @@
 General
 
-1. Gamificación Avanzada:
+1. Gamificación Avanzada: 
 2. Ruta de Aprendizaje Personalizada:
 3. Modo de Revisión de Simulacros:
 4. Variedad de Contenido:
