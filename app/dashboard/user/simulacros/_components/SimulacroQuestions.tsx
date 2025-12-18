@@ -113,7 +113,7 @@ export default function SimulacroQuestions({ preguntas, competencia, area }: Sim
 
   const onDialogConfirm = () => {
     setShowConfirmDialog(false);
-    if(unansweredQuestions <= preguntas.length ) {
+    if(unansweredQuestions > 0 ) {
       router.push('/dashboard/user/simulacros')
     } else {
       submitSimulacro();
