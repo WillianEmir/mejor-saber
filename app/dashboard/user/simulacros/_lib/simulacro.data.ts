@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from '@/src/lib/prisma';  
-import { User } from '@/src/generated/prisma';
+import { User } from '@/src/generated/prisma'; 
 import { AreaCompetenciasType, SimulacroResultType, SimulacroWithRelationsType } from './simulacro.schema';
 import { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema';
 
@@ -26,6 +26,9 @@ export async function getSimulacrosByUserId(userId: User['id']): Promise<Simulac
               },
             },
           },
+        },
+        _count: {
+          select: { preguntas: true },
         },
       },
     });

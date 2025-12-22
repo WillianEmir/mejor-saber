@@ -18,7 +18,7 @@ type SimulacroDisplayResultType = {
 }; 
  
 interface SimulacrumResultProps {
-  simulacroData: SimulacroDisplayResultType
+  simulacroData: SimulacroDisplayResultType 
 }
 
 export default function SimulacroResult({ simulacroData }: SimulacrumResultProps) {
@@ -65,6 +65,10 @@ export default function SimulacroResult({ simulacroData }: SimulacrumResultProps
           <div className="flex items-center">
             <span className="font-semibold mr-2">Incorrectas:</span>
             <span className="text-red-500 font-bold">{incorrectas}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="font-semibold mr-2">Duración:</span>
+            <span className="text-green-500 font-bold">{simulacroData.duracionMinutos} minutos</span>
           </div>
           <div className="flex items-center col-span-2">
             <span className="font-semibold mr-2">Puntaje:</span>

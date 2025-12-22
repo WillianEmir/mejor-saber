@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react'; 
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'
 import { BarChart } from '@/src/components/ui/charts/BarChart'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
@@ -27,10 +27,10 @@ const formatLabel = (label: string, maxLength = 35): string | string[] => {
       }
       currentLine = word;
     } else {
-      currentLine = prospectiveLine;
+      currentLine = prospectiveLine; 
     }
   });
-  lines.push(currentLine);
+  lines.push(currentLine); 
 
   return lines;
 };
@@ -66,8 +66,18 @@ export default function EvidenciaProgress({ evidenciaProgress, areaAverages, com
     }),
     datasets: [
       {
-        label: 'Promedio por Evidencia',
+        label: 'Primer Resultado',
+        data: filteredEvidencias.map(e => e.first),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'Promedio',
         data: filteredEvidencias.map(e => e.average),
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+      },
+      {
+        label: 'Último Resultado',
+        data: filteredEvidencias.map(e => e.last),
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
       },
     ],

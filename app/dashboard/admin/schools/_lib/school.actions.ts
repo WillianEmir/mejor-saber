@@ -17,10 +17,7 @@ export async function createOrUpdateSchool(formData: FormData): Promise<FormStat
     department: formData.get('department') || undefined,
     city: formData.get('city') || undefined,
     maxUsers: formData.get('maxUsers') ? parseInt(formData.get('maxUsers') as string) : undefined,
-  });
-
-  console.log(validatedFields.data);
-  
+  });  
 
   if (!validatedFields.success) {
     return {
@@ -46,7 +43,7 @@ export async function createOrUpdateSchool(formData: FormData): Promise<FormStat
             create: [
               {
                 DANE: schooldData.DANE,
-                nombre: schooldData.nombre,
+                nombre: `${schooldData.nombre} - Sede Principal`,
               }
             ]
           }

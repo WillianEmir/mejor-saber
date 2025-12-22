@@ -39,6 +39,8 @@ export type AreaProgressType = {
 }
 
 export type EvidenciaProgressType = {
+  last: any;
+  first: any;
   name: string;
   competenciaName: string;
   areaName: string;

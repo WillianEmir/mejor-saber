@@ -8,7 +8,7 @@ export async function getRankingBySchool (schoolId: string) : Promise<RankingByS
     const students = await prisma.user.findMany({
       where: {
         schoolId,
-        role: 'USER',
+        role: 'USER', 
       },
       include: {
         simulacros: {
@@ -61,8 +61,9 @@ export async function getRankingByArea (schoolId: string, areaId: string) : Prom
 
     const ranking = students.map(student => {
       const areaSimulacros = student.simulacros.filter(
-        simulacro => simulacro.competencia!.areaId === areaId
+        simulacro => simulacro.competencia && simulacro.competencia.areaId === areaId
       );
+
       const totalScore = areaSimulacros.reduce((acc, simulacro) => acc + (simulacro.score || 0), 0);
       const averageScore = areaSimulacros.length > 0 ? totalScore / areaSimulacros.length : 0;
       return {

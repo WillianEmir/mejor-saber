@@ -1,60 +1,92 @@
 'use client'
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'
-import { BarChart } from '@/src/components/ui/charts/BarChart'
+import { useState, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'; 
+import { BarChart } from '@/src/components/ui/charts/BarChart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
 import { areaAveragesType, CompetenciaProgressType } from '../_lib/progress.schema';
 
 interface CompetenciaProgressProps {
-  competenciaProgress: CompetenciaProgressType[];
+  competenciaAverages: CompetenciaProgressType[];
   areaAverages: areaAveragesType[];
-} 
+}
 
-export default function CompetenciaProgress({ competenciaProgress, areaAverages }: CompetenciaProgressProps) {
+export default function CompetenciaProgress({ competenciaAverages, areaAverages }: CompetenciaProgressProps) {
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
-  const [selectedCompetencia, setSelectedCompetencia] = useState<CompetenciaProgressType | undefined>(undefined);
+  const [selectedCompetenciaName, setSelectedCompetenciaName] = useState<string | null>(null);
 
   const handleAreaChange = (areaName: string) => {
     setSelectedArea(areaName);
-    setSelectedCompetencia(undefined); // Reset competencia when area changes
+    setSelectedCompetenciaName(null); // Reset competencia when area changes
   };
 
   const handleCompetenciaChange = (competenciaName: string) => {
-    const competencia = competenciaProgress.find(c => c.name === competenciaName);
-    setSelectedCompetencia(competencia);
+    setSelectedCompetenciaName(competenciaName);
   };
 
-  const filteredCompetencias = selectedArea
-    ? competenciaProgress.filter(c => c.areaName === selectedArea)
-    : [];
+  const filteredCompetencias = useMemo(() => {
+    if (!selectedArea) return [];
+    return competenciaAverages.filter(c => c.areaName === selectedArea);
+  }, [selectedArea, competenciaAverages]);
 
-  const chartData = selectedCompetencia ? {
-    labels: ['Primer Simulacro', 'Promedio', 'Último Simulacro'],
-    datasets: [
-      {
-        label: `Rendimiento en ${selectedCompetencia.name}`,
-        data: [selectedCompetencia.first, selectedCompetencia.average, selectedCompetencia.last],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.5)',
-          'rgba(54, 162, 235, 0.5)',
-          'rgba(75, 192, 192, 0.5)',
+  const chartData = useMemo(() => {
+    if (selectedCompetenciaName) {
+      const competencia = competenciaAverages.find(c => c.name === selectedCompetenciaName);
+      if (!competencia) return { labels: [], datasets: [] };
+      
+      return {
+        labels: ['Primer Resultado', 'Promedio', 'Último Resultado'],
+        datasets: [
+          {
+            label: `Rendimiento en ${competencia.name}`,
+            data: [competencia.first, competencia.average, competencia.last],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+            ],
+          },
         ],
-      },
-    ],
-  } : {
-    labels: [],
-    datasets: [],
-  };
+      };
+    }
+
+    if (selectedArea) {
+      const competenciasInArea = competenciaAverages.filter(c => c.areaName === selectedArea);
+      if (competenciasInArea.length === 0) return { labels: [], datasets: [] };
+      
+      return {
+        labels: competenciasInArea.map(c => c.name),
+        datasets: [
+          {
+            label: 'Primer Resultado',
+            data: competenciasInArea.map(c => c.first),
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+          {
+            label: 'Promedio',
+            data: competenciasInArea.map(c => c.average),
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          },
+          {
+            label: 'Último Resultado',
+            data: competenciasInArea.map(c => c.last),
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          },
+        ],
+      };
+    }
+
+    return { labels: [], datasets: [] }; // Default empty state
+  }, [selectedArea, selectedCompetenciaName, competenciaAverages]);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-center">Rendimiento por Competencia</CardTitle>
         <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Select onValueChange={handleAreaChange}>
+          <Select onValueChange={handleAreaChange} value={selectedArea || ''}>
             <SelectTrigger>
-              <SelectValue placeholder="Seleccionar área" />
+              <SelectValue placeholder="1. Seleccionar un área" />
             </SelectTrigger>
             <SelectContent>
               {areaAverages.map(area => (
@@ -62,9 +94,9 @@ export default function CompetenciaProgress({ competenciaProgress, areaAverages 
               ))}
             </SelectContent>
           </Select>
-          <Select onValueChange={handleCompetenciaChange} disabled={!selectedArea} value={selectedCompetencia?.name || ''}>
+          <Select onValueChange={handleCompetenciaChange} disabled={!selectedArea} value={selectedCompetenciaName || ''}>
             <SelectTrigger>
-              <SelectValue placeholder="Seleccionar competencia" />
+              <SelectValue placeholder="2. Ver una competencia (Opcional)" />
             </SelectTrigger>
             <SelectContent>
               {filteredCompetencias.map(c => (
@@ -75,11 +107,11 @@ export default function CompetenciaProgress({ competenciaProgress, areaAverages 
         </div>
       </CardHeader>
       <CardContent className="h-96">
-        {selectedCompetencia ? (
+        {selectedArea ? (
           <BarChart data={chartData} />
         ) : (
           <div className="flex items-center justify-center h-full">
-            <p>Selecciona un área y una competencia para ver tu rendimiento.</p>
+            <p>Selecciona un área para ver tu rendimiento.</p>
           </div>
         )}
       </CardContent>

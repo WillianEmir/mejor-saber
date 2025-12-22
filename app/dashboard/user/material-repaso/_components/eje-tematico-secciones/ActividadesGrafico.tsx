@@ -41,9 +41,9 @@ export default function ActividadesGrafico({
       setTimeout(() => {
         setIncorrectAttempts(prev => ({ ...prev, [actividad.id]: false }))
         setSelectedAnswers(prev => {
-            const newAnswers = {...prev};
-            delete newAnswers[actividad.id];
-            return newAnswers;
+          const newAnswers = { ...prev };
+          delete newAnswers[actividad.id];
+          return newAnswers;
         })
       }, 500)
     }
@@ -64,13 +64,13 @@ export default function ActividadesGrafico({
     if (isCompleted) {
       return `${base} ${isCorrectButton ? 'bg-green-100 dark:bg-green-900 border-green-300 text-green-800 dark:text-green-200' : 'bg-gray-100 dark:bg-gray-800 border-gray-300 text-gray-500'} cursor-not-allowed`
     }
-    
+
     if (isSelected && hadIncorrectAttempt) {
-        return `${base} bg-red-100 dark:bg-red-900 border-red-400 text-red-800 dark:text-red-200 animate-pulse`
+      return `${base} bg-red-100 dark:bg-red-900 border-red-400 text-red-800 dark:text-red-200 animate-pulse`
     }
 
     if (isSelected) {
-        return `${base} bg-blue-100 dark:bg-blue-900 border-blue-400 ring-2 ring-blue-400`
+      return `${base} bg-blue-100 dark:bg-blue-900 border-blue-400 ring-2 ring-blue-400`
     }
 
     return `${base} bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600`
@@ -88,7 +88,7 @@ export default function ActividadesGrafico({
         <div key={actividad.id} className="p-4 border rounded-lg bg-gray-50 dark:bg-gray-800 flex flex-col md:flex-row items-center gap-6">
           {/* Imagen */}
           {actividad.imagen && (
-            <div className="w-full md:w-1/3 flex-shrink-0">
+            <div className="w-full md:w-1/3 shrink-0">
               <Image
                 src={actividad.imagen}
                 alt={actividad.nombre}
@@ -121,7 +121,10 @@ export default function ActividadesGrafico({
               </button>
             </div>
             {progresoInicial[actividad.id] && (
-                 <p className="text-sm font-medium text-green-600 dark:text-green-400 mt-3">¡Completado!</p>
+              <>
+                <p className="text-sm font-medium text-green-600 dark:text-green-400 mt-3">¡Completado!</p>
+                <p className="text-sm font-medium text-black dark:text-neutral-light mt-3">Retroalimentación: {actividad.match}</p>
+              </>
             )}
           </div>
         </div>

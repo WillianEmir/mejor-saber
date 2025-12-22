@@ -1,7 +1,7 @@
-import { getSchoolSedes } from './_lib/data';
-import { getUsersBySchoolId } from './_lib/actions';
+import { getSchoolSedes } from './_lib/sede.data';
 
 import UserManagement from './_components/UserManagement';
+import { getUsersBySchoolId } from './_lib/user.data';
 
 export default async function SchoolUsersPage() {
 
@@ -12,4 +12,4 @@ export default async function SchoolUsersPage() {
       <UserManagement initialUsers={users} sedes={sedes} /> 
     </div>
   );
-}
+}  

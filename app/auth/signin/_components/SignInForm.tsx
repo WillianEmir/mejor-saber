@@ -52,7 +52,7 @@ export default function SignInForm() {
     }
 
     const formData = new FormData();
-    formData.append('email', data.email);
+    formData.append('email', data.email.toLowerCase());
     formData.append('password', data.password);
     formData.append('remember', data.remember ? 'true' : 'false');
 

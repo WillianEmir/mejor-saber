@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/src/components/ui/card'
 import { BarChart, BarChartDataType } from '@/src/components/ui/charts/BarChart'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
+import { ChartOptions } from 'chart.js';
 
 interface AreaProgressProps {
   chartData: BarChartDataType | undefined;
@@ -12,6 +13,54 @@ interface AreaProgressProps {
 export default function AreaProgress({ chartData: initialChartData }: AreaProgressProps) {
 
   const [selectedAreaName, setSelectedAreaName] = useState('all');
+
+  const customOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      datalabels: {
+        align: 'end',
+        anchor: 'end',
+        formatter: (value: number) => {
+          return Math.round(value).toString();
+        },
+        font: {
+          weight: 'bold',
+        },
+        color: 'black',
+      },
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += Math.round(context.parsed.y);
+            }
+            return label;
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 10,
+          callback: function (value: string | number) {
+            return Math.round(Number(value)).toString();
+          },
+        },
+        min: 0,
+        max: 100,
+      },
+    },
+  };
 
   if (!initialChartData) return (
     <div className="flex items-center justify-center h-full">
@@ -71,7 +120,7 @@ export default function AreaProgress({ chartData: initialChartData }: AreaProgre
       </CardHeader>
       <CardContent className="h-[500px]">
         {chartData ? (
-          <BarChart data={chartData} />
+          <BarChart data={chartData} options={customOptions} />
         ) : (
           <div className="flex items-center justify-center h-full">
             <p>No hay datos para mostrar.</p>

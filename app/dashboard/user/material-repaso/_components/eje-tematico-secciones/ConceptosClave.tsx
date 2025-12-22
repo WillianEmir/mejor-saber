@@ -1,7 +1,7 @@
 import ReactPlayer from 'react-player'
 import Image from 'next/image'
 
-import { SubTemaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.schema'; 
+import { SubTemaType } from '@/app/dashboard/admin/contenidos-curriculares/_lib/subTema.schema';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/src/components/ui/accordion'
 import { Checkbox } from '@/src/components/ui/checkbox';
@@ -14,7 +14,7 @@ interface ConceptosClaveProps {
   isPending: boolean;
 }
 
-export default function ConceptosClave({ subtema, progreso, handleSubTemaToggle, isPending}: ConceptosClaveProps) {
+export default function ConceptosClave({ subtema, progreso, handleSubTemaToggle, isPending }: ConceptosClaveProps) {
   return (
     <Accordion type="single" collapsible defaultValue={`${subtema.id}`} className="w-full">
       <AccordionItem value={`subtema-${subtema.id}`} className="rounded-md border bg-white dark:bg-gray-800 p-3">
@@ -49,13 +49,13 @@ export default function ConceptosClave({ subtema, progreso, handleSubTemaToggle,
                 {subtema.imagen && (
                   <div className="space-y-2">
                     <h5 className="font-semibold">Imagen</h5>
-                    <div className="rounded-md overflow-hidden relative w-full h-64">
+                    <div className="w-full shrink-0">
                       <Image
                         src={subtema.imagen}
                         alt={`Imagen para ${subtema.nombre}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        width={300}
+                        height={200}
+                        className="object-cover w-full h-auto"
                       />
                     </div>
                   </div>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useTransition } from 'react';
@@ -8,18 +7,20 @@ import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel } from '@/src/components/ui/dropdown-menu';
 import { MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { deleteUser } from '../_lib/actions';
+import { deleteUser } from '../_lib/user.actions';
 import UserModal from './UserModal';
+import UserImportModal from './UserImportModal';
 import { Button } from '@/src/components/ui/Button';
-import { UserSchoolType } from '../_lib/school.schema';
+import { UserSchoolType } from '../_lib/user.schema';
 
-interface UserManagementProps { 
+interface UserManagementProps {  
   initialUsers: UserSchoolType[]; 
   sedes: SchoolSede[];
 }
 
 export default function UserManagement({ initialUsers, sedes }: UserManagementProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserSchoolType | undefined>(undefined);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -33,6 +34,14 @@ export default function UserManagement({ initialUsers, sedes }: UserManagementPr
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUser(undefined);
+  };
+
+  const handleOpenImportModal = () => {
+    setIsImportModalOpen(true);
+  };
+
+  const handleCloseImportModal = () => {
+    setIsImportModalOpen(false);
   };
 
   const handleDelete = (id: string) => {
@@ -59,7 +68,10 @@ export default function UserManagement({ initialUsers, sedes }: UserManagementPr
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Usuarios de la Institución</CardTitle>
-        <Button onClick={() => handleOpenModal()}>Crear Usuario</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleOpenImportModal}>Importar</Button>
+          <Button onClick={() => handleOpenModal()}>Crear Usuario</Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -77,7 +89,7 @@ export default function UserManagement({ initialUsers, sedes }: UserManagementPr
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {initialUsers.map((user) => {
-                const sedeName = sedes.find(sede => sede.id === user.schoolSedeId)?.nombre || 'N/A';
+                const sedeName = sedes.find(sede => sede.id === user.name)?.nombre || 'N/A';
                 return (
                   <tr key={user.id}>
                     <td className="px-6 py-4 whitespace-nowrap">{user.name} {user.lastName}</td>
@@ -120,6 +132,12 @@ export default function UserManagement({ initialUsers, sedes }: UserManagementPr
         sedes={sedes}
       />
 
+      <UserImportModal
+        isOpen={isImportModalOpen}
+        onClose={handleCloseImportModal}
+        schoolId={initialUsers[0]?.schoolId || ''}
+      />
+
       <ConfirmationDialog
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
@@ -131,3 +149,4 @@ export default function UserManagement({ initialUsers, sedes }: UserManagementPr
     </Card>
   );
 }
+

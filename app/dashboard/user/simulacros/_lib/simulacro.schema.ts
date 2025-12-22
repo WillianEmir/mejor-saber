@@ -10,7 +10,7 @@ export const SimulacroPreguntaSchema = z.object({
 })
 
 // Schema para validar el simulacro
-export const SimulacroSchema = z.object({
+export const SimulacroSchema = z.object({ 
   score: z.number().min(0).max(100),
   duracionMinutos: z.number().min(0),
   userId: z.string().uuid({ error: 'El ID del usuario debe ser un UUID válido.' }),
@@ -38,6 +38,9 @@ export type SimulacroWithRelationsType = SimulacroType & {
       nombre: string;
     };
   } | null;
+  _count?: {
+    preguntas: number;
+  };
 };
 
 // Type para el resultado de una pregunta del simulacro

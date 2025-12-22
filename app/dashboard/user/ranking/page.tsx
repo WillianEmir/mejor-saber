@@ -6,10 +6,10 @@ import { getAreas } from "@/app/dashboard/admin/areas/_lib/area.data";
 import RankingBySchool from "./_components/RankingBySchool";
 import RankingByArea from "./_components/RankingByArea";
 
-export default async function RankingPage() {
+export default async function RankingPage() { 
 
   const session = await auth(); // Updated call
-  const schoolId = session?.user?.schoolId;
+  const schoolId = session?.user?.schoolId; 
 
   if (!schoolId) {
     return (

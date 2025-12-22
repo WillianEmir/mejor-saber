@@ -39,7 +39,7 @@ export default function SimulacroHistory({ simulacros }: SimulacroHistoryProps) 
       const competenciaMatch = !selectedCompetencia || simulacro.competencia?.id === selectedCompetencia;
       return areaMatch && competenciaMatch;
     });
-  }, [simulacros, selectedArea, selectedCompetencia]);
+  }, [simulacros, selectedArea, selectedCompetencia]); 
   
   const competenciasInArea = useMemo(() => {
     if (!selectedArea) return competencias;
@@ -109,6 +109,7 @@ export default function SimulacroHistory({ simulacros }: SimulacroHistoryProps) 
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">Realizado el: {new Date(simulacro.createdAt).toLocaleDateString()}</p>
                 <p className="text-sm font-bold text-gray-900 dark:text-white">Puntaje: {simulacro.score?.toFixed(2)}</p>
+                <p className="text-sm font-bold text-gray-900 dark:text-white">Duración: {simulacro.duracionMinutos} minutos</p>
               </div>
               <Link
                 href={`/dashboard/user/simulacros/resultados/${simulacro.id}`}

@@ -40,7 +40,7 @@ export async function signup(formData: FormData) : Promise<FormState> {
     await prisma.user.create({
       data: {
         name,
-        email,
+        email: email.toLowerCase(),
         password: hashedPassword,
       },
     });

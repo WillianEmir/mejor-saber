@@ -29,12 +29,14 @@ model ContenidoCurricular {
   nombre           String
   createdAt        DateTime      @default(now()) @map("created_at")
   updatedAt        DateTime      @updatedAt @map("updated_at")
-  areaId           String        @map("area_id")
   descripcionCorta String?
   descripcionLarga String?
   imagen           String?
-  area             Area          @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
   ejesTematicos    EjeTematico[]
+
+  area             Area          @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  areaId           String        @map("area_id")
 
   @@index([areaId])
   @@map("contenidos_curriculares")
@@ -43,7 +45,6 @@ model ContenidoCurricular {
 model EjeTematico {
   id                    String                @id @default(uuid())
   nombre                String
-  contenidoCurricularId String                @map("contenido_curricular_id")
   descripcionCorta      String?
   descripcionLarga      String?
   imagen                String?
@@ -51,7 +52,10 @@ model EjeTematico {
   preguntaTematica      String?
   relevanciaICFES       String?
   video                 String?
+
   contenidoCurricular   ContenidoCurricular   @relation(fields: [contenidoCurricularId], references: [id], onDelete: Cascade)
+  contenidoCurricularId String                @map("contenido_curricular_id")
+
   objetivosAprendizaje  ObjetivoAprendizaje[]
   secciones             Seccion[]
   preguntas             Pregunta[]            @relation("EjeTematicoPreguntas")
@@ -68,10 +72,12 @@ model Seccion {
   tipo          TipoSeccion
   createdAt     DateTime               @default(now()) @map("created_at")
   updatedAt     DateTime               @updatedAt @map("updated_at")
+  
+  ejeTematico   EjeTematico            @relation(fields: [ejeTematicoId], references: [id], onDelete: Cascade)
   ejeTematicoId String                 @map("eje_tematico_id")
+
   actividades   ActividadInteractiva[]
   progresos     ProgresoSeccion[]
-  ejeTematico   EjeTematico            @relation(fields: [ejeTematicoId], references: [id], onDelete: Cascade)
   subTemas      SubTema[]
 
   @@index([ejeTematicoId])
@@ -104,9 +110,11 @@ model ActividadInteractiva {
   updatedAt         DateTime                 @updatedAt @map("updated_at")
   match             String
   retroalimentacion String
-  seccionId         String                   @map("seccion_id")
+
   seccion           Seccion                  @relation(fields: [seccionId], references: [id], onDelete: Cascade)
-  progresos         ProgresoActividad[]
+  seccionId         String                   @map("seccion_id")
+  
+  progresos         ProgresoActividad[] 
 
   @@index([seccionId])
   @@map("actividades_interactivas")
@@ -242,12 +250,14 @@ model Pregunta {
   enunciado          String
   createdAt          DateTime            @default(now()) @map("created_at")
   updatedAt          DateTime            @updatedAt @map("updated_at")
-  evidenciaId        String              @map("evidencia_id")
   groupFlag          String?
-  opciones           OpcionPregunta[]
+  
   evidencia          Evidencia           @relation(fields: [evidenciaId], references: [id])
+  evidenciaId        String              @map("evidencia_id")
+
   simulacroPreguntas SimulacroPregunta[]
   ejesTematicos      EjeTematico[]       @relation("EjeTematicoPreguntas")
+  opciones           OpcionPregunta[]
 
   @@index([evidenciaId])
   @@map("preguntas")

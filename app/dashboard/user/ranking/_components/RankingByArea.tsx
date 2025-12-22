@@ -6,7 +6,7 @@ import { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema';
 
 interface RankingByAreaProps {
   areas: Areatype[];
-  schoolId: string; 
+  schoolId: string;  
 }
 
 async function AreaRankingCard({ area, schoolId }: { area: Areatype, schoolId: string }) {
@@ -29,7 +29,7 @@ async function AreaRankingCard({ area, schoolId }: { area: Areatype, schoolId: s
                 </AvatarFallback>
               </Avatar>
               <span className="font-medium">{user.name}</span>
-              <span className="ml-auto font-semibold text-primary">{user.score.toFixed(1)}</span>
+              <span className="ml-auto font-semibold text-primary">{user.score.toFixed(2)}</span>
             </li>
           ))}
         </ul>

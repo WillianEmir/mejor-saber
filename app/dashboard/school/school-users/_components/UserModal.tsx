@@ -3,7 +3,7 @@
 
 import { useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { toast } from 'sonner'; 
 
 import { Button } from '@/src/components/ui/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/src/components/ui/dialog';
@@ -11,9 +11,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/src/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
 import { SchoolSede } from '@/src/generated/prisma';
-import { UserSchoolModal, UserSchoolSchema } from '../_lib/schema';
-import { createOrUpdateUser } from '../_lib/actions';
-import { UserSchoolType } from '../_lib/school.schema';
+import { UserSchoolModal, UserSchoolSchema, UserSchoolType } from '../_lib/user.schema';
+import { createOrUpdateUser } from '../_lib/user.actions';
 
 interface UserModalProps {
   user?: UserSchoolType;
@@ -39,7 +38,7 @@ export default function UserModal({ user, schoolId, sedes, isOpen, onClose }: Us
       idDocument: user?.idDocument || '',
       schoolId: schoolId,
       role: user?.role as 'USER' | 'DOCENTE' || 'USER',
-      schoolSedeId: user?.schoolSedeId || undefined,
+      sedeName: user?.sedeName || undefined,
       gradeNumber: user?.degree?.match(/\d+/)?.[0] || '',
       gradeLetter: user?.degree?.match(/[a-zA-Z]+/)?.[0] || '',
     },
@@ -66,7 +65,7 @@ export default function UserModal({ user, schoolId, sedes, isOpen, onClose }: Us
         idDocument: user?.idDocument || '',
         schoolId: schoolId,
         role: user?.role as 'USER' | 'DOCENTE' || 'USER',
-        schoolSedeId: user?.schoolSedeId || undefined,
+        sedeName: user?.sedeName || undefined,
         gradeNumber: user?.degree?.match(/\d+/)?.[0] || '',
         gradeLetter: user?.degree?.match(/[a-zA-Z]+/)?.[0] || '',
       });
@@ -93,7 +92,7 @@ export default function UserModal({ user, schoolId, sedes, isOpen, onClose }: Us
     formData.append('schoolId', data.schoolId);
     formData.append('role', data.role);
     if (data.gradeNumber && data.gradeLetter) formData.append('degree', `${data.gradeNumber} - ${data.gradeLetter}`);
-    if (data.schoolSedeId) formData.append('schoolSedeId', data.schoolSedeId);
+    if (data.sedeName) formData.append('sedeName', data.sedeName);
 
     startTransition(async () => {
       const result = await createOrUpdateUser(formData);
@@ -214,7 +213,7 @@ export default function UserModal({ user, schoolId, sedes, isOpen, onClose }: Us
             </div>
             <FormField
               control={form.control}
-              name="schoolSedeId"
+              name="sedeName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Sede</FormLabel>
@@ -226,7 +225,7 @@ export default function UserModal({ user, schoolId, sedes, isOpen, onClose }: Us
                     </FormControl>
                     <SelectContent>
                       {sedes.map(sede => (
-                        <SelectItem key={sede.id} value={sede.id}>{sede.nombre}</SelectItem>
+                        <SelectItem key={sede.id} value={sede.nombre}>{sede.nombre}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>

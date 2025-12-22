@@ -1,13 +1,13 @@
 import prisma from '@/src/lib/prisma';
 import { auth } from '@/auth'; // Updated import
 
-export const getSchoolSedes = async () => {
+export const getSchoolSedes = async () => { 
 
   const session = await auth(); // Updated call
 
   if (!session || session?.user?.role !== 'ADMINSCHOOL') {
     return [];
-  }
+  } 
 
   const schoolId = session?.user?.schoolId;
   
