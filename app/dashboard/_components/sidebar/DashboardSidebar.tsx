@@ -100,11 +100,6 @@ const schoolPath: NavItem[] = [
   },
   {
     icon: <ChartBarIcon className="size-5.5" />,
-    name: "Progreso Institucional",
-    path: "/dashboard/school/progreso-institucional",
-  },
-  {
-    icon: <ChartBarIcon className="size-5.5" />,
     name: "Sedes",
     path: "/dashboard/school/sedes",
   },

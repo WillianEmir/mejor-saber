@@ -6,6 +6,7 @@ import { FormState } from '@/src/types';
 import bcrypt from 'bcryptjs';
 import { sendEmailNewUser } from '@/src/lib/mailNodemailer';
 import { revalidatePath } from "next/cache";
+import { School } from 'lucide-react';
 
 export async function createOrUpdateUser(formData: FormData): Promise<FormState> {
 
@@ -99,7 +100,7 @@ type BulkCreateResult = {
   }
 }
 
-export async function bulkCreateUsers(users: UserSchool[]): Promise<BulkCreateResult> {
+export async function bulkCreateUsers(users: UserSchool[]): Promise<BulkCreateResult> { 
   const resultSummary = {
     successCount: 0,
     failedCount: 0,
@@ -111,6 +112,37 @@ export async function bulkCreateUsers(users: UserSchool[]): Promise<BulkCreateRe
   }
 
   const schoolId = users[0].schoolId;
+
+  // Validación de límite de usuarios
+  const school = await prisma.school.findUnique({
+    where: { id: schoolId },
+    select: { 
+      maxUsers: true,
+      _count: {
+        select: { users: true }
+      }
+    }
+  });
+
+  if (!school) {
+    return { success: false, message: "El colegio especificado no fue encontrado.", results: resultSummary };
+  }
+
+  const currentUserCount = school._count.users;
+  const newUsersCount = users.length;
+
+  if (school.maxUsers !== null && currentUserCount + newUsersCount > school.maxUsers) {
+    const availableSlots = school.maxUsers - currentUserCount;
+    return {
+      success: false,
+      message: `La importación excede el límite de usuarios. Límite: ${school.maxUsers}, Actuales: ${currentUserCount}, a Importar: ${newUsersCount}. Espacios disponibles: ${availableSlots > 0 ? availableSlots : 0}.`,
+      results: {
+        successCount: 0,
+        failedCount: newUsersCount,
+        errors: users.map(u => ({ email: u.email, reason: 'Excede el límite de usuarios del colegio.' }))
+      }
+    };
+  }
 
   // Fetch all sedes for the school once
   const sedes = await prisma.schoolSede.findMany({ where: { schoolId }, select: { id: true, nombre: true } });

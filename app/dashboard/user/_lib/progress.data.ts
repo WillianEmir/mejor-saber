@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import prisma from '@/src/lib/prisma';
+import prisma from '@/src/lib/prisma'; 
 
 import { CompetenciaProgressType, EvidenciaProgressType } from './progress.schema';
 import { BarChartDataType } from '@/src/components/ui/charts/BarChart';

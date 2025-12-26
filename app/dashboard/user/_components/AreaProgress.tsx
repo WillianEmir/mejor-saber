@@ -105,7 +105,7 @@ export default function AreaProgress({ chartData: initialChartData }: AreaProgre
     <Card>
       <CardHeader>
         <div className="pt-4">
-          <Select onValueChange={handleAreaChange} defaultValue="all">
+          <Select onValueChange={handleAreaChange} defaultValue="all"> 
             <SelectTrigger className="w-full mx-auto">
               <SelectValue placeholder="Seleccionar área" />
             </SelectTrigger>

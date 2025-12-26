@@ -7,25 +7,39 @@ import { Input } from '@/src/components/ui/input';
 import { toast } from 'sonner';
 import { UserSchoolSchema, UserSchool } from '../_lib/user.schema';
 import { ZodError } from 'zod';
-import { ScrollArea } from '@/src/components/ui/scroll-area'; 
+import { ScrollArea } from '@/src/components/ui/scroll-area';
 import { Badge } from '@/src/components/ui/badge';
 import { bulkCreateUsers } from '../_lib/user.actions';
 import { getSedesBySchoolId } from '../_lib/sede.actions';
 import * as XLSX from 'xlsx';
+import { Alert, AlertDescription, AlertTitle } from '@/src/components/ui/alert';
+import { Terminal } from 'lucide-react';
 
 interface UserImportModalProps {
   isOpen: boolean;
   onClose: () => void;
   schoolId: string;
+  maxUsers: number | null;
+  userCount: number;
 }
 
-export default function UserImportModal({ isOpen, onClose, schoolId }: UserImportModalProps) {
+export default function UserImportModal({ isOpen, onClose, schoolId, maxUsers, userCount }: UserImportModalProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isParsing, setIsParsing] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [isGeneratingTemplate, setIsGeneratingTemplate] = useState(false);
   const [parsedData, setParsedData] = useState<UserSchool[]>([]);
   const [validationErrors, setValidationErrors] = useState<Record<number, ZodError>>({});
+  const [limitExceeded, setLimitExceeded] = useState(false);
+
+  const handleResetAndClose = () => {
+    setFile(null);
+    setParsedData([]);
+    setValidationErrors({});
+    setLimitExceeded(false);
+    setIsParsing(false); 
+    onClose();
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -38,6 +52,7 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
       setFile(uploadedFile);
       setParsedData([]);
       setValidationErrors({});
+      setLimitExceeded(false); // Reset on new file
     }
   };
 
@@ -54,13 +69,13 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
 
       const sedeNames = sedes.map(s => s.nombre);
       const headers = ["email", "name", "lastName", "idDocument", "sedeName", "degree"];
-      
+
       const ws = XLSX.utils.aoa_to_sheet([headers]);
-      
+
       // Create dropdown list for 'sedeName' column
       const sedeNameColumn = 'E'; // Column E
       ws['!dataValidation'] = [
-        { 
+        {
           sqref: `${sedeNameColumn}2:${sedeNameColumn}200`, // Apply validation from E2 to E200
           opts: {
             type: 'list',
@@ -94,6 +109,7 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
       return;
     }
     setIsParsing(true);
+    setLimitExceeded(false); // Reset before parsing
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -103,9 +119,18 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
-        
+
         const newParsedData: UserSchool[] = [];
         const newErrors: Record<number, ZodError> = {};
+        
+        // Client-side limit validation
+        if (userCount + jsonData.length > maxUsers!) {
+          const availableSlots = maxUsers! - userCount;
+          toast.error('Límite de usuarios excedido.', {
+            description: `Tu plan permite ${maxUsers} usuarios. Actualmente tienes ${userCount}, e intentas importar ${jsonData.length}. Solo puedes agregar ${availableSlots > 0 ? availableSlots : 0} más.`,
+          });
+          setLimitExceeded(true);
+        }
 
         jsonData.forEach((row, index) => {
           const user = {
@@ -118,22 +143,23 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
             sedeName: row.sedeName || undefined,
             degree: row.degree ? String(row.degree) : undefined,
           };
-          
-          // We'll rely on backend for final validation of sedeName
+
           const validation = UserSchoolSchema.safeParse(user);
           if (!validation.success) {
             newErrors[index] = validation.error;
           }
-          newParsedData.push(user as UserSchool); // Cast needed due to schema difference
+          newParsedData.push(user as UserSchool);
         });
 
         setParsedData(newParsedData);
         setValidationErrors(newErrors);
+        
         if (Object.keys(newErrors).length > 0) {
-          toast.warning(`Se encontraron ${Object.keys(newErrors).length} filas con errores. Por favor, corrígelas y vuelve a subir el archivo.`);
-        } else {
+          toast.warning(`Se encontraron ${Object.keys(newErrors).length} filas con errores de formato. Por favor, corrígelas.`);
+        } else if (!limitExceeded) {
           toast.success('Todos los datos son válidos y están listos para ser importados.');
         }
+
       } catch (error) {
         toast.error('Error al procesar el archivo Excel.');
         console.error(error);
@@ -142,16 +168,16 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
       }
     };
     reader.onerror = (error) => {
-        toast.error('Error al leer el archivo.');
-        console.error(error);
-        setIsParsing(false);
+      toast.error('Error al leer el archivo.');
+      console.error(error);
+      setIsParsing(false);
     };
     reader.readAsBinaryString(file);
   };
 
   const handleConfirmImport = () => {
-    if (parsedData.length === 0 || Object.keys(validationErrors).length > 0) {
-      toast.error('No hay datos válidos para importar.');
+    if (parsedData.length === 0 || Object.keys(validationErrors).length > 0 || limitExceeded) {
+      toast.error('No hay datos válidos para importar o se excede el límite de usuarios.');
       return;
     }
 
@@ -168,7 +194,7 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
             ),
           });
         }
-        onClose();
+        handleResetAndClose(); 
       } else {
         toast.error(result.message);
       }
@@ -176,9 +202,10 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
   };
 
   const hasErrors = Object.keys(validationErrors).length > 0;
+  const availableSlots = maxUsers! - userCount;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleResetAndClose}>
       <DialogContent className="w-full max-w-4xl max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle>Importación Masiva de Estudiantes</DialogTitle>
@@ -186,8 +213,16 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
             Sube un archivo XLSX con los datos de los estudiantes. Asegúrate de que las columnas coincidan con la plantilla.
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="grow overflow-y-auto p-1 space-y-4">
+           <Alert>
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>Información de tu Plan</AlertTitle>
+            <AlertDescription>
+              Actualmente tienes <strong>{userCount} de {maxUsers}</strong> usuarios. Puedes importar <strong>{availableSlots > 0 ? availableSlots : 0}</strong> más.
+            </AlertDescription>
+          </Alert>
+          
           <div className="flex items-center justify-between">
             <Input type="file" accept=".xlsx, .csv" onChange={handleFileChange} className="max-w-xs" />
             <div className='flex gap-2'>
@@ -239,11 +274,11 @@ export default function UserImportModal({ isOpen, onClose, schoolId }: UserImpor
         </div>
 
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>Cancelar</Button>
-          <Button 
-            type="button" 
-            onClick={handleConfirmImport} 
-            disabled={isParsing || parsedData.length === 0 || hasErrors || isPending}
+          <Button type="button" variant="outline" onClick={handleResetAndClose} disabled={isPending}>Cancelar</Button>
+          <Button
+            type="button"
+            onClick={handleConfirmImport}
+            disabled={isParsing || parsedData.length === 0 || hasErrors || isPending || limitExceeded}
           >
             {isPending ? 'Importando...' : `Confirmar Importación (${parsedData.length - Object.keys(validationErrors).length} usuarios)`}
           </Button>

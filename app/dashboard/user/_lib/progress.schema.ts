@@ -21,7 +21,7 @@ export type GeneralProgressType = {
   finalScore: number
 }
 
-export type CompetenciaProgressType = {
+export type CompetenciaProgressType = { 
   name: string
   areaName: string
   first: number

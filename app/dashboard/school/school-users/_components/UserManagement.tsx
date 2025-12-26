@@ -13,12 +13,14 @@ import UserImportModal from './UserImportModal';
 import { Button } from '@/src/components/ui/Button';
 import { UserSchoolType } from '../_lib/user.schema';
 
-interface UserManagementProps {  
+interface UserManagementProps { 
   initialUsers: UserSchoolType[]; 
   sedes: SchoolSede[];
+  maxUsers: number | null;
+  userCount: number;
 }
 
-export default function UserManagement({ initialUsers, sedes }: UserManagementProps) {
+export default function UserManagement({ initialUsers, sedes, maxUsers, userCount }: UserManagementProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserSchoolType | undefined>(undefined);
@@ -89,7 +91,7 @@ export default function UserManagement({ initialUsers, sedes }: UserManagementPr
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {initialUsers.map((user) => {
-                const sedeName = sedes.find(sede => sede.id === user.name)?.nombre || 'N/A';
+                const sedeName = sedes.find(sede => sede.id === user.sedeName)?.nombre || 'N/A';
                 return (
                   <tr key={user.id}>
                     <td className="px-6 py-4 whitespace-nowrap">{user.name} {user.lastName}</td>
@@ -136,6 +138,8 @@ export default function UserManagement({ initialUsers, sedes }: UserManagementPr
         isOpen={isImportModalOpen}
         onClose={handleCloseImportModal}
         schoolId={initialUsers[0]?.schoolId || ''}
+        maxUsers={maxUsers}
+        userCount={userCount}
       />
 
       <ConfirmationDialog

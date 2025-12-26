@@ -12,7 +12,7 @@ import { areaAveragesType, CompetenciaProgressType, EvidenciaProgressType } from
 import { SummaryData } from "./dashboard.schema"
 import DashboardTabContent from "./DashboardTabContent"
 
-interface MiProgresoProps { 
+interface MiProgresoProps {  
   summaryData: SummaryData;
   generalProgressData: BarChartDataType;
   areaProgressData: BarChartDataType | undefined;

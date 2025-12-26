@@ -1,34 +1,36 @@
-import { getScoreDistributionData } from "./_lib/school.data";
+import { auth } from "@/auth";
 
-import SchoolProgressChart from "./_components/SchoolProgressChart";
-import SchoolStatsCards from "./_components/SchoolStatsCards";
-import { notFound } from "next/navigation";
+import { getSchoolProgressChartsData } from "./_lib/school.data";
 
-export default async function SchoolDashboardPage() { 
+import SchoolProgress from "./_components/SchoolProgress";
 
-  const scoreDistribution = await getScoreDistributionData();
+export default async function SchoolDashboardPage() {
+  
+  const session = await auth();
 
-  if (!scoreDistribution) notFound()
- 
-  const chartData = {
-    labels: ['Puntaje Inicial', 'Promedio General', 'Puntaje Actual'],
-    datasets: [
-      {
-        label: 'Progreso de la Escuela',
-        data: [
-          scoreDistribution.firstSimulacroAvg,
-          scoreDistribution.overallAvg,
-          scoreDistribution.lastSimulacroAvg,
-        ],
-        backgroundColor: ['#ef4444', '#eab308', '#22c55e'],
-      },
-    ],
-  };
+  if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'ADMINSCHOOL') {
+    return (
+      <div className="p-4 sm:p-6 lg:p-8">
+        <h1 className="text-2xl font-bold">No autorizado</h1>
+        <p>
+          No tienes permisos para ver esta página.
+        </p>
+      </div>
+    );
+  }
 
-  return (
-    <div className="space-y-4">
-      <SchoolStatsCards />
-      <SchoolProgressChart chartData={chartData} />
-    </div>
-  );
+  if (!session?.user?.schoolId) {
+    return (
+      <div className="p-4 sm:p-6 lg:p-8">
+        <h1 className="text-2xl font-bold">Escuela no encontrada</h1>
+        <p>
+          No estás asociado a ninguna escuela.
+        </p>
+      </div>
+    );
+  }
+
+  const schoolData = await getSchoolProgressChartsData(session.user.schoolId);
+
+  return <SchoolProgress data={schoolData} />;
 }

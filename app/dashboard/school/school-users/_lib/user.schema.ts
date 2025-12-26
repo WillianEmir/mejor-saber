@@ -14,7 +14,7 @@ export const UserSchoolSchema = z.object({
   sedeName: z.string().optional(),
 });
 
-export type UserSchoolType = {
+export type UserSchoolType = { 
   id: string;
   email: string;
   name: string;

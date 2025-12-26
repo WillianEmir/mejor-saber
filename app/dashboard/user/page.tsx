@@ -1,7 +1,7 @@
 import MiProgreso from './_components/MiProgreso';
 import { getNivelesDesempenoData, getStudentProgressChartsData } from './_lib/progress.data';
 
-export default async function MiProgresoPage() {
+export default async function MiProgresoPage() { 
 
   // Fetch all data in parallel
   const [

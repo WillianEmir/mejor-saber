@@ -6,4 +6,6 @@ export interface SummaryData {
   bestPerformingArea: { name: string; average: number } | null;
   worstPerformingArea: { name: string; average: number } | null;
   areaAverages: { name: string; average: number }[];
+  registeredUsers?: number;
+  maxUsers?: number | null;
 }

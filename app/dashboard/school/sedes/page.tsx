@@ -1,4 +1,3 @@
-import React from 'react'
 import { SedeList } from './_components/SedeList'
 import { getSedesBySchool } from './_lib/sede.data'
 
