@@ -2,8 +2,8 @@ import { auth } from "@/auth"; // Updated import
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
 import ReportsGraph from "./_components/ReportsGraph";
 import ReportListArea from "./_components/ReportListArea";
-import { getSchoolSedes } from "./_lib/reports.data";
-
+import { getSchoolSedes, getSchoolProgressChartsData } from "../_lib/school.data";
+ 
 export default async function SchoolReportsPage() {
   const session = await auth(); // Updated call
 
@@ -11,9 +11,10 @@ export default async function SchoolReportsPage() {
     return <div>No estás autorizado para ver esta página.</div>; 
   }
 
-  const schoolId = session.user.schoolId;
+  const schoolId = session.user.schoolId;  
 
   const sedes = await getSchoolSedes(schoolId);
+  const initialProgressData = await getSchoolProgressChartsData(schoolId);
 
   return (
     <div className="space-y-6">
@@ -29,11 +30,12 @@ export default async function SchoolReportsPage() {
             <ReportsGraph
               sedes={sedes}
               schoolId={schoolId}
+              initialProgressData={initialProgressData}
             />
           </div>
         </TabsContent>
         <TabsContent value="listado-usuarios">
-          <ReportListArea sedes={sedes} schoolId={schoolId} />
+          <ReportListArea sedes={sedes} schoolId={schoolId} initialStudentReports={initialProgressData.studentExportData} />
         </TabsContent>
       </Tabs>
     </div>

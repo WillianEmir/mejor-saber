@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 
-import { getSchoolProgressChartsData } from "./_lib/school.data";
+import { getSchoolProgressChartsData } from "./_lib/school.data"; 
 
 import SchoolProgress from "./_components/SchoolProgress";
 

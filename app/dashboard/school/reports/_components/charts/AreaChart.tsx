@@ -7,7 +7,7 @@ interface AreaChartProps {
   displayChartData: BarChartDataType | undefined;
 }
 
-export default function AreaChart({ displayChartData }: AreaChartProps) {
+export default function AreaChart({ displayChartData }: AreaChartProps) { 
   return (
     <Card>
       <CardContent className="h-[500px]">

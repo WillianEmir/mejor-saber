@@ -66,6 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user && token) {
         session.user.id = token.sub as string;
         session.user.role = token.role as Role;
+        session.user.school = token.school as { id: string, name: string } | null;
         session.user.schoolId = token.schoolId as string | null;
       }
       return session;
@@ -73,12 +74,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // This callback is used to add custom data to the JWT.
     async jwt({ token, user }) {
       if (user) {
-        // On sign-in, `user` object is available.
-        // Persist the custom data to the token.
         token.role = user.role;
         token.schoolId = user.schoolId;
+        if (user.schoolId) {
+          const school = await prisma.school.findUnique({
+            where: { id: user.schoolId },
+            select: { id: true, nombre: true },
+          });
+          if (school) {
+            token.school = { id: school.id, name: school.nombre };
+          }
+        }
       }
       return token;
     },
   },
 });
+

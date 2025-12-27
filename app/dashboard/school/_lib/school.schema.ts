@@ -50,6 +50,7 @@ const StudentExportDataSchema = z.object({
   areaAverages: z.array(AreaAverageSchema),
   competenciaAverages: z.array(CompetenciaProgressSchema),
   evidenciaAverages: z.array(EvidenciaProgressSchema),
+  idDocument: z.string(),
 });
 
 const SummaryDataSchema = z.object({

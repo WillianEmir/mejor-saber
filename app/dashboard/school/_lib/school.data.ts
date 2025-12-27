@@ -12,11 +12,12 @@ import { BarChartDataType } from '@/src/components/ui/charts/BarChart';
 // Define la estructura de datos para la exportación de estudiantes
 export type StudentExportDataType = {
   id: string;
+  idDocument: string;
   name: string;
   lastName: string;
   degree: string;
   sede: string;
-  simulationsTaken: number;
+  simulationsTaken: number; 
   generalAverage: number;
   initialOverallScore: number;
   finalOverallScore: number;
@@ -156,6 +157,7 @@ export async function getSchoolProgressChartsData(schoolId: string): Promise<Sch
         lastName: string;
         degree: string;
         sede: string;
+        idDocument: string;
       };
       performanceBySimulacro: Map<
         string,
@@ -180,6 +182,7 @@ export async function getSchoolProgressChartsData(schoolId: string): Promise<Sch
       studentData.set(userId, {
         details: {
           id: userId,
+          idDocument: sp.simulacro.user.idDocument ?? 'N/A',
           name: sp.simulacro.user.name,
           lastName: sp.simulacro.user.lastName ?? '',
           degree: sp.simulacro.user.degree ?? 'No especificado',
@@ -540,6 +543,7 @@ export async function getSchoolProgressChartsData(schoolId: string): Promise<Sch
       areaAverages: studentAreaAverages,
       competenciaAverages: studentCompetenciaAverages,
       evidenciaAverages: studentEvidenciaAverages,
+      idDocument: student.details.idDocument,
     });
   }
 

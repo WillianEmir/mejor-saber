@@ -550,7 +550,7 @@ export async function getSchoolReportsData(schoolId: string, sedeId?: string, st
     },
     include: {
       competencia: {
-        include: {
+        include: { 
           area: true
         }
       }

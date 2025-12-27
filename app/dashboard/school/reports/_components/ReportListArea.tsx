@@ -1,61 +1,100 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
-import { SchoolSede, User } from '@/src/generated/prisma';
-import { getSchoolDegrees, getSchoolStudentReportsData, getSchoolStudents, getSedeStudents, StudentReport } from '../_lib/reports.data';
+import React, { useMemo, useState } from 'react';
 import ReportFilters from './filters/ReportFilters';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
 import { Card } from '@/src/components/ui/card';
+import { StudentExportDataType } from '../../_lib/school.data';
 
 interface ReportListAreaProps {
-  sedes: SchoolSede[];
+  sedes: {
+    id: string;
+    nombre: string;
+  }[];
   schoolId: string;
+  initialStudentReports: StudentExportDataType[];
 }
 
-export default function ReportListArea({ sedes, schoolId }: ReportListAreaProps) {
+export default function ReportListArea({ sedes, schoolId, initialStudentReports }: ReportListAreaProps) {
   const [selectedSede, setSelectedSede] = useState('all');
   const [selectedDegree, setSelectedDegree] = useState('all');
   const [selectedStudent, setSelectedStudent] = useState('all');
-  const [studentReports, setStudentReports] = useState<StudentReport[]>([]);
-  const [studentList, setStudentList] = useState<Pick<User, 'id' | 'name' | 'lastName'>[]>([]);
-  const [degrees, setDegrees] = useState<string[]>([]);
-  const [areaNames, setAreaNames] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (schoolId) {
-      getSchoolDegrees(schoolId, selectedSede).then(setDegrees);
-    }
-  }, [schoolId, selectedSede]);
-
-  useEffect(() => {
-    if (schoolId) {
-      getSchoolStudentReportsData(schoolId, selectedSede, selectedDegree, selectedStudent).then(reports => {
-        setStudentReports(reports);
-        if (reports.length > 0 && reports[0].areas.length > 0) {
-          setAreaNames(reports[0].areas.map(a => a.name));
-        }
-      });
-    }
-  }, [schoolId, selectedSede, selectedDegree, selectedStudent]);
-
-  useEffect(() => {
-    if (selectedSede && selectedSede !== 'all') {
-      getSedeStudents(selectedSede, selectedDegree).then(setStudentList);
-      setSelectedStudent('all');
-    } else if (selectedSede === 'all') {
-      getSchoolStudents(schoolId, selectedDegree).then(setStudentList);
-      setSelectedStudent('all');
-    } else {
-      setStudentList([]);
-      setSelectedStudent('all');
-    }
-  }, [selectedSede, schoolId, selectedDegree]);
 
   const handleSedeChange = (sedeId: string) => {
     setSelectedSede(sedeId);
     setSelectedDegree('all');
     setSelectedStudent('all');
   };
+  
+  const handleDegreeChange = (degree: string) => {
+    setSelectedDegree(degree);
+    setSelectedStudent('all');
+  };
+
+  const filteredStudentReports = useMemo(() => {
+    let filteredData = initialStudentReports;
+
+    if (selectedSede !== 'all') {
+      const sedeName = sedes.find(s => s.id === selectedSede)?.nombre;
+      if (sedeName) {
+        filteredData = filteredData.filter(report => report.sede === sedeName);
+      } else {
+        filteredData = [];
+      }
+    }
+    if (selectedDegree !== 'all') {
+      filteredData = filteredData.filter(report => report.degree === selectedDegree);
+    }
+    if (selectedStudent !== 'all') {
+      filteredData = filteredData.filter(report => report.id === selectedStudent);
+    }
+    return filteredData;
+  }, [initialStudentReports, selectedSede, selectedDegree, selectedStudent, sedes]);
+
+  const studentList = useMemo(() => {
+    let relevantStudents = initialStudentReports;
+    if (selectedSede !== 'all') {
+      const sedeName = sedes.find(s => s.id === selectedSede)?.nombre;
+      if (sedeName) {
+        relevantStudents = relevantStudents.filter(student => student.sede === sedeName);
+      } else {
+        relevantStudents = [];
+      }
+    }
+     if (selectedDegree !== 'all') {
+      relevantStudents = relevantStudents.filter(student => student.degree === selectedDegree);
+    }
+    
+    const students = relevantStudents.map(s => ({
+      id: s.id,
+      name: s.name,
+      lastName: s.lastName,
+    }));
+    const uniqueStudents = Array.from(new Map(students.map(item => [item['id'], item])).values());
+    return uniqueStudents;
+  }, [initialStudentReports, selectedSede, selectedDegree, sedes]);
+
+  const degrees = useMemo(() => {
+    let relevantStudents = initialStudentReports;
+    if (selectedSede !== 'all') {
+      const sedeName = sedes.find(s => s.id === selectedSede)?.nombre;
+      if (sedeName) {
+        relevantStudents = relevantStudents.filter(student => student.sede === sedeName);
+      } else {
+        relevantStudents = [];
+      }
+    }
+    const allDegrees = relevantStudents.map(s => s.degree).filter(Boolean);
+    const uniqueDegrees = [...new Set(allDegrees)].sort();
+    return uniqueDegrees;
+  }, [initialStudentReports, selectedSede, sedes]);
+
+  const areaNames = useMemo(() => {
+    if (initialStudentReports.length > 0 && initialStudentReports[0].areaAverages.length > 0) {
+      return initialStudentReports[0].areaAverages.map(a => a.name).sort();
+    }
+    return [];
+  }, [initialStudentReports]);
 
   return (
     <Card>
@@ -63,15 +102,15 @@ export default function ReportListArea({ sedes, schoolId }: ReportListAreaProps)
         sedes={sedes}
         degrees={degrees}
         studentList={studentList}
-        areaNames={[]}
+        areaNames={[]} // No se usa en este componente
         selectedSede={selectedSede}
         selectedDegree={selectedDegree}
         selectedStudent={selectedStudent}
         selectedAreaName="all"
         onSedeChange={handleSedeChange}
-        onDegreeChange={setSelectedDegree}
+        onDegreeChange={handleDegreeChange}
         onStudentChange={setSelectedStudent}
-        onAreaChange={() => {}}
+        onAreaChange={() => { }}
         showAreaFilter={false}
       />
       <div className="overflow-x-auto">
@@ -82,32 +121,26 @@ export default function ReportListArea({ sedes, schoolId }: ReportListAreaProps)
               <TableHead>Nombre Completo</TableHead>
               <TableHead>Sede</TableHead>
               <TableHead>Grado</TableHead>
-              <TableHead>General (1ro)</TableHead>
-              <TableHead>General (Último)</TableHead>
+              <TableHead>Prom. General</TableHead>
               {areaNames.map(areaName => (
-                <React.Fragment key={areaName}>
-                  <TableHead>{areaName} (1ro)</TableHead>
-                  <TableHead>{areaName} (Último)</TableHead>
-                </React.Fragment>
+                <TableHead key={areaName}>Prom. {areaName}</TableHead>
               ))}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {studentReports.map(report => (
+            {filteredStudentReports.map(report => (
               <TableRow key={report.id}>
                 <TableCell>{report.idDocument || 'N/A'}</TableCell>
-                <TableCell>{report.fullName}</TableCell>
+                <TableCell>{`${report.name} ${report.lastName}`}</TableCell>
                 <TableCell>{report.sede || 'N/A'}</TableCell>
                 <TableCell>{report.degree || 'N/A'}</TableCell>
-                <TableCell>{report.overall.first?.toFixed(2) ?? 'N/A'}</TableCell>
-                <TableCell>{report.overall.last?.toFixed(2) ?? 'N/A'}</TableCell>
+                <TableCell>{report.generalAverage?.toFixed(2) ?? 'N/A'}</TableCell>
                 {areaNames.map(areaName => {
-                  const areaReport = report.areas.find(a => a.name === areaName);
+                  const areaReport = report.areaAverages.find(a => a.name === areaName);
                   return (
-                    <React.Fragment key={areaName}>
-                      <TableCell>{areaReport?.first?.toFixed(2) ?? 'N/A'}</TableCell>
-                      <TableCell>{areaReport?.last?.toFixed(2) ?? 'N/A'}</TableCell>
-                    </React.Fragment>
+                    <TableCell key={areaName}>
+                      {areaReport?.average?.toFixed(2) ?? 'N/A'}
+                    </TableCell>
                   );
                 })}
               </TableRow>

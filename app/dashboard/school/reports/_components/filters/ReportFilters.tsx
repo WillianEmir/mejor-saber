@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SchoolSede, User } from '@/src/generated/prisma';
 
 interface ReportFiltersProps {
-  sedes: SchoolSede[];
+  sedes: { id: string; nombre: string; }[];
   degrees: string[];
   studentList: Pick<User, 'id' | 'name' | 'lastName'>[];
   areaNames: string[];
@@ -13,23 +13,23 @@ interface ReportFiltersProps {
   selectedStudent: string;
   selectedAreaName: string;
   onSedeChange: (value: string) => void;
-  onDegreeChange: (value: string) => void; 
+  onDegreeChange: (value: string) => void;
   onStudentChange: (value: string) => void;
   onAreaChange: (value: string) => void;
   showAreaFilter?: boolean;
 }
 
-export default function ReportFilters({ 
-  sedes, 
-  degrees, 
-  studentList, 
-  areaNames, 
-  selectedSede, 
-  selectedDegree, 
-  selectedStudent, 
-  onSedeChange, 
-  onDegreeChange, 
-  onStudentChange, 
+export default function ReportFilters({
+  sedes,
+  degrees,
+  studentList,
+  areaNames,
+  selectedSede,
+  selectedDegree,
+  selectedStudent,
+  onSedeChange,
+  onDegreeChange,
+  onStudentChange,
   onAreaChange,
   showAreaFilter = true
 }: ReportFiltersProps) {

@@ -5,12 +5,15 @@ import { Menu, X, MoreHorizontal } from "lucide-react";
 import { ThemeToggleButton } from "../../../../src/components/ui/ThemeToggleButton";
 import { useSidebarStore } from "@/src/store/sidebar.store";
 import Link from "next/link";
-import UserDropdown from "./UserDropdown";
+import UserDropdown from "./UserDropdown"; 
 import Image from "next/image";
+import { useCurrentUser } from "@/src/hooks/use-current-user";
 
 const DashboardHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebarStore();
+  const  session  = useCurrentUser();
+  const user = session?.data?.user;
 
   const handleSidebarToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -46,6 +49,13 @@ const DashboardHeader: React.FC = () => {
           >
             {isMobileOpen ? <X size={24} /> : <Menu size={20} />}
           </button>
+          {user?.school && (
+            <div className="hidden lg:flex items-center gap-2">
+              <span className="text-2xl font-semibold text-gray-600 dark:text-gray-300">
+                {user.school.name}
+              </span>
+            </div>
+          )}
 
           <div className="flex items-center justify-center lg:flex-1 lg:hidden">
             <Link href={'/'}>
