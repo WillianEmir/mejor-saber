@@ -1,7 +1,7 @@
 "use client"; 
 
 import DashboardHeader from "@/app/dashboard/_components/header/DashboardHeader";
-import AppSidebar from "@/app/dashboard/_components/sidebar/DashboardSidebar";
+import AppSidebar from "@/app/dashboard/_components/sidebar/DashboardSidebar"; 
 import { useSidebarStore } from "@/src/store/sidebar.store";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

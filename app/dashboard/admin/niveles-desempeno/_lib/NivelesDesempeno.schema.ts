@@ -2,7 +2,7 @@ import { NivelDesempeno } from '@/src/generated/prisma';
 import * as z from 'zod';
 import { Areatype } from '../../areas/_lib/area.schema';
 
-enum Nivel {
+enum Nivel { 
   NIVEL1 = 'NIVEL1',
   NIVEL2 = 'NIVEL2',
   NIVEL3 = 'NIVEL3', 

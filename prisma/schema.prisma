@@ -20,6 +20,7 @@ model Area {
   contenidosCurriculares ContenidoCurricular[]
   nivelesDesempeno       NivelDesempeno[]
   simulacros             Simulacro[]
+  simulacrosOficiales    SimulacroOficial[]
 
   @@map("areas")
 }
@@ -277,26 +278,29 @@ model OpcionPregunta {
 }
 
 model Simulacro {
-  id              String              @id @default(uuid())
-  score           Float?
-  createdAt       DateTime            @default(now()) @map("created_at")
-  updatedAt       DateTime            @updatedAt @map("updated_at")
-  duracionMinutos Int?
+  id                 String              @id @default(uuid())
+  score              Float?
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  duracionMinutos    Int?
   
-  competencia     Competencia?         @relation(fields: [competenciaId], references: [id])
-  competenciaId   String?              @map("competencia_id")
+  competencia        Competencia?        @relation(fields: [competenciaId], references: [id])
+  competenciaId      String?             @map("competencia_id")
 
-  area            Area?               @relation(fields: [areaId], references: [id])
-  areaId          String?             @map("area_id")
+  area               Area?               @relation(fields: [areaId], references: [id])
+  areaId             String?             @map("area_id")
   
-  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          String              @map("user_id")
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String              @map("user_id")
   
-  preguntas       SimulacroPregunta[]
+  preguntas          SimulacroPregunta[]
+  simulacroOficial   SimulacroOficial?   @relation(fields: [simulacroOficialId], references: [id])
+  simulacroOficialId String?
 
   @@index([userId])
   @@index([competenciaId])
   @@index([areaId])
+  @@index([simulacroOficialId])
   @@map("simulacros")
 }
 
@@ -346,6 +350,9 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
   order                 Order[]
   freeSimulacrosCount   Int                    @default(0) @map("free_simulacros_count")
+
+  gamificationProfile GamificationProfile?
+  badges              UserBadge[]
 
   createdAt             DateTime               @default(now()) @map("created_at")
   updatedAt             DateTime               @updatedAt @map("updated_at")
@@ -430,16 +437,17 @@ model Session {
 }
 
 model School {
-  id         String       @id @default(uuid())
-  nombre     String
-  email      String?      @unique
-  DANE       String       @unique
-  address    String?
-  department String?
-  city       String?
-  maxUsers   Int?
-  sedes      SchoolSede[]
-  users      User[]
+  id                  String               @id @default(uuid())
+  nombre              String
+  email               String?              @unique
+  DANE                String               @unique
+  address             String?
+  department          String?
+  city                String?
+  maxUsers            Int?
+  sedes               SchoolSede[]
+  users               User[]
+  simulacrosOficiales SimulacroOficial[]
 
   @@map("schools")
 }
@@ -531,6 +539,63 @@ model Payment {
   orderId String @unique
 
   @@map("payments")
+}
+
+model SimulacroOficial {
+  id          String    @id @default(uuid())
+  nombre      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  habilitado  Boolean   @default(false)
+
+  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  schoolId  String
+
+  area      Area      @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  areaId    String
+
+  simulacros  Simulacro[]
+
+  @@index([schoolId])
+  @@index([areaId])
+  @@map("simulacros_oficiales")
+}
+
+model GamificationProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  points      Int      @default(0) // "Saber-Puntos"
+  level       Int      @default(1)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("gamification_profiles")
+}
+
+model Badge {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  iconUrl     String   // URL a un ícono visual para la insignia
+  criteria    String   // Descripción del criterio para ganarla
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  users       UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  earnedAt  DateTime @default(now()) @map("earned_at")
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
 }
 
 enum TipoSeccion {

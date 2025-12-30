@@ -4,24 +4,28 @@ import { useState, useEffect, useTransition } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { ChevronLeftIcon, ChevronRightIcon, BookOpenIcon } from '@heroicons/react/24/outline';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 import { createSimulacro } from '@/app/dashboard/user/simulacros/_lib/simulacro.action';
+import { useGamificationStore } from '@/src/store/gamification.store';
 import { Timer } from './SimulacroTimer';
 import { ConfirmationDialog } from '@/src/components/ui/ConfirmationDialog';
 
 import { CompetenciaWithAreaType } from '@/app/dashboard/admin/areas/_lib/competencia.schema';
 import { Areatype } from '@/app/dashboard/admin/areas/_lib/area.schema';
 import { PreguntaWithRelationsType } from '@/app/dashboard/admin/preguntas/_lib/pregunta.schema';
-import { useRouter } from 'next/navigation';
 
 interface SimulacrumQuestionsProps {
   preguntas: PreguntaWithRelationsType[];
   competencia?: CompetenciaWithAreaType;  
   area?: Areatype;
+  officialSimulacroId?: string;
 }
 
-export default function SimulacroQuestions({ preguntas, competencia, area }: SimulacrumQuestionsProps) {
-
+export default function SimulacroQuestions({ preguntas, competencia, area, officialSimulacroId }: SimulacrumQuestionsProps) {
+  const { data: session } = useSession();
+  const fetchGamificationProfile = useGamificationStore((state) => state.fetchProfile);
   const [isPending, startTransition] = useTransition();
   const [time, setTime] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -93,11 +97,16 @@ export default function SimulacroQuestions({ preguntas, competencia, area }: Sim
         duracionMinutos,
         competencia?.id,
         areaId,
-        simulacroPreguntasData
+        simulacroPreguntasData,
+        officialSimulacroId
       );
 
       if(result.success) {
         toast.success(result.message);
+        if (session?.user?.id) {
+          // Dispara la actualización del perfil de gamificación
+          fetchGamificationProfile(session.user.id);
+        }
         router.push(`/dashboard/user/simulacros/resultados/${result.simulacroId}`);
       } else {
         toast.error(result.message)

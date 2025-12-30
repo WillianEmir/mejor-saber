@@ -1,4 +1,4 @@
-'use server'
+'use server' 
 
 import prisma from '@/src/lib/prisma'
 import { revalidatePath } from 'next/cache'

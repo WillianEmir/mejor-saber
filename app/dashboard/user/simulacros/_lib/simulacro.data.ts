@@ -127,3 +127,50 @@ export async function getSimulacroByIdWithRelations(simulacroId: string): Promis
     throw new Error('Error de base de datos: No se pudo obtener el simulacro con relaciones.');
   }
 }
+
+export async function getActiveOfficialSimulacrosBySchoolId(schoolId: string, userId: string) { 
+  try {
+    // First, get all active official simulacros for the school
+    const activeOfficialSimulacros = await prisma.simulacroOficial.findMany({
+      where: {
+        schoolId: schoolId,
+        habilitado: true, // Filter by the new 'habilitado' field
+      },
+      include: {
+        area: {
+          select: {
+            id: true,
+            nombre: true,
+          },
+        },
+      },
+      // orderBy removed as it was date-based
+    });
+
+    // Get the IDs of official simulacros already completed by the user
+    const completedOfficialSimulacroIds = await prisma.simulacro.findMany({
+      where: {
+        userId: userId,
+        simulacroOficialId: {
+          in: activeOfficialSimulacros.map(s => s.id), // Only check among the active ones
+        },
+      },
+      select: {
+        simulacroOficialId: true,
+      },
+      distinct: ['simulacroOficialId'], // Ensure unique official simulacro IDs
+    });
+
+    const completedIds = new Set(completedOfficialSimulacroIds.map(s => s.simulacroOficialId));
+
+    // Filter out the ones that have been completed
+    const filteredSimulacros = activeOfficialSimulacros.filter(
+      simulacro => !completedIds.has(simulacro.id)
+    );
+
+    return filteredSimulacros;
+  } catch (error) {
+    console.error('Error fetching active official simulacros for school:', error);
+    return [];
+  }
+}

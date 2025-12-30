@@ -1,11 +1,12 @@
-'use server';
+'use server'
 
-import { revalidatePath } from 'next/cache';
-import prisma from '@/src/lib/prisma';
 import { auth } from '@/auth';
 
+import { awardPointsAndCheckBadges, GamificationActionType } from '@/app/dashboard/user/gamification/_lib/actions';
 import { SimulacroSchema } from './simulacro.schema';
 import { FormState } from '@/src/types';
+import prisma from '@/src/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export const createSimulacro = async (
   score: number,
@@ -14,8 +15,9 @@ export const createSimulacro = async (
   areaId: string | undefined,
   preguntas: {
     preguntaId: string; opcionSeleccionadaId: string | null; correcta: boolean
-  }[]
-): Promise<FormState & {simulacroId?: string}> => {
+  }[],
+  simulacroOficialId?: string // Add this parameter
+): Promise<FormState & { simulacroId?: string }> => {
 
   const session = await auth();
 
@@ -34,6 +36,7 @@ export const createSimulacro = async (
     userId,
     competenciaId,
     areaId,
+    simulacroOficialId, // Add to validation
     preguntas,
   });
 
@@ -60,7 +63,8 @@ export const createSimulacro = async (
       };
     }
 
-    if (!user.isActive && user.freeSimulacrosCount >= 2) {
+    // Only apply free simulacro limit if it's not an official one
+    if (!simulacroData.simulacroOficialId && !user.isActive && user.freeSimulacrosCount >= 2) {
       return {
         success: false,
         message: 'Has agotado tu simulacro gratuito. Por favor, adquiere un plan para continuar.',
@@ -80,11 +84,27 @@ export const createSimulacro = async (
       },
     });
 
-    if (!user.isActive) {
+    // Only increment free simulacro count if it's not an official one
+    if (!simulacroData.simulacroOficialId && !user.isActive) {
       await prisma.user.update({
         where: { id: userId },
         data: { freeSimulacrosCount: { increment: 1 } },
       })
+    } 
+
+    let actionType: GamificationActionType | undefined;
+    if (simulacroData.areaId) {
+      actionType = "COMPLETE_SIMULACRO_AREA";
+    } else if (simulacroData.competenciaId) {
+      actionType = "COMPLETE_SIMULACRO_COMPETENCIA";
+    }
+
+    if (actionType) {
+      await awardPointsAndCheckBadges({
+        userId: userId,
+        actionType: actionType,
+        score: simulacroData.score,
+      });
     }
 
     revalidatePath('/dashboard/simulacros');

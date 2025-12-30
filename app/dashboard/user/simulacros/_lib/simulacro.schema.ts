@@ -16,6 +16,7 @@ export const SimulacroSchema = z.object({
   userId: z.string().uuid({ error: 'El ID del usuario debe ser un UUID válido.' }),
   competenciaId: z.string().uuid({ error: 'El ID de la competencia debe ser un UUID válido.' }).optional(),
   areaId: z.string().uuid({ error: 'El ID del área debe ser un UUID válido.' }).optional(),
+  simulacroOficialId: z.string().uuid({ error: 'El ID del simulacro oficial debe ser un UUID válido.' }).optional(),
   preguntas: z.array(SimulacroPreguntaSchema)
 }) 
 

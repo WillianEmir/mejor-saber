@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { NivelDesempenoSchema } from './NivelesDesempeno.schema';
+import { NivelDesempenoSchema } from './NivelesDesempeno.schema'; 
 import prisma from '@/src/lib/prisma';
 import { FormState } from '@/src/types';
 

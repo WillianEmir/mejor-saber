@@ -1,7 +1,7 @@
 'use client'
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./alert-dialog"
-import { Button } from "./Button"
+import { Button } from "./Button" 
 
 interface ConfirmationDialogProps { 
   isOpen: boolean

@@ -4,23 +4,28 @@ import SimulacroCompetenciasList from '@/app/dashboard/user/simulacros/_componen
 
 import { getAreaCompetencias } from '../_lib/simulacro.data';
 
-interface pageProps {  
-  params: Promise<{ 
-    areaId: string 
+interface pageProps {
+  params: Promise<{
+    areaId: string
+  }>,
+  searchParams?: Promise<{
+    officialSimulacroId: string
   }>
+;
 }
 
-export default async function Page({ params }: pageProps) {
+export default async function Page({ params, searchParams }: pageProps) {
 
-  const {areaId} = await params;
-  const area = await getAreaCompetencias(areaId); 
+  const { areaId } = await params;
+  const { officialSimulacroId } = await searchParams || {};
 
-  if(!area) notFound()   
+  const area = await getAreaCompetencias(areaId);
+
+  if (!area) notFound()
 
   return (
     <>
-      <SimulacroCompetenciasList area={area} />
+      <SimulacroCompetenciasList area={area} officialSimulacroId={officialSimulacroId} />
     </>
   );
 }
- 

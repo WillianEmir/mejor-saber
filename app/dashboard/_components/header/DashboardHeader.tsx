@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X, MoreHorizontal } from "lucide-react";
+import GamificationHUD from "./GamificationHUD";
 import { ThemeToggleButton } from "../../../../src/components/ui/ThemeToggleButton";
 import { useSidebarStore } from "@/src/store/sidebar.store";
 import Link from "next/link";
 import UserDropdown from "./UserDropdown"; 
 import Image from "next/image";
-import { useCurrentUser } from "@/src/hooks/use-current-user";
+import { useCurrentUser } from "@/src/hooks/use-current-user"; 
 
 const DashboardHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -80,6 +81,7 @@ const DashboardHeader: React.FC = () => {
 
         <div className={`${isApplicationMenuOpen ? "flex" : "hidden"} items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}>
           <div className="flex items-center gap-2 2xsm:gap-3">
+            <GamificationHUD />
             <ThemeToggleButton />
           </div>
           <UserDropdown />

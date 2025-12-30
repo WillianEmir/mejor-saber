@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from "@/src/lib/prisma";
-import { NivelDesempenoType } from "./NivelesDesempeno.schema";
+import { NivelDesempenoType } from "./NivelesDesempeno.schema"; 
 
 // Obtiene todos los niveles de desempeño con sus áreas
 export async function getNivelesDesempeno(): Promise<NivelDesempenoType[]> {

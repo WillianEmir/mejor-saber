@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import { useSidebarStore } from "@/src/store/sidebar.store";
 import SidebarMenu from "./SidebarMenu";
-import { ChartBarIcon, BookOpenIcon, RocketLaunchIcon, UsersIcon, AcademicCapIcon, ClipboardDocumentListIcon, BuildingLibraryIcon, UserGroupIcon, DocumentChartBarIcon, UserPlusIcon } from "@heroicons/react/24/outline";
+import { ChartBarIcon, BookOpenIcon, RocketLaunchIcon, UsersIcon, AcademicCapIcon, ClipboardDocumentListIcon, BuildingLibraryIcon, UserGroupIcon, DocumentChartBarIcon, UserPlusIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { useCurrentUser } from "@/src/hooks/use-current-user";
 import Image from "next/image";
 
@@ -31,6 +31,11 @@ const userPath: NavItem[] = [
     icon: <BookOpenIcon className="size-5.5" />,
     name: "Material de Repaso",
     path: "/dashboard/user/material-repaso",
+  },
+  {
+    icon: <SparklesIcon className="size-5.5" />, // New icon for gamification
+    name: "Centro de Gamificación",
+    path: "/dashboard/user/gamification",
   },
   {
     icon: <UsersIcon className="size-5.5" />,
@@ -90,6 +95,11 @@ const adminPath: NavItem[] = [
     name: "Ordenes",
     path: "/dashboard/admin/orders",
   },
+  {
+    icon: <UsersIcon className="size-5.5" />,
+    name: "Insignias",
+    path: "/dashboard/admin/insignias",
+  },
 ];
 
 const schoolPath: NavItem[] = [
@@ -112,6 +122,11 @@ const schoolPath: NavItem[] = [
     icon: <DocumentChartBarIcon className="size-5.5" />,
     name: "Reportes",
     path: "/dashboard/school/reports",
+  },
+  {
+    icon: <DocumentChartBarIcon className="size-5.5" />,
+    name: "Simulacros Oficiales",
+    path: "/dashboard/school/simulacros-oficiales",
   },
 ];
 
@@ -192,7 +207,7 @@ const DashboardSidebar: React.FC = () => {
         <Link href="/dashboard/profile">
           <div className="flex items-center gap-4 p-1 rounded-md hover:bg-primary/10 transition-all duration-200 dark:hover:bg-neutral-dark">
             <Image
-              src={data?.user.image || "/images/default-avatar.png"} //TODO: Add default user image
+              src={data?.user.image || "/default-avatar.png"} //TODO: Add default user image
               alt="User image"
               width={50}
               height={50}

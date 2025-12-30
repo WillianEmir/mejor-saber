@@ -1,7 +1,7 @@
 import { getAdminDashboardStats, getQuestionCountHierarchy, getContenidoCurricularStats, getTestimoniosStats, getScoreDistributionByArea } from "@/app/dashboard/admin/_lib/admin.data";
 
 import { Users, HelpCircle, Book, School } from 'lucide-react'; 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs"; 
 import { ContenidoCurricularStats } from "./_components/ContenidoCurricularStats";
 import { TestimoniosStats } from "./_components/TestimoniosStats";
 import { ScoreDistribution } from "./_components/ScoreDistribution";

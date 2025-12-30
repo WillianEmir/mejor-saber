@@ -1,12 +1,23 @@
 import Link from 'next/link';
-import { AreaCompetenciasType } from '../_lib/simulacro.schema';
+import { AreaCompetenciasType } from '../_lib/simulacro.schema'; 
  
 
 interface SimulacroCompetenciasListProps {     
   area: AreaCompetenciasType;
+  officialSimulacroId?: string; // Add this prop
 } 
 
-export default function SimulacroCompetenciasList({ area }: SimulacroCompetenciasListProps) {
+export default function SimulacroCompetenciasList({ area, officialSimulacroId }: SimulacroCompetenciasListProps) {
+  // Helper to add officialSimulacroId to href if present
+  const appendOfficialId = (href: string) => {
+    if (officialSimulacroId) {
+      // Check if href already contains query parameters
+      const separator = href.includes('?') ? '&' : '?';
+      return `${href}${separator}officialSimulacroId=${officialSimulacroId}`;
+    }
+    return href;
+  };
+
   return (
     <div className="min-h-screen bg-white p-4 dark:bg-neutral-dark sm:p-6 lg:p-8">
       <div className="mx-auto max-w-7xl">
@@ -41,7 +52,7 @@ export default function SimulacroCompetenciasList({ area }: SimulacroCompetencia
             </div>
             <div className="mt-6">
               <Link
-                href={`/dashboard/user/simulacros/${area.id}/all`}
+                href={appendOfficialId(`/dashboard/user/simulacros/${area.id}/all`)} // Use appendOfficialId
                 className="inline-block w-full rounded-md bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-primary/80 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 Iniciar Práctica Completa
@@ -61,7 +72,7 @@ export default function SimulacroCompetenciasList({ area }: SimulacroCompetencia
               </div>
               <div className="mt-6">
                 <Link
-                  href={`/dashboard/user/simulacros/${area.id}/${competencia.id}`}
+                  href={appendOfficialId(`/dashboard/user/simulacros/${area.id}/${competencia.id}`)} // Use appendOfficialId
                   className="inline-block w-full rounded-md bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-primary/80 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
                   Iniciar Práctica
